@@ -6,7 +6,7 @@ import sys
 import threading
 import traceback
 
-from .source_handler import CandumpHandler, InvalidFrame, SerialHandler
+from .source_handler import InvalidFrame, SerialHandler
 
 
 should_redraw = threading.Event()
@@ -18,7 +18,7 @@ can_messages_lock = threading.Lock()
 thread_exception = None
 
 
-def reading_loop(source_handler, blacklist):
+def reading_loop(source_handler):
     """Background thread for reading."""
     try:
         while not stop_reading.is_set():
@@ -29,13 +29,13 @@ def reading_loop(source_handler, blacklist):
             except EOFError:
                 break
 
-            if frame_id in blacklist:
-                continue
+#            if frame_id in blacklist:
+#                continue
 
             # Add the frame to the can_messages dict and tell the main thread to refresh its content
             with can_messages_lock:
                 can_messages[frame_id] = data
-                should_redraw.set()
+#                should_redraw.set()
 
         stop_reading.wait()
 
@@ -206,13 +206,13 @@ def run():
  #       return
 
     # --blacklist-file prevails over --blacklist
-    if args.blacklist_file:
-        with open(args.blacklist_file) as f_obj:
-            blacklist = parse_ints(f_obj)
-    elif args.blacklist:
-        blacklist = parse_ints(args.blacklist)
-    else:
-        blacklist = set()
+#    if args.blacklist_file:#
+#        with open(args.blac#klist_file) as f_obj:
+#            blacklist = par#se_ints(f_obj)
+#    elif args.blacklist#:
+#        blacklist = parse_ints(args.blacklist)
+#    else:
+#        blacklist = set()
 
 #    if args.serial_device:
     if True:
@@ -230,7 +230,7 @@ def run():
         source_handler.open()
 
         # Start the reading background thread
-        reading_thread = threading.Thread(target=reading_loop, args=(source_handler, blacklist,))
+        reading_thread = threading.Thread(target=reading_loop, args=source_handler)
         reading_thread.start()
 
         # Make sure to draw the UI the first time even if no data has been read
