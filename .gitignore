@@ -1,7 +1,0 @@
-*.pyc
-pip-selfcheck.json
-.Python
-bin
-include
-lib
-canmonitor.egg-info
