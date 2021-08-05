@@ -1,20 +1,18 @@
-# Python CAN bus monitor
+# Arduino CAN bus sketch
 
-This script allows you to read live data from a CAN bus or offline CAN data from a file and display it in an easy-to-read table.
+This sketch reads CAN data using a [CAN bus shield](http://wiki.seeed.cc/CAN-BUS_Shield_V1.2/) (or any MCP2515 based boards) and outputs it over the serial interface.
 
-## Live
+It requires the [CAN bus shield library](https://github.com/Seeed-Studio/CAN_BUS_Shield) from Seeedstudio.
 
-It's primarily meant to be used in conjunction with an Arduino and a CAN bus shield. You'll need this [Arduino sketch](https://github.com/alexandreblin/arduino-can-reader.git) to make it work.
+You can use this [Python script](https://github.com/alexandreblin/python-can-monitor.git) I wrote to display the data in a more readable format.
 
-You can also use any serial device capable of reading a CAN bus. It expects data in this format:
+## Configuration
+Make sure the variables at the top of the sketch are correct for your usage.
 
-    FRAME:ID=X:LEN=Y:ZZ:ZZ:ZZ:ZZ:ZZ:ZZ:ZZ:ZZ
+ * `CS_PIN` should be set to the chip select pin for your board (leave to 9 if you have the latest CAN Shield from Seeedstudio)
+ * `SERIAL_SPEED` is the speed of the serial interface. Make sure it matches the settings of whatever software you're using to read the data
+ * `CAN_SPEED` should be set to the speed of the CAN bus you're connected too ([possible values](https://github.com/Seeed-Studio/CAN_BUS_Shield#1-set-the-baudrate)).
 
-where `X` is the CAN frame ID (decimal), `Y` is the number of bytes in the frame, and `ZZ:ZZ...` are the actual bytes (in hex).
+**Be careful**, setting the wrong speed can mess with the CAN bus. I once set the wrong speed when connecting it to my car and my dashboard lights went crazy! Restarting the car solved the problem, but in any case, *use at your own risk*.
 
-## Usage
-Install the dependencies (preferably in a virtualenv)
-
-    pip install -e .
-
-Launch the script via le launcher.sh
+**If you're not using Seeedstudio's shield** you may have to tweak the library to make it work. I had another MCP2515 board and could not make it work with Seeedstudio's library. This was due to the oscillator's frequency. Seeedstudio's shield uses a 16Mhz oscillator, whereas some boards use 10Mhz or some other value. So you need to use [Kvaser's bit timing calculator](https://www.kvaser.com/support/calculators/bit-timing-calculator/) and change the `CFG1`, `CFG2` and `CFG3` variables for your bus speed near the bottom of `mcp_can_dfs.h`.
