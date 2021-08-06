@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import argparse
-import curses
+#import argparse
+#import curses
 import sys
 import threading
 import traceback
@@ -93,7 +93,8 @@ def run():
         # Start the reading background thread
         reading_thread = threading.Thread(target=reading_loop, args=(source_handler,))
         reading_thread.start()
-
+# ICI ON DEFINI LA MAINWINDOW
+#UNE FOIS FAIT ON POURRA SUPPRIMER LE WHILE EN DESSOUS
         while(not stop_reading.is_set()) :
             True
             time.sleep(1)
