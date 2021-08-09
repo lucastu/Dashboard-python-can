@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>/home/pi/lucas/bg.jpg</file>
+  </qresource>
+</RCC>
