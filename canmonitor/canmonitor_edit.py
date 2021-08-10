@@ -17,6 +17,24 @@ can_messages_lock = threading.Lock()
 
 thread_exception = None
 
+INIT_STATUS_FRAME    = 0x0
+VOLUME_FRAME         = 0x1
+TEMPERATURE_FRAME    = 0x2
+RADIO_SOURCE_FRAME   = 0x3
+RADIO_NAME_FRAME     = 0x4
+RADIO_FREQ_FRAME     = 0x5
+RADIO_FMTYPE_FRAME   = 0x6
+RADIO_DESC_FRAME     = 0x7
+INFO_MSG_FRAME       = 0x8
+RADIO_STATIONS_FRAME = 0x9
+SEATBELTS_FRAME      = 0x10
+AIRBAG_STATUS_FRAME  = 0x11
+INFO_TRIP1_FRAME     = 0x12
+INFO_TRIP2_FRAME     = 0x13
+INFO_INSTANT_FRAME   = 0x14
+TRIP_MODE_FRAME      = 0x15
+AUDIO_SETTINGS_FRAME = 0x16
+SECRET_FRAME         = 0x17
 
 def reading_loop(source_handler, blacklist):
     """Background thread for reading."""
@@ -37,10 +55,6 @@ def reading_loop(source_handler, blacklist):
                 can_messages[frame_id] = data
                 print ("FRAME ID %s  :  %s" % (frame_id, data))
                 print ("FRAME ID %s  :  %s" % (frame_id, format_data_hex(data)))
-
-
-                # should_redraw.set()
-
         stop_reading.wait()
 
     except:
