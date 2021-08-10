@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import argparse
-import curses
+from PyQt5 import QtWidgets, uic
+
 import sys
 import threading
 import traceback
+import time
+import os
+from source_handler import InvalidFrame, SerialHandler
+os.environ.__setitem__('DISPLAY', ':0.0')
 
-from source_handler import CandumpHandler, InvalidFrame, SerialHandler
-
-
-should_redraw = threading.Event()
 stop_reading = threading.Event()
 
 can_messages = {}
@@ -17,26 +17,10 @@ can_messages_lock = threading.Lock()
 
 thread_exception = None
 
-INIT_STATUS_FRAME    = 0x0
-VOLUME_FRAME         = 0x1
-TEMPERATURE_FRAME    = 0x2
-RADIO_SOURCE_FRAME   = 0x3
-RADIO_NAME_FRAME     = 0x4
-RADIO_FREQ_FRAME     = 0x5
-RADIO_FMTYPE_FRAME   = 0x6
-RADIO_DESC_FRAME     = 0x7
-INFO_MSG_FRAME       = 0x8
-RADIO_STATIONS_FRAME = 0x9
-SEATBELTS_FRAME      = 0x10
-AIRBAG_STATUS_FRAME  = 0x11
-INFO_TRIP1_FRAME     = 0x12
-INFO_TRIP2_FRAME     = 0x13
-INFO_INSTANT_FRAME   = 0x14
-TRIP_MODE_FRAME      = 0x15
-AUDIO_SETTINGS_FRAME = 0x16
-SECRET_FRAME         = 0x17
+baudrate = 115200
+serial_device = "/dev/ttyUSB0"
 
-def reading_loop(source_handler, blacklist):
+def reading_loop(source_handler, root):
     """Background thread for reading."""
     try:
         while not stop_reading.is_set():
@@ -47,14 +31,21 @@ def reading_loop(source_handler, blacklist):
             except EOFError:
                 break
 
-            if frame_id in blacklist:
-                continue
-
             # Add the frame to the can_messages dict and tell the main thread to refresh its content
             with can_messages_lock:
+                try:
+                    root.RadioName.setText("placeholder")
+                except:
+                    print ("pété")
+
                 can_messages[frame_id] = data
-                print ("FRAME ID %s  :  %s" % (frame_id, data))
-                print ("FRAME ID %s  :  %s" % (frame_id, format_data_hex(data)))
+                print ("FRAME ID %s  :  %s  %s"   % (frame_id, format_data_hex(data),format_data_ascii(data)))
+                if frame_id == 0x02 :
+                    root.Temperature.setText(format_data_hex(data))
+
+                if frame_id == 0x04 :
+                    root.RadioName.setText(format_data_ascii(data))
+
         stop_reading.wait()
 
     except:
@@ -65,20 +56,6 @@ def reading_loop(source_handler, blacklist):
             # we're stopping the script anyway
             global thread_exception
             thread_exception = sys.exc_info()
-
-
-# def init_window(stdscr):
-    """Init a window filling the entire screen with a border around it."""
-    # stdscr.clear()
-    # stdscr.refresh()
-    #
-    # max_y, max_x = stdscr.getmaxyx()
-    # root_window = stdscr.derwin(max_y, max_x, 0, 0)
-    #
-    # root_window.box()
-    #
-    # return root_window
-
 
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
@@ -104,85 +81,6 @@ def format_data_ascii(data):
     return msg_str
 
 
-# def main(stdscr, reading_thread):
-    """Main function displaying the UI."""
-    # Don't print typed character
-    # curses.noecho()
-    # curses.cbreak()
-    # curses.curs_set(0) # set cursor state to invisible
-
-    # Set getch() to non-blocking
-    # stdscr.nodelay(True)
-
-    # win = init_window(stdscr)
-
-    # while True:
-    #     # should_redraw is set by the serial thread when new data is available
-    #     if should_redraw.wait(timeout=0.05):  # Timeout needed in order to react to user input
-    #         max_y, max_x = win.getmaxyx()
-    #
-    #         column_width = 50
-    #         id_column_start = 2
-    #         bytes_column_start = 13
-    #         text_column_start = 38
-    #
-    #         # Compute row/column counts according to the window size and borders
-    #         row_start = 3
-    #         lines_per_column = max_y - (1 + row_start)
-    #         num_columns = (max_x - 2) // column_width
-    #
-    #         # Setting up column headers
-    #         for i in range(0, num_columns):
-    #             win.addstr(1, id_column_start + i * column_width, 'ID')
-    #             win.addstr(1, bytes_column_start + i * column_width, 'Bytes')
-    #             win.addstr(1, text_column_start + i * column_width, 'Text')
-    #
-    #         win.addstr(3, id_column_start, "Press 'q' to quit")
-    #
-    #         row = row_start + 2  # The first column starts a bit lower to make space for the 'press q to quit message'
-    #         current_column = 0
-    #
-    #         # Make sure we don't read the can_messages dict while it's being written to in the reading thread
-    #         with can_messages_lock:
-    #             for frame_id in sorted(can_messages.keys()):
-    #                 msg = can_messages[frame_id]
-    #
-    #                 msg_bytes = sc
-    #
-    #                 msg_str = format_data_ascii(msg)
-    #
-    #                 # print frame ID in decimal and hex
-    #                 win.addstr(row, id_column_start + current_column * column_width, '%s' % str(frame_id).ljust(5))
-    #                 win.addstr(row, id_column_start + 5 + current_column * column_width, '%X'.ljust(5) % frame_id)
-    #
-    #                 # print frame bytes
-    #                 win.addstr(row, bytes_column_start + current_column * column_width, msg_bytes.ljust(23))
-    #
-    #                 # print frame text
-    #                 win.addstr(row, text_column_start + current_column * column_width, msg_str.ljust(8))
-    #
-    #                 row = row + 1
-    #
-    #                 if row >= lines_per_column + row_start:
-    #                     # column full, switch to the next one
-    #                     row = row_start
-    #                     current_column = current_column + 1
-    #
-    #                     if current_column >= num_columns:
-    #                         break
-    #
-    #         win.refresh()
-    #
-    #         should_redraw.clear()
-    #
-    #     c = stdscr.getch()
-    #     if c == ord('q') or not reading_thread.is_alive():
-    #         break
-    #     elif c == curses.KEY_RESIZE:
-    #         win = init_window(stdscr)
-    #         should_redraw.set()
-
-
 def parse_ints(string_list):
     int_set = set()
     for line in string_list:
@@ -194,49 +92,7 @@ def parse_ints(string_list):
 
 
 def run():
-    parser = argparse.ArgumentParser(description='Process CAN data from a serial device or from a file.')
-    parser.add_argument('serial_device', type=str, default ="/dev/ttyUSB0", nargs='?')
-    parser.add_argument('baud_rate', type=int, default=115200, nargs='?',
-                        help='Serial baud rate in bps (default: 115200)')
-    parser.add_argument('-f', '--candump-file', metavar='CANDUMP_FILE', help="File (of 'candump' format) to read from")
-    parser.add_argument('-s', '--candump-speed', type=float, metavar='CANDUMP_SPEED', help="Speed scale of file read")
-
-    parser.add_argument('--blacklist', '-b', nargs='+', metavar='BLACKLIST', help="Ids that must be ignored")
-    parser.add_argument(
-        '--blacklist-file',
-        '-bf',
-        metavar='BLACKLIST_FILE',
-        help="File containing ids that must be ignored",
-    )
-
-    args = parser.parse_args()
-
-    # checks arguments
-    if not args.serial_device and not args.candump_file:
-        print("Please specify serial device or file name")
-        print()
-        parser.print_help()
-        return
-    if args.serial_device and args.candump_file:
-        print("You cannot specify a serial device AND a file name")
-        print()
-        parser.print_help()
-        return
-
-    # --blacklist-file prevails over --blacklist
-    if args.blacklist_file:
-        with open(args.blacklist_file) as f_obj:
-            blacklist = parse_ints(f_obj)
-    elif args.blacklist:
-        blacklist = parse_ints(args.blacklist)
-    else:
-        blacklist = set()
-
-    if args.serial_device:
-        source_handler = SerialHandler(args.serial_device, baudrate=args.baud_rate)
-    elif args.candump_file:
-        source_handler = CandumpHandler(args.candump_file, args.candump_speed)
-
+    source_handler = SerialHandler(serial_device, baudrate)
     reading_thread = None
 
     try:
@@ -244,16 +100,15 @@ def run():
         source_handler.open()
 
         # Start the reading background thread
-        reading_thread = threading.Thread(target=reading_loop, args=(source_handler, blacklist,))
+
+
+        app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
+        root = Ui()  # Create an instance of our class
+        reading_thread = threading.Thread(target=reading_loop, args=(source_handler,root,))
         reading_thread.start()
+        # root.RadioName.setText("placeholder")
+        app.exec_()  # Start the application
 
-        # Make sure to draw the UI the first time even if no data has been read
-        # should_redraw.set()
-
-        # Start the main loop
-        # curses.wrapper(main, reading_thread)
-        while(not stop_reading.is_set()) :
-            True
     finally:
         # Cleanly stop reading thread before exiting
         if reading_thread:
@@ -268,6 +123,12 @@ def run():
             if thread_exception:
                 traceback.print_exception(*thread_exception)
                 sys.stderr.flush()
+
+class Ui(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(Ui, self).__init__() # Call the inherited classes __init__ method
+        uic.loadUi('/home/pi/lucas/interface.ui', self) # Load the .ui file
+        self.show() # Show the GUI
 
 if __name__ == '__main__':
     run()
