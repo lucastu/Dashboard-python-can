@@ -108,12 +108,14 @@ void setup() {
   if (CAN.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK) {
     CAN.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
     pinMode(CAN0_INT, INPUT);
+    
     // Si on est ok envoi de la trame check
     Serial.println("FRAME:ID=0:LEN=8:00:00:00:00:00:00:00:00");
-    // Envoi du message pour activer la sortie CDC
-        byte data[] = { 0xB2, 0x00 };
-        CAN.sendMsgBuf(416, 0, 2, data);
-        data[0] = 0x92;
+    
+    // Envoi du message pour activer la sortie CDC => KO
+        
+       // CAN.sendMsgBuf(416, 0, 2, data);
+        byte data[] = { 0x92, 0x00 };
         CAN.sendMsgBuf(416, 0, 2, data);
   }
 }
