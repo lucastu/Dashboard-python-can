@@ -113,10 +113,26 @@ void setup() {
     Serial.println("FRAME:ID=0:LEN=8:00:00:00:00:00:00:00:00");
     
     // Envoi du message pour activer la sortie CDC => KO
-        
-       // CAN.sendMsgBuf(416, 0, 2, data);
-        byte data[] = { 0x92, 0x00 };
-        CAN.sendMsgBuf(416, 0, 2, data);
+    //Essai en envoyant tout !    
+      byte dataInit[] = { 0x92, 0x00 };
+      CAN.sendMsgBuf(416, 0, 2, dataInit);
+      delay(200);
+      byte dataDisk1[] = { 0x20, , 0x01, 0x06, 0x05, 0x00, 0x10, 0x00};
+      CAN.sendMsgBuf(354, 0, 7, dataDisk1);
+      delay(200);
+      byte dataDisk[] = { 0x00, 0x00, 0x00, 0x00, 0x33, 0x33, 0x03, 0x33};
+      CAN.sendMsgBuf(46, 0, 8, dataDisk);
+      delay(200);
+      byte datatRACK[] = { 0x01, 0x58, 0x01, 0x0 , 0x00, 0x00 };
+      CAN.sendMsgBuf(418, 0, 5, datatRACK);
+      delay(200);
+      byte dataUNKN[] = { 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 , 0x00 };
+      CAN.sendMsgBuf(1329, 0, 8, dataUNKN);
+      delay(200);
+      byte dataUNKN2[] = { 0x31, 0x07, 0x01, 0x05, 0x02, 0x04, 0x20, 0x09 };
+      CAN.sendMsgBuf(1521, 0, 8, dataUNKN2);    
+      delay(200);
+      Serial.println("Done INIT ?");
   }
 }
 
