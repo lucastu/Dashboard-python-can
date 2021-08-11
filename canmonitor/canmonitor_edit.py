@@ -62,17 +62,17 @@ def reading_loop(source_handler, root):
                     #VOLUME = int(format_data_hex(data),16)
                     #ICI DECLENCHER LE CHANGEMENT DE VOLUME
                     
-                if frame_id == TEMPERATURE_FRAME :
+                elif frame_id == TEMPERATURE_FRAME :
                    # root.Temperature.setText(format_data_hex(data))
                     root.Temperature.setText(int(format_data_hex(data),16))
                     
-                if frame_id == RADIO_NAME_FRAME :
+                elif frame_id == RADIO_NAME_FRAME :
                     root.RadioName.setText(format_data_ascii(data))
                     
-                if frame_id == RADIO_FREQ_FRAME :
+                elif frame_id == RADIO_FREQ_FRAME :
                     root.RadioFreq.setText(format_data_ascii(data))  
                     
-                if frame_id == RADIO_FMTYPE_FRAME :
+                elif frame_id == RADIO_FMTYPE_FRAME :
                     temp = (format_data_hex(data))  
                     #if temp ==1
                     #        0 - ---
@@ -80,14 +80,21 @@ def reading_loop(source_handler, root):
                     #        2 - FM2
                     #        4 - FMAST
                     #        5 - AM
-                if frame_id == RADIO_SOURCE_FRAME :
+                elif frame_id == RADIO_SOURCE_FRAME :
                     #temp = format_data_hex(data)
                     #if temp == Radio : afficher la tab radio 
                     #elseif temp == cdc : afficher la page bluetooth ? etc.
                     True
                     
-                    
-                    
+                elif frame_id == RADIO_DESC_FRAME :
+                    root.RadioDesc.setText(format_data_ascii(data))                    
+
+                elif frame_id == INFO_MSG_FRAME :
+                    #Alors là ya du taf !! on verra après ;)
+                    continue
+                elif frame_id == RADIO_STATION_FRAME :     
+                    #JE ne sais pas encore comment ça marche ici ...
+                    continue                    
                 else :    
                     print ("FRAME ID %s  :  %s  %s"   % (frame_id, format_data_hex(data),format_data_ascii(data)))
         stop_reading.wait()
