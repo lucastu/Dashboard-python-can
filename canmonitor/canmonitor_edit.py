@@ -117,9 +117,63 @@ def reading_loop(source_handler, root):
                     #    tripInfo2 = tripInfo
                     #                   
                     
+                elif frame_id == INFO_INSTANT_FRAME      :     
+                    instantInfo = InstantInfo(autonomy: data[3] == 0xFF ? -1 : Int(UInt16(highByte: data[3], lowByte: data[4])),
+                                               fuelUsage: data[1] == 0xFF ? 0 : Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
                     
+                elif frame_id == TRIP_MODE_FRAME :     
+                    if data[0] == 0 :
+                        tripInfoMode = "instant"
+                    elif data[] ==1 :
+                        tripInfoMode = "trip1"
+                    elif data[0] ==2 :
+                        tripInfoMode = "trip2"
+                     default:
+                        print("Unknown trip mode \(data[0])")
+                        
+                elif frame_id == AUDIO_SETTINGS_FRAME : 
                     
-                                        
+                    #Si on a un mode actif, on bascule de tab
+                    int activeMode = 0
+                    if (data[0] & 0x80) == 0x80 
+                        activeMode = 1 #.leftRightBalance
+                    elif (data[1] & 0x80) == 0x80 
+                        activeMode = 2 #.frontRearBalance
+                    elif (data[2] & 0x80) == 0x80 
+                        activeMode = 3 #.bass
+                    elif (data[4] & 0x80) == 0x80 
+                        activeMode = 4 #.treble
+                    elif (data[5] & 0x80) == 0x80 
+                        activeMode = 5 #.loudness
+                    elif (data[5] & 0x10) == 0x10 
+                        activeMode = 6 #.automaticVolume
+                    elif (data[6] & 0x40) == 0x40 
+                        activeMode = 7 #.equalizer
+                    
+
+                    int equalizerSetting = 0
+                    switch data[6] & 0xBF { // exclude the "active mode" bit
+                    if (data[6] & 0xBF)== 0x07:
+                        equalizerSetting = 1 #.classical
+                    elif (data[6] & 0xBF)== 0x0B:
+                        equalizerSetting = 2 #.jazzBlues
+                    elif (data[6] & 0xBF)==  0x0F:
+                        equalizerSetting = 3 #.popRock
+                    elif (data[6] & 0xBF)==  0x13:
+                        equalizerSetting = 4 #.vocals
+                    elif (data[6] & 0xBF)==  0x17:
+                        equalizerSetting = 5 #.techno
+                    }
+
+                    audioSettings = AudioSettings(activeMode: activeMode,
+                                                  frontRearBalance: Int(data[1] & 0x7F) - 63,
+                                                  leftRightBalance: Int(data[0] & 0x7F) - 63,
+                                                  automaticVolume: (data[5] & 0x07) == 0x07,
+                                                  equalizer: equalizerSetting,
+                                                  bass: Int(data[2] & 0x7F) - 63,
+                                                  treble: Int(data[4] & 0x7F) - 63,
+                                                  loudness: (data[5] & 0x40) == 0x40)
+                    
                 else :    
                     print ("FRAME ID %s  :  %s  %s"   % (frame_id, format_data_hex(data),format_data_ascii(data)))
         stop_reading.wait()
