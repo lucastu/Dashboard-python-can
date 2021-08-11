@@ -90,11 +90,36 @@ def reading_loop(source_handler, root):
                     root.RadioDesc.setText(format_data_ascii(data))                    
 
                 elif frame_id == INFO_MSG_FRAME :
+                    #parseInfoMessage(data)
                     #Alors là ya du taf !! on verra après ;)
                     continue
                 elif frame_id == RADIO_STATION_FRAME :     
                     #JE ne sais pas encore comment ça marche ici ...
                     continue                    
+                elif frame_id == SEATBELTS_FRAME :     
+                    #Est-ce que j'en fais quelque chose de cette info ??
+                    continue                    
+                elif frame_id == AIRBAG_STATUS_FRAME   :     
+                    #Est-ce que j'en fais quelque chose de cette info ?? AIRBAG PASSAGER
+                    continue           
+                    
+                elif frame_id == INFO_TRIP1_FRAME  or frame_id == INFO_TRIP2_FRAME :
+                    #info de trip, idem pour les deux, à voir comment je le traite..
+                    #tripInfo = TripInfo(distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
+                    #                        averageFuelUsage: data[3] == 0xFF ?
+                    #                            -1 :
+                    #                            Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
+                    #                        averageSpeed: data[0] == 0xFF ? -1 : Int(data[0]))
+
+                    #if frameID == 0x0C 
+                    #    tripInfo1 = tripInfo
+                    #else 
+                    #    tripInfo2 = tripInfo
+                    #                   
+                    
+                    
+                    
+                                        
                 else :    
                     print ("FRAME ID %s  :  %s  %s"   % (frame_id, format_data_hex(data),format_data_ascii(data)))
         stop_reading.wait()
