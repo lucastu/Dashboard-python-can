@@ -12,7 +12,7 @@ os.environ.__setitem__('DISPLAY', ':0.0')
 
 stop_reading = threading.Event()
 
-can_messages = {}
+can_messages = :}
 can_messages_lock = threading.Lock()
 
 thread_exception = None
@@ -198,8 +198,219 @@ def reading_loop(source_handler, root):
             thread_exception = sys.exc_info()
             
 def parseInfoMessage(data) :
-    if data[0] == 1
-        print("ok")
+        if isInfoMessage(data, b1: 0x01, b2: 0x2F, b3: 0xC4) :
+            infoMessage = "Essuie-vitre automatique activé"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x30, b3: 0xC4) :
+            infoMessage = "Essuie-vitre automatique désactivé"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x31, b3: 0xC4) :
+            infoMessage = "Allumage automatique des projecteurs activé"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x32, b3: 0xC4) :
+            infoMessage = "Allumage automatique des projecteurs désactivé"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x33, b3: 0xC4) :
+            infoMessage = "Auto-verrouillage des portes activé"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x34, b3: 0xC4) :
+            infoMessage = "Auto-verrouillage des portes déactivé"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x37, b3: 0xC4) :
+            infoMessage = "Sécurité enfant activée"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x38, b3: 0xC4) :
+            infoMessage = "Sécurité enfant désactivée"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x3D, b3: 0xC4) :
+            infoMessage = "Stationnement NON (cf photo)"
+        elif isInfoMessage(data, b1: 0x01, b2: 0x98, b3: 0xC4) :
+            infoMessage = "Système STOP START défaillant"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xF6, b3: 0xC4) :
+            infoMessage = "Manoeuvre toit impossible: tº ext. trop faible"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xF7, b3: 0xC4) :
+            infoMessage = "Manoeuvre toit impossible: vitesse trop élevée"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xF8, b3: 0xC4) :
+            infoMessage = "Manoeuvre toit impossible: coffre ouvert"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xFA, b3: 0xC4) :
+            infoMessage = "Manoeuvre toit impossible: rideau coffre non déployé"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xFB, b3: 0xC4) :
+            infoMessage = "Manoeuvre toit terminée"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xFC, b3: 0xC4) :
+            infoMessage = "Terminer immédiatement la manoeuvre de toit"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xFD, b3: 0xC4) :
+            infoMessage = "Manoeuvre impossible: toit verrouillé"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xFE, b3: 0xC4) :
+            infoMessage = "Mécanisme toit escamotable défaillant"
+        elif isInfoMessage(data, b1: 0x01, b2: 0xFF, b3: 0xC4) :
+            infoMessage = "Manoeuvre impossible: lunette ouverte"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x00, b3: 0xC8) :
+            infoMessage = "Diagnostic OK"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x01, b3: 0xC8) :
+            infoMessage = "STOP: défaut température moteur, arrêtez le véhicule"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x03, b3: 0xC8) :
+            infoMessage = "Ajustez niveau liquide de refroidissement"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x04, b3: 0xC8) :
+            infoMessage = "Ajustez le niveau d'huile moteur"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x05, b3: 0xC8) :
+            infoMessage = "STOP: défaut pression huile moteur, arrêtez le véhicule"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x08, b3: 0xC8) :
+            infoMessage = "STOP: système de freinage défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x0A, b3: 0xC8) :
+            infoMessage = "Demande non permise (cf photo)"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x0D, b3: 0xC8) :
+            infoMessage = "Plusieurs roues crevées"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x0F, b3: 0xC8) :
+            infoMessage = "Risque de colmatage filtre à particules: consultez la notice"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x11, b3: 0xC8) :
+            infoMessage = "Suspension défaillante, vitesse max 90km/h"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x12, b3: 0xC8) :
+            infoMessage = "Suspension défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x13, b3: 0xC8) :
+            infoMessage = "Direction assistée défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x14, b3: 0xC8) :
+            infoMessage = "WTF?"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x61, b3: 0xC8) :
+            infoMessage = "Frein de parking serré"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x62, b3: 0xC8) :
+            infoMessage = "Frein de parking desserré"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x64, b3: 0xC8) :
+            infoMessage = "Commande frein de parking défaillante, frein de parking auto activé"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x67, b3: 0xC8) :
+            infoMessage = "Plaquettes de frein usées"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x68, b3: 0xC8) :
+            infoMessage = "Frein de parking défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x69, b3: 0xC8) :
+            infoMessage = "Aileron mobile défaillant, vitesse limitée, consultez la notice"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x6A, b3: 0xC8) :
+            infoMessage = "Système de freinage ABS défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x6B, b3: 0xC8) :
+            infoMessage = "Système ESP/ASR défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x6C, b3: 0xC8) :
+            infoMessage = "Suspension défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x6D, b3: 0xC8) :
+            infoMessage = "STOP: direction assistée défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x6E, b3: 0xC8) :
+            infoMessage = "Défaut boite de vitesse, faites réparer le véhicule"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x6F, b3: 0xC8) :
+            infoMessage = "Système de controle de vitesse défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x73, b3: 0xC8) :
+            infoMessage = "Capteur de luminosité ambiante défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x74, b3: 0xC8) :
+            infoMessage = "Ampoule feu de position défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x75, b3: 0xC8) :
+            infoMessage = "Réglage automatique des projecteurs défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x76, b3: 0xC8) :
+            infoMessage = "Projecteurs directionnels défaillants"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x78, b3: 0xC8) :
+            infoMessage = "Airbag(s) ou ceinture(s) à prétensionneur(s) défaillant(s)"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x7A, b3: 0xC8) :
+            infoMessage = "Défaut boite de vitesse, faites réparer le véhicule"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x7B, b3: 0xC8) :
+            infoMessage = "Pied sur frein et levier en position \"N\" nécessaires"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x7D, b3: 0xC8) :
+            infoMessage = "Présence d'eau dans le filtre à gasoil, faites réparer le véhicule"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x7E, b3: 0xC8) :
+            infoMessage = "Défaut moteur, faites réparer le véhicule"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x7F, b3: 0xC8) :
+            infoMessage = "Défaut moteur, faites réparer le véhicule"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x81, b3: 0xC8) :
+            infoMessage = "Niveau additif FAP trop faible, faites réparer le véhicule"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x83, b3: 0xC8) :
+            infoMessage = "Antivol électronique défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x88, b3: 0xC8) :
+            infoMessage = "Système aide au stationnement défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x89, b3: 0xC8) :
+            infoMessage = "Système de mesure de place défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x8A, b3: 0xC8) :
+            infoMessage = "Charge batterie ou alimentation électrique défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x8D, b3: 0xC8) :
+            infoMessage = "Pression pneumatiques insuffisante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x97, b3: 0xC8) :
+            infoMessage = "Système d'alerte de franchissement de ligne défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x9A, b3: 0xC8) :
+            infoMessage = "Ampoule feu de croisement défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x9B, b3: 0xC8) :
+            infoMessage = "Ampoule feu de route défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x9C, b3: 0xC8) :
+            infoMessage = "Ampoule feu stop défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x9D, b3: 0xC8) :
+            infoMessage = "Ampoule anti-brouillard défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x9E, b3: 0xC8) :
+            infoMessage = "Clignotant défaillant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0x9F, b3: 0xC8) :
+            infoMessage = "Ampoule feu de recul défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xA0, b3: 0xC8) :
+            infoMessage = "Ampoule feu de position défaillante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xCD, b3: 0xC8) :
+            infoMessage = "Régulation de vitesse impossible: vitesse trop faible"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xCE, b3: 0xC8) :
+            infoMessage = "Activation du régulateur impossible: saisir la vitesse"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xD2, b3: 0xC8) :
+            infoMessage = "Ceintures AV non bouclées"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xD3, b3: 0xC8) :
+            infoMessage = "Ceintures passagers AR bouclées"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xD7, b3: 0xC8) :
+            infoMessage = "Placer boite automatique en position P"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xD8, b3: 0xC8) :
+            infoMessage = "Risque de verglas"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xD9, b3: 0xC8) :
+            infoMessage = "Oubli frein à main !"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xDE, b3: 0xC8) || isInfoMessage(data, b1: 0x00, b2: 0x0B, b3: 0xC8) :
+            # Car doors frame
+            decodedCarDoors = 1
+
+            let doorByte1 = data[3]
+            let doorByte2 = data[4]
+
+            if doorByte1 & 0x04 == 0x04 :
+                decodedCarDoors.insert(.Hood)
+
+            if doorByte1 & 0x08 == 0x08 :
+                decodedCarDoors.insert(.Trunk)
+
+            if doorByte1 & 0x10 == 0x10 :
+                decodedCarDoors.insert(.RearLeft)
+
+            if doorByte1 & 0x20 == 0x20 :
+                decodedCarDoors.insert(.RearRight)
+
+            if doorByte1 & 0x40 == 0x40 :
+                decodedCarDoors.insert(.FrontLeft)
+
+            if doorByte1 & 0x80 == 0x80 :
+                decodedCarDoors.insert(.FrontRight)
+
+            if doorByte2 & 0x40 == 0x40 :
+                decodedCarDoors.insert(.FuelFlap)
+                
+            carDoors = decodedCarDoors
+        elif isInfoMessage(data, b1: 0x00, b2: 0xDF, b3: 0xC8) :
+            infoMessage = "Niveau liquide lave-glace insuffisant"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xE0, b3: 0xC8) :
+            infoMessage = "Niveau carburant faible"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xE1, b3: 0xC8) :
+            infoMessage = "Circuit de carburant neutralisé"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xE3, b3: 0xC8) :
+            infoMessage = "Pile télécommande plip usagée"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xE5, b3: 0xC8) :
+            infoMessage = "Pression pneumatique(s) non surveillée"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xE7, b3: 0xC8) :
+            infoMessage = "Vitesse élevée, vérifier si pression pneumatiques adaptée"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xE8, b3: 0xC8) :
+            infoMessage = "Pression pneumatique(s) insuffisante"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xEB, b3: 0xC8) :
+            infoMessage = "La phase de démarrage a échoué (consulter la notice)"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xEC, b3: 0xC8) :
+            infoMessage = "Démarrage prolongé en cours"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xEF, b3: 0xC8) :
+            infoMessage = "Télécommande non détectée"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xF0, b3: 0xC8) :
+            infoMessage = "Diagnostic en cours"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xF1, b3: 0xC8) :
+            infoMessage = "Diagnostic terminé"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xF7, b3: 0xC8) :
+            infoMessage = "Ceinture passager AR gauche débouclée"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xF8, b3: 0xC8) :
+            infoMessage = "Ceinture passager AR central débouclée"
+        elif isInfoMessage(data, b1: 0x00, b2: 0xF9, b3: 0xC8) :
+            infoMessage = "Ceinture passager AR droit débouclée"
+        else :
+            carDoors = .None
+            infoMessage = nil
+        
             
             
             
@@ -235,6 +446,11 @@ def parse_ints(string_list):
         except ValueError:
             continue
     return int_set
+
+
+def isInfoMessage(data, byte b1, byte b2,  byte b3) :
+#Fonction qui compare les trois bytes du premier paramètre avec les trois bytes des autres paramètres en omettant le premier quartet et le dernier
+    return ((data[0] & 0x0F) == b1 && (data[1] & 0xFF) == b2 && (data[2] & 0xF0) == (b3 & 0xF0))
 
 
 def run():
