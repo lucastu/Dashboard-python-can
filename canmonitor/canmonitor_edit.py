@@ -74,17 +74,31 @@ def reading_loop(source_handler, root):
                     
                 elif frame_id == RADIO_FMTYPE_FRAME :
                     temp = (format_data_hex(data))  
-                    #if temp ==1
-                    #        0 - ---
-                    #        1 - FM1
-                    #        2 - FM2
-                    #        4 - FMAST
-                    #        5 - AM
+                    if temp == 1 : 
+                        root.RadioFMType.setText("FM1")
+                    elif temp == 2 : 
+                        root.RadioFMType.setText("FM2")   
+                    elif temp == 4 : 
+                        root.RadioFMType.setText("FMAST")                          
+                    elif temp == 5 : 
+                        root.RadioFMType.setText("AM")    
+
                 elif frame_id == RADIO_SOURCE_FRAME :
-                    #temp = format_data_hex(data)
-                    #if temp == Radio : afficher la tab radio 
-                    #elseif temp == cdc : afficher la page bluetooth ? etc.
-                    True
+                    temp = format_data_hex(data)
+                    if temp == 0x01 : 
+                        Source = "Tuner"
+                    elif temp == 0x02 : 
+                        Source =  "cd"                       
+                    elif temp == 0x03 : 
+                        Source = "CDC"
+                    elif temp == 0x04 : 
+                        Source = "AUX1"                        
+                    elif temp == 0x05 : 
+                        Source = "AUX2"   
+                    elif temp == 0x06 : 
+                        Source = "USB"   
+                    elif temp == 0x07 : 
+                        Source = "BLUETOOTH"   
                     
                 elif frame_id == RADIO_DESC_FRAME :
                     root.RadioDesc.setText(format_data_ascii(data))                    
