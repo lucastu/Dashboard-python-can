@@ -12,7 +12,7 @@ os.environ.__setitem__('DISPLAY', ':0.0')
 
 stop_reading = threading.Event()
 
-can_messages = :}
+can_messages = {}
 can_messages_lock = threading.Lock()
 
 thread_exception = None
@@ -53,139 +53,139 @@ def reading_loop(source_handler, root):
                 break
 
             # Add the frame to the can_messages dict and tell the main thread to refresh its content
-            with can_messages_lock:
-                #root.RadioName.setText("placeholder")
-                can_messages[frame_id] = data
 
-                if frame_id == VOLUME_FRAME :
-                    True
-                    #VOLUME = int(format_data_hex(data),16)
-                    #ICI DECLENCHER LE CHANGEMENT DE VOLUME
-                    
-                elif frame_id == TEMPERATURE_FRAME :
-                   # root.Temperature.setText(format_data_hex(data))
-                    root.Temperature.setText(int(format_data_hex(data),16))
-                    
-                elif frame_id == RADIO_NAME_FRAME :
-                    root.RadioName.setText(format_data_ascii(data))
-                    
-                elif frame_id == RADIO_FREQ_FRAME :
-                    root.RadioFreq.setText(format_data_ascii(data))  
-                    
-                elif frame_id == RADIO_FMTYPE_FRAME :
-                    temp = (format_data_hex(data))  
-                    if temp == 1 : 
-                        root.RadioFMType.setText("FM1")
-                    elif temp == 2 : 
-                        root.RadioFMType.setText("FM2")   
-                    elif temp == 4 : 
-                        root.RadioFMType.setText("FMAST")                          
-                    elif temp == 5 : 
-                        root.RadioFMType.setText("AM")    
+            #root.RadioName.setText("placeholder")
 
-                elif frame_id == RADIO_SOURCE_FRAME :
-                    temp = format_data_hex(data)
-                    if temp == 0x01 : 
-                        Source = "Tuner"
-                    elif temp == 0x02 : 
-                        Source =  "cd"                       
-                    elif temp == 0x03 : 
-                        Source = "CDC"
-                    elif temp == 0x04 : 
-                        Source = "AUX1"                        
-                    elif temp == 0x05 : 
-                        Source = "AUX2"   
-                    elif temp == 0x06 : 
-                        Source = "USB"   
-                    elif temp == 0x07 : 
-                        Source = "BLUETOOTH"   
-                    
-                elif frame_id == RADIO_DESC_FRAME :
-                    root.RadioDesc.setText(format_data_ascii(data))                    
 
-                elif frame_id == INFO_MSG_FRAME :
-                    parseInfoMessage(data)
-                    #Alors là ya du taf !! on verra après ;) Avec une fonction dédiée ! 
-                    continue
-                elif frame_id == RADIO_STATION_FRAME :     
-                    #JE ne sais pas encore comment ça marche ici ...
-                    continue                    
-                elif frame_id == SEATBELTS_FRAME :     
-                    #Est-ce que j'en fais quelque chose de cette info ??
-                    continue                    
-                elif frame_id == AIRBAG_STATUS_FRAME   :     
-                    #Est-ce que j'en fais quelque chose de cette info ?? AIRBAG PASSAGER
-                    continue           
-                    
-                elif frame_id == INFO_TRIP1_FRAME  or frame_id == INFO_TRIP2_FRAME :
-                    #info de trip, idem pour les deux, à voir comment je le traite..
-                    #tripInfo = TripInfo(distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
-                    #                        averageFuelUsage: data[3] == 0xFF ?
-                    #                            -1 :
-                    #                            Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
-                    #                        averageSpeed: data[0] == 0xFF ? -1 : Int(data[0]))
+            if frame_id == VOLUME_FRAME :
+                True
+                #VOLUME = int(format_data_hex(data),16)
+                #ICI DECLENCHER LE CHANGEMENT DE VOLUME
 
-                    #if frameID == 0x0C 
-                    #    tripInfo1 = tripInfo
-                    #else 
-                    #    tripInfo2 = tripInfo
-                    #                   
-                    
-                elif frame_id == INFO_INSTANT_FRAME      :     
-                    instantInfo = InstantInfo(autonomy: data[3] == 0xFF ? -1 : Int(UInt16(highByte: data[3], lowByte: data[4])),
-                                               fuelUsage: data[1] == 0xFF ? 0 : Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
-                    
-                elif frame_id == TRIP_MODE_FRAME :     
-                    if data[0] == 0 :
-                        tripInfoMode = "instant"
-                    elif data[0] ==1 :
-                        tripInfoMode = "trip1"
-                    elif data[0] ==2 :
-                        tripInfoMode = "trip2"
-                        
-                elif frame_id == AUDIO_SETTINGS_FRAME : 
-                    
-                    #Si on a un mode actif, on bascule de tab
-                    int activeMode = 0
-                    if (data[0] & 0x80) == 0x80 
-                        activeMode = 1 #.leftRightBalance
-                    elif (data[1] & 0x80) == 0x80 
-                        activeMode = 2 #.frontRearBalance
-                    elif (data[2] & 0x80) == 0x80 
-                        activeMode = 3 #.bass
-                    elif (data[4] & 0x80) == 0x80 
-                        activeMode = 4 #.treble
-                    elif (data[5] & 0x80) == 0x80 
-                        activeMode = 5 #.loudness
-                    elif (data[5] & 0x10) == 0x10 
-                        activeMode = 6 #.automaticVolume
-                    elif (data[6] & 0x40) == 0x40 
-                        activeMode = 7 #.equalizer
+            elif frame_id == TEMPERATURE_FRAME :
+               # root.Temperature.setText(format_data_hex(data))
+                root.Temperature.setText(int(format_data_hex(data),16))
 
-                    int equalizerSetting = 0
-                    if (data[6] & 0xBF)== 0x07:
-                        equalizerSetting = 1 #.classical
-                    elif (data[6] & 0xBF)== 0x0B:
-                        equalizerSetting = 2 #.jazzBlues
-                    elif (data[6] & 0xBF)==  0x0F:
-                        equalizerSetting = 3 #.popRock
-                    elif (data[6] & 0xBF)==  0x13:
-                        equalizerSetting = 4 #.vocals
-                    elif (data[6] & 0xBF)==  0x17:
-                        equalizerSetting = 5 #.techno
-                    }
+            elif frame_id == RADIO_NAME_FRAME :
+                root.RadioName.setText(format_data_ascii(data))
 
-                    #audioSettings = AudioSettings(activeMode: activeMode,
-                     #                             frontRearBalance: Int(data[1] & 0x7F) - 63,
-                      #                            leftRightBalance: Int(data[0] & 0x7F) - 63,
-                       #                           automaticVolume: (data[5] & 0x07) == 0x07,
-                        #                          equalizer: equalizerSetting,
-                         #                         bass: Int(data[2] & 0x7F) - 63,
-                          #                        treble: Int(data[4] & 0x7F) - 63,
-                           #                       loudness: (data[5] & 0x40) == 0x40)
-                    
-                else :    
-                    print ("FRAME ID %s  :  %s  %s"   % (frame_id, format_data_hex(data),format_data_ascii(data)))
+            elif frame_id == RADIO_FREQ_FRAME :
+                root.RadioFreq.setText(format_data_ascii(data))  
+
+            elif frame_id == RADIO_FMTYPE_FRAME :
+                temp = (format_data_hex(data))  
+                if temp == 1 : 
+                    root.RadioFMType.setText("FM1")
+                elif temp == 2 : 
+                    root.RadioFMType.setText("FM2")   
+                elif temp == 4 : 
+                    root.RadioFMType.setText("FMAST")                          
+                elif temp == 5 : 
+                    root.RadioFMType.setText("AM")    
+
+            elif frame_id == RADIO_SOURCE_FRAME :
+                temp = format_data_hex(data)
+                if temp == 0x01 : 
+                    Source = "Tuner"
+                elif temp == 0x02 : 
+                    Source =  "cd"                       
+                elif temp == 0x03 : 
+                    Source = "CDC"
+                elif temp == 0x04 : 
+                    Source = "AUX1"                        
+                elif temp == 0x05 : 
+                    Source = "AUX2"   
+                elif temp == 0x06 : 
+                    Source = "USB"   
+                elif temp == 0x07 : 
+                    Source = "BLUETOOTH"   
+
+            elif frame_id == RADIO_DESC_FRAME :
+                root.RadioDesc.setText(format_data_ascii(data))                    
+
+            elif frame_id == INFO_MSG_FRAME :
+                parseInfoMessage(data)
+                #Alors là ya du taf !! on verra après ;) Avec une fonction dédiée ! 
+                continue
+            elif frame_id == RADIO_STATION_FRAME :     
+                #JE ne sais pas encore comment ça marche ici ...
+                continue                    
+            elif frame_id == SEATBELTS_FRAME :     
+                #Est-ce que j'en fais quelque chose de cette info ??
+                continue                    
+            elif frame_id == AIRBAG_STATUS_FRAME   :     
+                #Est-ce que j'en fais quelque chose de cette info ?? AIRBAG PASSAGER
+                continue           
+
+            elif frame_id == INFO_TRIP1_FRAME  or frame_id == INFO_TRIP2_FRAME :
+                #info de trip, idem pour les deux, à voir comment je le traite..
+                #tripInfo = TripInfo(distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
+                #                        averageFuelUsage: data[3] == 0xFF ?
+                #                            -1 :
+                #                            Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
+                #                        averageSpeed: data[0] == 0xFF ? -1 : Int(data[0]))
+
+                #if frameID == 0x0C 
+                #    tripInfo1 = tripInfo
+                #else 
+                #    tripInfo2 = tripInfo
+                #                   
+
+            elif frame_id == INFO_INSTANT_FRAME      :     
+                instantInfo = InstantInfo(autonomy: data[3] == 0xFF ? -1 : Int(UInt16(highByte: data[3], lowByte: data[4])),
+                                           fuelUsage: data[1] == 0xFF ? 0 : Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
+
+            elif frame_id == TRIP_MODE_FRAME :     
+                if data[0] == 0 :
+                    tripInfoMode = "instant"
+                elif data[0] ==1 :
+                    tripInfoMode = "trip1"
+                elif data[0] ==2 :
+                    tripInfoMode = "trip2"
+
+            elif frame_id == AUDIO_SETTINGS_FRAME : 
+
+                #Si on a un mode actif, on bascule de tab
+                int activeMode = 0
+                if (data[0] & 0x80) == 0x80 
+                    activeMode = 1 #.leftRightBalance
+                elif (data[1] & 0x80) == 0x80 
+                    activeMode = 2 #.frontRearBalance
+                elif (data[2] & 0x80) == 0x80 
+                    activeMode = 3 #.bass
+                elif (data[4] & 0x80) == 0x80 
+                    activeMode = 4 #.treble
+                elif (data[5] & 0x80) == 0x80 
+                    activeMode = 5 #.loudness
+                elif (data[5] & 0x10) == 0x10 
+                    activeMode = 6 #.automaticVolume
+                elif (data[6] & 0x40) == 0x40 
+                    activeMode = 7 #.equalizer
+
+                int equalizerSetting = 0
+                if (data[6] & 0xBF)== 0x07:
+                    equalizerSetting = 1 #.classical
+                elif (data[6] & 0xBF)== 0x0B:
+                    equalizerSetting = 2 #.jazzBlues
+                elif (data[6] & 0xBF)==  0x0F:
+                    equalizerSetting = 3 #.popRock
+                elif (data[6] & 0xBF)==  0x13:
+                    equalizerSetting = 4 #.vocals
+                elif (data[6] & 0xBF)==  0x17:
+                    equalizerSetting = 5 #.techno
+                }
+
+                #audioSettings = AudioSettings(activeMode: activeMode,
+                 #                             frontRearBalance: Int(data[1] & 0x7F) - 63,
+                  #                            leftRightBalance: Int(data[0] & 0x7F) - 63,
+                   #                           automaticVolume: (data[5] & 0x07) == 0x07,
+                    #                          equalizer: equalizerSetting,
+                     #                         bass: Int(data[2] & 0x7F) - 63,
+                      #                        treble: Int(data[4] & 0x7F) - 63,
+                       #                       loudness: (data[5] & 0x40) == 0x40)
+
+            else :    
+                print ("FRAME ID %s  :  %s  %s"   % (frame_id, format_data_hex(data),format_data_ascii(data)))
         stop_reading.wait()
 
     except:
