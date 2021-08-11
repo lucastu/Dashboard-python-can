@@ -104,8 +104,8 @@ def reading_loop(source_handler, root):
                     root.RadioDesc.setText(format_data_ascii(data))                    
 
                 elif frame_id == INFO_MSG_FRAME :
-                    #parseInfoMessage(data)
-                    #Alors là ya du taf !! on verra après ;)
+                    parseInfoMessage(data)
+                    #Alors là ya du taf !! on verra après ;) Avec une fonction dédiée ! 
                     continue
                 elif frame_id == RADIO_STATION_FRAME :     
                     #JE ne sais pas encore comment ça marche ici ...
@@ -138,12 +138,10 @@ def reading_loop(source_handler, root):
                 elif frame_id == TRIP_MODE_FRAME :     
                     if data[0] == 0 :
                         tripInfoMode = "instant"
-                    elif data[] ==1 :
+                    elif data[0] ==1 :
                         tripInfoMode = "trip1"
                     elif data[0] ==2 :
                         tripInfoMode = "trip2"
-                     default:
-                        print("Unknown trip mode \(data[0])")
                         
                 elif frame_id == AUDIO_SETTINGS_FRAME : 
                     
@@ -163,10 +161,8 @@ def reading_loop(source_handler, root):
                         activeMode = 6 #.automaticVolume
                     elif (data[6] & 0x40) == 0x40 
                         activeMode = 7 #.equalizer
-                    
 
                     int equalizerSetting = 0
-                    switch data[6] & 0xBF { // exclude the "active mode" bit
                     if (data[6] & 0xBF)== 0x07:
                         equalizerSetting = 1 #.classical
                     elif (data[6] & 0xBF)== 0x0B:
@@ -179,14 +175,14 @@ def reading_loop(source_handler, root):
                         equalizerSetting = 5 #.techno
                     }
 
-                    audioSettings = AudioSettings(activeMode: activeMode,
-                                                  frontRearBalance: Int(data[1] & 0x7F) - 63,
-                                                  leftRightBalance: Int(data[0] & 0x7F) - 63,
-                                                  automaticVolume: (data[5] & 0x07) == 0x07,
-                                                  equalizer: equalizerSetting,
-                                                  bass: Int(data[2] & 0x7F) - 63,
-                                                  treble: Int(data[4] & 0x7F) - 63,
-                                                  loudness: (data[5] & 0x40) == 0x40)
+                    #audioSettings = AudioSettings(activeMode: activeMode,
+                     #                             frontRearBalance: Int(data[1] & 0x7F) - 63,
+                      #                            leftRightBalance: Int(data[0] & 0x7F) - 63,
+                       #                           automaticVolume: (data[5] & 0x07) == 0x07,
+                        #                          equalizer: equalizerSetting,
+                         #                         bass: Int(data[2] & 0x7F) - 63,
+                          #                        treble: Int(data[4] & 0x7F) - 63,
+                           #                       loudness: (data[5] & 0x40) == 0x40)
                     
                 else :    
                     print ("FRAME ID %s  :  %s  %s"   % (frame_id, format_data_hex(data),format_data_ascii(data)))
@@ -200,7 +196,13 @@ def reading_loop(source_handler, root):
             # we're stopping the script anyway
             global thread_exception
             thread_exception = sys.exc_info()
-
+            
+def parseInfoMessage(data) :
+    if data[0] == 1
+        print("ok")
+            
+            
+            
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
     # Bytes are separated by spaces.
