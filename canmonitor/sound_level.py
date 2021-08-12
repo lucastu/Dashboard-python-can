@@ -1,14 +1,14 @@
-import sys
-import time
-import os
-from PyQt5.QtWidgets import (QApplication, QDialog,
-                             QProgressBar, QPushButton)
-from PyQt5.QtCore import QTimer
-from PyQt5.QtCore import Qt
-import threading
+#import sys
+#import time
+#import os
+#from PyQt5.QtWidgets import (QApplication, QDialog,
+#                             QProgressBar, QPushButton)
+#from PyQt5.QtCore import QTimer
+#from PyQt5.QtCore import Qt
+#import threading
 
 # Pour le dev : affiche sur l ecran de la raspberry
-os.environ.__setitem__('DISPLAY', ':0.0')
+#os.environ.__setitem__('DISPLAY', ':0.0')
 
 class volumewindow(QDialog):
     def __init__(self):
@@ -40,7 +40,6 @@ class volumewindow(QDialog):
 
     def moveup(self):
         self.show()
-        # print("plus caché")
         size = self.size()
         # Emplacement de la fenetre en fonction de la taille de l ecran et de la fenetre pour etre centre
         emplacement_y_cible = int(ScreenHeight - size.height())
@@ -57,16 +56,6 @@ class volumewindow(QDialog):
             # Application nouvelle geometry
             self.move(emplacement_x, emplacement_y)
             time.sleep(.01)
-
-        Last_click = db.get(Query()['Nom'] == 'Last_click')
-        Last_click_time = int(Last_click.get('Valeur'))
-        while int(time.time())-Last_click_time < 2 :
-            Niveau = db.get(Query()['Nom'] == 'Volume')
-            Volume = int(Niveau.get('Valeur'))
-            self.progress.setValue(Volume)
-            time.sleep(0.1)
-            Last_click = db.get(Query()['Nom'] == 'Last_click')
-            Last_click_time = int(Last_click.get('Valeur'))
         self.update()
         self.movedown()
 
@@ -77,8 +66,6 @@ class volumewindow(QDialog):
         emplacement_y_cible =  ScreenHeight
         emplacement_x = int(ScreenWidth / 2 - size.width() / 2)
         emplacement_y = int(ScreenHeight - size.height())
-
-
         # Application nouvelle geometry
         self.move(emplacement_x, emplacement_y)
 
@@ -91,7 +78,7 @@ class volumewindow(QDialog):
             # Application nouvelle geometrie
             self.move(emplacement_x, emplacement_y)
             time.sleep(.01)
-        # On se cache
+        # On se cache arrivé en bas
         self.hide()
 
     def volume_loop(self):
