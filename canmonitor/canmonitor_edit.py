@@ -60,8 +60,6 @@ def reading_loop(source_handler, root):
 
             # Add the frame to the can_messages dict and tell the main thread to refresh its content
 
-            # root.RadioName.setText("placeholder")
-
             if frame_id == VOLUME_FRAME:
                 continue
                 # VOLUME = int(format_data_hex(data),16)
@@ -69,7 +67,8 @@ def reading_loop(source_handler, root):
 
             elif frame_id == TEMPERATURE_FRAME:
                 root.Temperature.setText(format_data_hex(data)+"°C")
-                # root.Temperature.setText(string(int(format_data_hex(data), 16)))
+                root.Temperature.setText(str(format_data_hex(data))+"°C")
+                # root.Temperature.setText(str(int(format_data_hex(data), 16)))
 
             elif frame_id == RADIO_NAME_FRAME:
                 root.RadioName.setText(format_data_ascii(data))
@@ -185,16 +184,15 @@ def reading_loop(source_handler, root):
                 elif (data[6] & 0xBF) == 0x17 :
                     equalizerSetting = 5  # .techno
 
-
-                # audioSettings = AudioSettings(activeMode: activeMode,
-                #                             frontRearBalance: Int(data[1] & 0x7F) - 63,
-                #                            leftRightBalance: Int(data[0] & 0x7F) - 63,
-                #                           automaticVolume: (data[5] & 0x07) == 0x07,
-                #                          equalizer: equalizerSetting,
-                #                         bass: Int(data[2] & 0x7F) - 63,
-                #                        treble: Int(data[4] & 0x7F) - 63,
-                #                       loudness: (data[5] & 0x40) == 0x40)
-
+                audiosettings['activeMode']         = activeMode
+                audiosettings['frontRearBalance']   = Int(data[1] & 0x7F) - 63
+                audiosettings['leftRightBalance']   = Int(data[0] & 0x7F) - 63
+                audiosettings['automaticVolume']    = (data[5] & 0x07) == 0x07
+                audiosettings['equalizer']          = equalizerSetting
+                audiosettings['bass']               = Int(data[2] & 0x7F) - 63
+                audiosettings['treble']             = Int(data[4] & 0x7F) - 63
+                audiosettings['loudness']           = (data[5] & 0x40) == 0x40)
+                    }
                 else:
                     print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
