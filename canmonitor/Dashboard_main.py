@@ -9,6 +9,7 @@ import time
 import os
 from source_handler import InvalidFrame, SerialHandler
 from sound_level import volumewindow
+from ombre import Ombre
 
 os.environ.__setitem__('DISPLAY', ':0.0')
 
