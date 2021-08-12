@@ -1,3 +1,6 @@
+## WORK IN PROGRESS, VERY NOT WELL WRITTEN,  
+my bad...
+
 # Files
 
 **Dashboard_main.py**  => main script contain everything 
