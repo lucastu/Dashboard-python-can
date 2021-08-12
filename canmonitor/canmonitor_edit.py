@@ -8,6 +8,7 @@ import traceback
 import time
 import os
 from source_handler import InvalidFrame, SerialHandler
+from sound_level import volumewindow
 
 os.environ.__setitem__('DISPLAY', ':0.0')
 
@@ -183,7 +184,8 @@ def reading_loop(source_handler, root):
                     equalizerSetting = 4  # .vocals
                 elif (data[6] & 0xBF) == 0x17 :
                     equalizerSetting = 5  # .techno
-
+                
+                #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
                 audiosettings['activeMode']         = activeMode
                 audiosettings['frontRearBalance']   = Int(data[1] & 0x7F) - 63
                 audiosettings['leftRightBalance']   = Int(data[0] & 0x7F) - 63
@@ -192,7 +194,7 @@ def reading_loop(source_handler, root):
                 audiosettings['bass']               = Int(data[2] & 0x7F) - 63
                 audiosettings['treble']             = Int(data[4] & 0x7F) - 63
                 audiosettings['loudness']           = (data[5] & 0x40) == 0x40)
-                    }
+                    
                 else:
                     print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
@@ -494,7 +496,6 @@ class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui file
-
         self.showMaximized()  # Show the GUI
 
     def mousePressEvent(self, event):
