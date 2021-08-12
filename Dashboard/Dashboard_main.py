@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: ISO-8859-1 -*-
 from PyQt5 import QtWidgets, uic
-
+# from PyQt5.QtWidgets import (QApplication, QDialog,
+#                             QProgressBar, QPushButton)
 import sys
 import threading
 import traceback
@@ -23,6 +24,17 @@ thread_exception = None
 # Parametres de la lecture USB
 baudrate = 115200
 serial_device = "/dev/ttyUSB0"
+
+audiosettings = {
+    'activeMode' : '0',
+    'frontRearBalance' : '0',
+    'leftRightBalance' : '0',
+    'automaticVolume' : '0',
+    'equalizer' : '0',
+    'bass' : '0',
+    'treble' : '0',
+    'loudness' : '0',
+}
 
 def isInfoMessage(data, b1 , b2, b3 ):
     # Fonction qui compare les trois bytes du premier parametre avec les trois bytes des autres parametres en omettant le premier quartet et le dernier
@@ -55,6 +67,7 @@ def reading_loop(source_handler, root):
         while not stop_reading.is_set():
             try:
                 frame_id, data = source_handler.get_message()
+                print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
             except InvalidFrame:
                 continue
             except EOFError:
@@ -68,19 +81,18 @@ def reading_loop(source_handler, root):
                 # ICI DECLENCHER LE CHANGEMENT DE VOLUME
 
             elif frame_id == TEMPERATURE_FRAME:
-                root.Temperature.setText(format_data_hex(data)+"°C")
-                root.Temperature.setText(str(format_data_hex(data))+"°C")
-                # root.Temperature.setText(str(int(format_data_hex(data), 16)))
+                root.Temperature.setText(str(int(format_data_hex(data), 16))+"�C")
 
             elif frame_id == RADIO_NAME_FRAME:
                 root.RadioName.setText(format_data_ascii(data))
 
             elif frame_id == RADIO_FREQ_FRAME:
-                root.RadioFreq.setText(format_data_ascii(data))
+                root.RadioFreq.setText(format_data_hex(data))
+
 
             elif frame_id == RADIO_FMTYPE_FRAME:
-                temp = (format_data_hex(data))
-                RadioFMType =0
+                temp = int(format_data_hex(data))
+                RadioFMType ="0"
                 if temp == 1:
                     RadioFMType ="FM1"
                 elif temp == 2:
@@ -92,7 +104,7 @@ def reading_loop(source_handler, root):
                 root.RadioType.setText("Radio "+ RadioFMType)
 
             elif frame_id == RADIO_SOURCE_FRAME:
-                temp = format_data_hex(data)
+                temp = format_data_ascii(data)
                 Source = 0
                 if temp == 0x01:
                     Source = "Tuner"
@@ -146,19 +158,20 @@ def reading_loop(source_handler, root):
                 continue
 
             elif frame_id == TRIP_MODE_FRAME:
+                temp = int(format_data_hex(data))
                 tripInfoMode =""
-                if data[0] == 0:
+                if temp == 0:
                     tripInfoMode = "instant"
-                elif data[0] == 1:
+                elif temp == 1:
                     tripInfoMode = "trip1"
-                elif data[0] == 2:
+                elif temp == 2:
                     tripInfoMode = "trip2"
                 root.tripInfoMode.setText(tripInfoMode)
 
             elif frame_id == AUDIO_SETTINGS_FRAME:
                 # Si on a un mode actif, on bascule de tab
                 activeMode = 0
-                
+                # print (data)
                 if (data[0] & 0x80) == 0x80 :
                     activeMode = 1  # .leftRightBalance
                 elif (data[1] & 0x80) == 0x80 :
@@ -174,6 +187,8 @@ def reading_loop(source_handler, root):
                 elif (data[6] & 0x40) == 0x40 :
                     activeMode = 7  # .equalizer
 
+                # print(type(data[6]))
+                # print(str(data[6]))
                 equalizerSetting = 0
                 if (data[6] & 0xBF) == 0x07 :
                     equalizerSetting = 1  # .classical
@@ -187,19 +202,23 @@ def reading_loop(source_handler, root):
                     equalizerSetting = 5  # .techno
                 
                 #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
+
                 audiosettings['activeMode']         = activeMode
-                audiosettings['frontRearBalance']   = Int(data[1] & 0x7F) - 63
-                audiosettings['leftRightBalance']   = Int(data[0] & 0x7F) - 63
+                audiosettings['frontRearBalance']   = int(data[1] & 0x7F) - 63
+                audiosettings['leftRightBalance']   = int(data[0] & 0x7F) - 63
                 audiosettings['automaticVolume']    = (data[5] & 0x07) == 0x07
                 audiosettings['equalizer']          = equalizerSetting
-                audiosettings['bass']               = Int(data[2] & 0x7F) - 63
-                audiosettings['treble']             = Int(data[4] & 0x7F) - 63
-                audiosettings['loudness']           = (data[5] & 0x40) == 0x40)
-                    
-                else:
-                    print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
+                audiosettings['bass']               = int(data[2] & 0x7F) - 63
+                audiosettings['treble']             = int(data[4] & 0x7F) - 63
+                audiosettings['loudness']           = (data[5] & 0x40) == 0x40
+                root.SliderBasses.setValue(audiosettings['bass'])
+                root.SliderAigus.setValue(audiosettings['treble'])
+                root.Loudness.setChecked(audiosettings['loudness'])
 
-                stop_reading.wait()
+            else:
+                print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
+
+            # stop_reading.wait()
 
     except():
         if not stop_reading.is_set():
@@ -450,17 +469,6 @@ def format_data_ascii(data):
             msg_str = msg_str + char
     return msg_str
 
-
-def parse_ints(string_list):
-    int_set = set()
-    for line in string_list:
-        try:
-            int_set.add(int(line, 0))
-        except ValueError:
-            continue
-    return int_set
-
-
 def run():
     source_handler = SerialHandler(serial_device, baudrate)
     reading_thread = None
@@ -498,9 +506,7 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui file
         self.showMaximized()  # Show the GUI
-
-    def mousePressEvent(self, event):
-        self.close()
+        self.closebutton.clicked.connect(self.close)
 
 if __name__ == '__main__':
     run()

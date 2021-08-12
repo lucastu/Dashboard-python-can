@@ -1,16 +1,17 @@
 #import sys
 #import time
 #import os
-#from PyQt5.QtWidgets import (QApplication, QDialog,
+# from PyQt5.QtWidgets import (QApplication, QDialog,
 #                             QProgressBar, QPushButton)
-#from PyQt5.QtCore import QTimer
-#from PyQt5.QtCore import Qt
-#import threading
+# from PyQt5.QtCore import QTimer
+# from PyQt5.QtCore import Qt
+# import threading
+from PyQt5 import QtWidgets, uic
 
 # Pour le dev : affiche sur l ecran de la raspberry
 #os.environ.__setitem__('DISPLAY', ':0.0')
 
-class volumewindow(QDialog):
+class volumewindow(QtWidgets.QDialog):
     def __init__(self):
         Volume =0
         #Definition de la taille de lecran

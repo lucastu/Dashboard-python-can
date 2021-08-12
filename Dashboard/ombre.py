@@ -4,8 +4,8 @@
 #from PyQt5.QtCore import Qt
 #from PyQt5.QtWidgets import (QApplication, QDialog)
 #os.environ.__setitem__('DISPLAY', ':0.0')
-
-class Ombre(QDialog):
+from PyQt5 import QtWidgets, uic
+class Ombre(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
         self.initUI()
