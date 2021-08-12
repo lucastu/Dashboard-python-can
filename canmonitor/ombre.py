@@ -15,6 +15,7 @@ class Ombre(QDialog):
         self.setWindowTitle('Ombre')
         #self.setFixedSize(ScreenWidth, ScreenHeight)
         self.setStyleSheet("background-color: black;")
+        self.setWindowOpacity(0.5)
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
         self.showMaximized()
