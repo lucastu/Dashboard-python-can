@@ -1,13 +1,9 @@
-import sys
-import os
-from PyQt5.QtCore import QTimer
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QApplication, QDialog)
-# Pour le dev : affiche sur l ecran de la raspberry
-os.environ.__setitem__('DISPLAY', ':0.0')
-#Definition de la taille de lecran
-#ScreenHeight = 720
-#ScreenWidth = 1280
+#import sys
+#import os
+#from PyQt5.QtCore import QTimer
+#from PyQt5.QtCore import Qt
+#from PyQt5.QtWidgets import (QApplication, QDialog)
+#os.environ.__setitem__('DISPLAY', ':0.0')
 
 class Ombre(QDialog):
     def __init__(self):
@@ -26,5 +22,4 @@ class Ombre(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     shadow = Ombre()
-    #QTimer.singleShot (7000, shadow.close)
     sys.exit(app.exec_())
