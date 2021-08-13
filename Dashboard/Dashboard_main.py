@@ -67,15 +67,15 @@ def reading_loop(source_handler, root):
     while not stop_reading.is_set():
         try:
             frame_id, data = source_handler.get_message()
-            print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
+            #print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
         except InvalidFrame:
             continue
         except EOFError:
             break
 
         if frame_id == VOLUME_FRAME:
-            continue
-            # VOLUME = int(format_data_hex(data),16)
+            temp = int(format_data_hex(data),16)
+            root.Volume.setText(temp)
             # ICI DECLENCHER LE CHANGEMENT DE VOLUME
 
         elif frame_id == TEMPERATURE_FRAME:
@@ -102,7 +102,7 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_SOURCE_FRAME:
             temp = format_data_ascii(data)
-            print("Radio source frame data : %s; and type %s" % (temp , type(temp))
+            print("Radio source frame data : %s; and type %s  (non validé)" % (temp , type(temp))
             Source = "wait..."
             if temp == 0x01:
                 Source = "Tuner"
@@ -118,16 +118,20 @@ def reading_loop(source_handler, root):
                 Source = "USB"
             elif temp == 0x07:
                 Source = "BLUETOOTH"
+            root.RadioSource.setText(Source)                 
 
         elif frame_id == RADIO_DESC_FRAME:
-            root.RadioDesc.setText(format_data_ascii(data))
-
+            temp = format_data_ascii(data)      
+            root.RadioDesc.setText(temp)
+            print("Radio desc frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
+                  
         elif frame_id == INFO_MSG_FRAME:
             parseInfoMessage(data, root)
-
+            print("Radio desc frame data : %s; and type : %s  (non validé)" % (format_data_ascii(data) , type(temp))
+                  
         elif frame_id == RADIO_STATIONS_FRAME:
-            # je ne sais pas encore comment ca marche ici ...
-            continue
+            temp = format_data_ascii(data)  
+            print("Radio Stations frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
 
         elif frame_id == SEATBELTS_FRAME:
             # Est-ce que j'en fais quelque chose de cette info ??
@@ -138,6 +142,9 @@ def reading_loop(source_handler, root):
             continue
 
         elif frame_id == INFO_TRIP1_FRAME or frame_id == INFO_TRIP2_FRAME:
+            tripInfo = format_data_ascii(data)  
+            print("Radio Stations frame data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
+                  
         # info de trip, idem pour les deux, a voir comment je le traite..
         # tripInfo = TripInfo(distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
         #                        averageFuelUsage: data[3] == 0b11111111 ?
@@ -145,21 +152,20 @@ def reading_loop(source_handler, root):
         #                            Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
         #                        averageSpeed: data[0] == 0b11111111 ? -1 : Int(data[0]))
 
-        # if frameID == 0x0C
-        #    tripInfo1 = tripInfo
-        # else
-        #    tripInfo2 = tripInfo
-        #
-            continue
-
+             if frameID == 0x0C
+                tripInfo1 = tripInfo
+             else
+                tripInfo2 = tripInfo
+            
         elif frame_id == INFO_INSTANT_FRAME:
+            tripInfo = format_data_ascii(data)  
+            print("Radio Stations frame data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
             # instantInfo = InstantInfo(autonomy: data[3] == 0b11111111 ? -1: Int(UInt16(highByte: data[3], lowByte: data[4])),
             # fuelUsage: data[1] == 0b11111111 ? 0: Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
-            continue
-
+            
         elif frame_id == TRIP_MODE_FRAME:
             temp = int(format_data_hex(data))
-            print("Trip mode frame data : %s; and type : %s" % (temp , type(temp))
+            print("Trip mode frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
             tripInfoMode =""
             if temp == 0:
                 tripInfoMode = "instant"
@@ -171,9 +177,10 @@ def reading_loop(source_handler, root):
             root.tripInfoMode.setText(tripInfoMode)
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
-            # Si on a un mode actif, on bascule de tab
             activeMode = 0
-            # print (data)
+            equalizerSetting = 0             
+                  
+            #Active selected mode in audio settings      
             if (data[0] & 0b10000000) == 0b10000000 :
                 activeMode = 1  # .leftRightBalance
             elif (data[1] & 0b10000000) == 0b10000000 :
@@ -189,9 +196,7 @@ def reading_loop(source_handler, root):
             elif (data[6] & 0b00000100) == 0b00000100 :
                 activeMode = 7  # .equalizer
 
-            # print(type(data[6]))
-            # print(str(data[6]))
-            equalizerSetting = 0
+            #Valeur de l'equalizer Setting
             if (data[6] & 0b10111111) ==  0b00000111 :
                 equalizerSetting = 1  # .classical
             elif (data[6] & 0b10111111) == 0b00001011 :
@@ -204,7 +209,6 @@ def reading_loop(source_handler, root):
                 equalizerSetting = 5  # .techno
 
             #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
-
             audiosettings['activeMode']         = activeMode
             audiosettings['frontRearBalance']   = int(data[1] & 0b01111111) - 63
             audiosettings['leftRightBalance']   = int(data[0] & 0b01111111) - 63
@@ -215,16 +219,18 @@ def reading_loop(source_handler, root):
             audiosettings['loudness']           = ((data[5] & 0b00000100) == 0b00000100)
 
             #pour le debug
-            print(audiosettings['activeMode'])
-            print( audiosettings['frontRearBalance'])
-            print(audiosettings['leftRightBalance'])
-            print(audiosettings['automaticVolume'])   
-            print(audiosettings['equalizer'])       
-            print(audiosettings['bass'])           
-            print(audiosettings['treble'])         
-            print(audiosettings['loudness'])              
-
-
+            print("***************Audio Settings****************")      
+            print("activeMode" + audiosettings['activeMode'])
+            print("frontRearBalance " + audiosettings['frontRearBalance'])
+            print("leftRightBalance " + audiosettings['leftRightBalance'])
+            print("automaticVolume " + audiosettings['automaticVolume'])   
+            print("equalizer " + audiosettings['equalizer'])       
+            print("bass " + audiosettings['bass'])           
+            print("treble " + audiosettings['treble'])         
+            print("loudness " + audiosettings['loudness'])              
+            print("**********************************************")
+                  
+            #Update de l'affichage dans l'onglet Settings
             root.SliderBasses.setValue(audiosettings['bass'])
             root.SliderAigus.setValue(audiosettings['treble'])
             root.frontRearBalance.setValue(audiosettings['frontRearBalance'])
@@ -234,9 +240,16 @@ def reading_loop(source_handler, root):
             root.equalizer.setText(audiosettings['equalizer'])                      
 
         else:
-            print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
+            print ("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
-
+                  
+        #Si un mode de réglage est actif, on change de tab pour afficher les reglages
+        if audiosettings['activeMode'] != 0:
+            self.tabs.setCurrentIndex(1)
+        else           
+            self.tabs.setCurrentIndex(0)   
+                  
+                  
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
     # Bytes are separated by spaces.
