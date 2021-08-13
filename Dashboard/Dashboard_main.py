@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: ISO-8859-1 -*-
 from PyQt5 import QtWidgets, uic
-# from PyQt5.QtWidgets import (QApplication, QDialog,
-#                             QProgressBar, QPushButton)
+
 import sys
 import threading
 import traceback
@@ -47,208 +46,196 @@ def reading_loop(source_handler, root):
 
     # Variables de l'ID des types de frames
     INIT_STATUS_FRAME = 0x00
-    VOLUME_FRAME = 0x01
+    VOLUME_FRAME =      0x01
     TEMPERATURE_FRAME = 0x02
-    RADIO_SOURCE_FRAME = 0x03
-    RADIO_NAME_FRAME = 0x04
-    RADIO_FREQ_FRAME = 0x05
-    RADIO_FMTYPE_FRAME = 0x06
-    RADIO_DESC_FRAME = 0x07
-    INFO_MSG_FRAME = 0x08
-    RADIO_STATIONS_FRAME = 0x09
-    SEATBELTS_FRAME = 0x0A
-    AIRBAG_STATUS_FRAME = 0x0B
-    INFO_TRIP1_FRAME = 0x0C
-    INFO_TRIP2_FRAME = 0x0D
+    RADIO_SOURCE_FRAME =0x03
+    RADIO_NAME_FRAME =  0x04
+    RADIO_FREQ_FRAME =  0x05
+    RADIO_FMTYPE_FRAME =0x06
+    RADIO_DESC_FRAME =  0x07
+    INFO_MSG_FRAME =    0x08
+    RADIO_STATIONS_FRAME =0x09
+    SEATBELTS_FRAME =   0x0A
+    AIRBAG_STATUS_FRAME =0x0B
+    INFO_TRIP1_FRAME =  0x0C
+    INFO_TRIP2_FRAME =  0x0D
     INFO_INSTANT_FRAME = 0x0E
-    TRIP_MODE_FRAME = 0x0F
+    TRIP_MODE_FRAME =    0x0F
     AUDIO_SETTINGS_FRAME = 0x10
-    SECRET_FRAME = 0x42
+    SECRET_FRAME =         0x42
+    
+    while not stop_reading.is_set():
+        try:
+            frame_id, data = source_handler.get_message()
+            print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
+        except InvalidFrame:
+            continue
+        except EOFError:
+            break
 
-    try:
-        while not stop_reading.is_set():
-            try:
-                frame_id, data = source_handler.get_message()
-                print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
-            except InvalidFrame:
-                continue
-            except EOFError:
-                break
+        if frame_id == VOLUME_FRAME:
+            continue
+            # VOLUME = int(format_data_hex(data),16)
+            # ICI DECLENCHER LE CHANGEMENT DE VOLUME
 
-            # Add the frame to the can_messages dict and tell the main thread to refresh its content
+        elif frame_id == TEMPERATURE_FRAME:
+            root.Temperature.setText(str(int(format_data_hex(data), 16))+"°C")
 
-            if frame_id == VOLUME_FRAME:
-                continue
-                # VOLUME = int(format_data_hex(data),16)
-                # ICI DECLENCHER LE CHANGEMENT DE VOLUME
+        elif frame_id == RADIO_NAME_FRAME:
+            root.RadioName.setText(format_data_ascii(data))
 
-            elif frame_id == TEMPERATURE_FRAME:
-                root.Temperature.setText(str(int(format_data_hex(data), 16))+"°C")
+        elif frame_id == RADIO_FREQ_FRAME:
+            root.RadioFreq.setText(format_data_hex(data))
 
-            elif frame_id == RADIO_NAME_FRAME:
-                root.RadioName.setText(format_data_ascii(data))
+        elif frame_id == RADIO_FMTYPE_FRAME:
+            temp = int(format_data_hex(data))
+            RadioFMType ="wait..."
+            if temp == 1:
+                RadioFMType ="FM1"
+            elif temp == 2:
+                RadioFMType ="FM2"
+            elif temp == 4:
+                RadioFMType ="FMAST"
+            elif temp == 5 :
+                RadioFMType ="AM"
+            root.RadioType.setText("Radio "+ RadioFMType)
 
-            elif frame_id == RADIO_FREQ_FRAME:
-                root.RadioFreq.setText(format_data_hex(data))
+        elif frame_id == RADIO_SOURCE_FRAME:
+            temp = format_data_ascii(data)
+            print("Radio source frame data : %s; and type %s" % (temp , type(temp))
+            Source = "wait..."
+            if temp == 0x01:
+                Source = "Tuner"
+            elif temp == 0x02:
+                Source = "cd"
+            elif temp == 0x03:
+                Source = "CDC"
+            elif temp == 0x04:
+                Source = "AUX1"
+            elif temp == 0x05:
+                Source = "AUX2"
+            elif temp == 0x06:
+                Source = "USB"
+            elif temp == 0x07:
+                Source = "BLUETOOTH"
+
+        elif frame_id == RADIO_DESC_FRAME:
+            root.RadioDesc.setText(format_data_ascii(data))
+
+        elif frame_id == INFO_MSG_FRAME:
+            parseInfoMessage(data, root)
+
+        elif frame_id == RADIO_STATIONS_FRAME:
+            # je ne sais pas encore comment ca marche ici ...
+            continue
+
+        elif frame_id == SEATBELTS_FRAME:
+            # Est-ce que j'en fais quelque chose de cette info ??
+            continue
+
+        elif frame_id == AIRBAG_STATUS_FRAME:
+            # Est-ce que j'en fais quelque chose de cette info ?? AIRBAG PASSAGER
+            continue
+
+        elif frame_id == INFO_TRIP1_FRAME or frame_id == INFO_TRIP2_FRAME:
+        # info de trip, idem pour les deux, a voir comment je le traite..
+        # tripInfo = TripInfo(distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
+        #                        averageFuelUsage: data[3] == 0b11111111 ?
+        #                            -1 :
+        #                            Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
+        #                        averageSpeed: data[0] == 0b11111111 ? -1 : Int(data[0]))
+
+        # if frameID == 0x0C
+        #    tripInfo1 = tripInfo
+        # else
+        #    tripInfo2 = tripInfo
+        #
+            continue
+
+        elif frame_id == INFO_INSTANT_FRAME:
+            # instantInfo = InstantInfo(autonomy: data[3] == 0b11111111 ? -1: Int(UInt16(highByte: data[3], lowByte: data[4])),
+            # fuelUsage: data[1] == 0b11111111 ? 0: Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
+            continue
+
+        elif frame_id == TRIP_MODE_FRAME:
+            temp = int(format_data_hex(data))
+            print("Trip mode frame data : %s; and type : %s" % (temp , type(temp))
+            tripInfoMode =""
+            if temp == 0:
+                tripInfoMode = "instant"
+            elif temp == 1:
+                tripInfoMode = "trip1"
+            elif temp == 2:
+                tripInfoMode = "trip2"
+            #Update de display text      
+            root.tripInfoMode.setText(tripInfoMode)
+
+        elif frame_id == AUDIO_SETTINGS_FRAME:
+            # Si on a un mode actif, on bascule de tab
+            activeMode = 0
+            # print (data)
+            if (data[0] & 0b10000000) == 0b10000000 :
+                activeMode = 1  # .leftRightBalance
+            elif (data[1] & 0b10000000) == 0b10000000 :
+                activeMode = 2  # .frontRearBalance
+            elif (data[2] & 0b10000000) == 0b10000000 :
+                activeMode = 3  # .bass
+            elif (data[4] & 0b10000000) == 0b10000000 :
+                activeMode = 4  # .treble
+            elif (data[5] & 0b10000000) == 0b10000000 :
+                activeMode = 5  # .loudness
+            elif (data[5] & 0b00000001) == 0b00000001 :
+                activeMode = 6  # .automaticVolume
+            elif (data[6] & 0b00000100) == 0b00000100 :
+                activeMode = 7  # .equalizer
+
+            # print(type(data[6]))
+            # print(str(data[6]))
+            equalizerSetting = 0
+            if (data[6] & 0b10111111) ==  0b00000111 :
+                equalizerSetting = 1  # .classical
+            elif (data[6] & 0b10111111) == 0b00001011 :
+                equalizerSetting = 2  # .jazzBlues
+            elif (data[6] & 0b10111111) == 0b00001111 :
+                equalizerSetting = 3  # .popRock
+            elif (data[6] & 0b10111111) == 0b00010011 :
+                equalizerSetting = 4  # .vocals
+            elif (data[6] & 0b10111111) == 0b00010111 :
+                equalizerSetting = 5  # .techno
+
+            #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
+
+            audiosettings['activeMode']         = activeMode
+            audiosettings['frontRearBalance']   = int(data[1] & 0b01111111) - 63
+            audiosettings['leftRightBalance']   = int(data[0] & 0b01111111) - 63
+            audiosettings['automaticVolume']    = (data[5] & 0b00000111) == 0b00000111
+            audiosettings['equalizer']          = equalizerSetting
+            audiosettings['bass']               = int(data[2] & 0b01111111) - 63
+            audiosettings['treble']             = int(data[4] & 0b01111111) - 63
+            audiosettings['loudness']           = ((data[5] & 0b00000100) == 0b00000100)
+
+            #pour le debug
+            print(audiosettings['activeMode'])
+            print( audiosettings['frontRearBalance'])
+            print(audiosettings['leftRightBalance'])
+            print(audiosettings['automaticVolume'])   
+            print(audiosettings['equalizer'])       
+            print(audiosettings['bass'])           
+            print(audiosettings['treble'])         
+            print(audiosettings['loudness'])              
 
 
-            elif frame_id == RADIO_FMTYPE_FRAME:
-                temp = int(format_data_hex(data))
-                RadioFMType ="wait..."
-                if temp == 1:
-                    RadioFMType ="FM1"
-                elif temp == 2:
-                    RadioFMType ="FM2"
-                elif temp == 4:
-                    RadioFMType ="FMAST"
-                elif temp == 5 :
-                    RadioFMType ="AM"
-                root.RadioType.setText("Radio "+ RadioFMType)
+            root.SliderBasses.setValue(audiosettings['bass'])
+            root.SliderAigus.setValue(audiosettings['treble'])
+            root.frontRearBalance.setValue(audiosettings['frontRearBalance'])
+            root.leftRightBalance.setValue(audiosettings['leftRightBalance'])                      
+            root.Loudness.setChecked(audiosettings['loudness'])
+            root.automaticVolume.setChecked(audiosettings['automaticVolume'])
+            root.equalizer.setText(audiosettings['equalizer'])                      
 
-            elif frame_id == RADIO_SOURCE_FRAME:
-                temp = format_data_ascii(data)
-                print("Radio source frame data : %s; and type %s" % (temp , type(temp))
-                Source = "wait..."
-                if temp == 0x01:
-                    Source = "Tuner"
-                elif temp == 0x02:
-                    Source = "cd"
-                elif temp == 0x03:
-                    Source = "CDC"
-                elif temp == 0x04:
-                    Source = "AUX1"
-                elif temp == 0x05:
-                    Source = "AUX2"
-                elif temp == 0x06:
-                    Source = "USB"
-                elif temp == 0x07:
-                    Source = "BLUETOOTH"
+        else:
+            print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
-            elif frame_id == RADIO_DESC_FRAME:
-                root.RadioDesc.setText(format_data_ascii(data))
-
-            elif frame_id == INFO_MSG_FRAME:
-                parseInfoMessage(data, root)
-                
-            elif frame_id == RADIO_STATIONS_FRAME:
-                # je ne sais pas encore comment ca marche ici ...
-                continue
-                
-            elif frame_id == SEATBELTS_FRAME:
-                # Est-ce que j'en fais quelque chose de cette info ??
-                continue
-                      
-            elif frame_id == AIRBAG_STATUS_FRAME:
-                # Est-ce que j'en fais quelque chose de cette info ?? AIRBAG PASSAGER
-                continue
-
-            elif frame_id == INFO_TRIP1_FRAME or frame_id == INFO_TRIP2_FRAME:
-            # info de trip, idem pour les deux, a voir comment je le traite..
-            # tripInfo = TripInfo(distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
-            #                        averageFuelUsage: data[3] == 0b11111111 ?
-            #                            -1 :
-            #                            Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
-            #                        averageSpeed: data[0] == 0b11111111 ? -1 : Int(data[0]))
-
-            # if frameID == 0x0C
-            #    tripInfo1 = tripInfo
-            # else
-            #    tripInfo2 = tripInfo
-            #
-                continue
-                      
-            elif frame_id == INFO_INSTANT_FRAME:
-                # instantInfo = InstantInfo(autonomy: data[3] == 0b11111111 ? -1: Int(UInt16(highByte: data[3], lowByte: data[4])),
-                # fuelUsage: data[1] == 0b11111111 ? 0: Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
-                continue
-
-            elif frame_id == TRIP_MODE_FRAME:
-                temp = int(format_data_hex(data))
-                print("Trip mode frame data : %s; and type : %s" % (temp , type(temp))
-                tripInfoMode =""
-                if temp == 0:
-                    tripInfoMode = "instant"
-                elif temp == 1:
-                    tripInfoMode = "trip1"
-                elif temp == 2:
-                    tripInfoMode = "trip2"
-                #Update de display text      
-                root.tripInfoMode.setText(tripInfoMode)
-
-            elif frame_id == AUDIO_SETTINGS_FRAME:
-                # Si on a un mode actif, on bascule de tab
-                activeMode = 0
-                # print (data)
-                if (data[0] & 0b10000000) == 0b10000000 :
-                    activeMode = 1  # .leftRightBalance
-                elif (data[1] & 0b10000000) == 0b10000000 :
-                    activeMode = 2  # .frontRearBalance
-                elif (data[2] & 0b10000000) == 0b10000000 :
-                    activeMode = 3  # .bass
-                elif (data[4] & 0b10000000) == 0b10000000 :
-                    activeMode = 4  # .treble
-                elif (data[5] & 0b10000000) == 0b10000000 :
-                    activeMode = 5  # .loudness
-                elif (data[5] & 0b00000001) == 0b00000001 :
-                    activeMode = 6  # .automaticVolume
-                elif (data[6] & 0b00000100) == 0b00000100 :
-                    activeMode = 7  # .equalizer
-
-                # print(type(data[6]))
-                # print(str(data[6]))
-                equalizerSetting = 0
-                if (data[6] & 0b10111111) ==  0b00000111 :
-                    equalizerSetting = 1  # .classical
-                elif (data[6] & 0b10111111) == 0b00001011 :
-                    equalizerSetting = 2  # .jazzBlues
-                elif (data[6] & 0b10111111) == 0b00001111 :
-                    equalizerSetting = 3  # .popRock
-                elif (data[6] & 0b10111111) == 0b00010011 :
-                    equalizerSetting = 4  # .vocals
-                elif (data[6] & 0b10111111) == 0b00010111 :
-                    equalizerSetting = 5  # .techno
-                
-                #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
-
-                audiosettings['activeMode']         = activeMode
-                audiosettings['frontRearBalance']   = int(data[1] & 0b01111111) - 63
-                audiosettings['leftRightBalance']   = int(data[0] & 0b01111111) - 63
-                audiosettings['automaticVolume']    = (data[5] & 0b00000111) == 0b00000111
-                audiosettings['equalizer']          = equalizerSetting
-                audiosettings['bass']               = int(data[2] & 0b01111111) - 63
-                audiosettings['treble']             = int(data[4] & 0b01111111) - 63
-                audiosettings['loudness']           = ((data[5] & 0b00000100) == 0b00000100)
-                
-                #pour le debug
-                print(audiosettings['activeMode'])
-                print( audiosettings['frontRearBalance'])
-                print(audiosettings['leftRightBalance'])
-                print(audiosettings['automaticVolume'])   
-                print(audiosettings['equalizer'])       
-                print(audiosettings['bass'])           
-                print(audiosettings['treble'])         
-                print(audiosettings['loudness'])              
-                
-               
-                root.SliderBasses.setValue(audiosettings['bass'])
-                root.SliderAigus.setValue(audiosettings['treble'])
-                root.frontRearBalance.setValue(audiosettings['frontRearBalance'])
-                root.leftRightBalance.setValue(audiosettings['leftRightBalance'])                      
-                root.Loudness.setChecked(audiosettings['loudness'])
-                root.automaticVolume.setChecked(audiosettings['automaticVolume'])
-                root.equalizer.setText(audiosettings['equalizer'])                      
-                      
-            else:
-                print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
-
-    except():
-        if not stop_reading.is_set():
-            # Only log exception if we were not going to stop the thread
-            # When quitting, the main thread calls close() on the serial device
-            # and read() may throw an exception. We don't want to display it as
-            # we're stopping the script anyway
-            global thread_exception
-            thread_exception = sys.exc_info()
 
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
@@ -276,49 +263,41 @@ def format_data_ascii(data):
 def run():
     source_handler = SerialHandler(serial_device, baudrate)
     reading_thread = None
+    # Reading from a serial device, opened with timeout=0 (non-blocking read())
+    source_handler.open()
 
-    try:
-        # If reading from a serial device, it will be opened with timeout=0 (non-blocking read())
-        source_handler.open()
+    app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
+    root = Ui()  # Create an instance of our class for the MainWindow
 
-        # Start the reading background thread
+    # Creation du Thread pour la boucle de lecture, args : source_handler pour l'usb et root pour l'UI
+    reading_thread = threading.Thread(target=reading_loop, args=(source_handler, root,))
+    # Start the reading background thread              
+    reading_thread.start()
+    # Start the application              
+    app.exec_() 
 
-        app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
-        root = Ui()  # Create an instance of our class
-
-        # CrÃ©ation du Thread pour la boucle de lecture, args : source_handler pour l'usb et root pour l'UI
-        reading_thread = threading.Thread(target=reading_loop, args=(source_handler, root,))
-        reading_thread.start()
-        app.exec_()  # Start the application
-
-    finally:
-        # Cleanly stop reading thread before exiting
-        if reading_thread:
-            stop_reading.set()
-
-            if source_handler:
-                source_handler.close()
-
-            reading_thread.join()
-            # If the thread returned an exception, print it
-            if thread_exception:
-                traceback.print_exception(*thread_exception)
-                sys.stderr.flush()
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
-        uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui file
+        uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
         self.showMaximized()  # Show the GUI
         self.closebutton.clicked.connect(self.close_all)
                       
     def close_all(self):
         #on indique qu'on souhaite fermer              
-        stop_reading.set()
-        #On attend la fin du reading_thread              
-        reading_thread.join()
+        if reading_thread:
+            stop_reading.set()
+            if source_handler:
+                source_handler.close()
+            reading_thread.join()
+            # If the thread returned an exception, print it
+            if thread_exception:
+                traceback.print_exception(*thread_exception)
+                sys.stderr.flush()
+                      
         print("Fermeture de l'application")              
-        #Fin de chantier             
+        #Fin de chantier, tous les threads sont fermés, on ferme la fenetre             
         self.close()              
                       
 
