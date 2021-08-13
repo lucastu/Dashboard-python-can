@@ -241,8 +241,6 @@ def reading_loop(source_handler, root):
             else:
                 print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
-            # stop_reading.wait()
-
     except():
         if not stop_reading.is_set():
             # Only log exception if we were not going to stop the thread
@@ -312,7 +310,17 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui file
         self.showMaximized()  # Show the GUI
-        self.closebutton.clicked.connect(self.close)
+        self.closebutton.clicked.connect(self.close_all)
+                      
+    def close_all(self):
+        #on indique qu'on souhaite fermer              
+        stop_reading.set()
+        #On attend la fin du reading_thread              
+        reading_thread.join()
+        print("Fermeture de l'application")              
+        #Fin de chantier             
+        self.close()              
+                      
 
 if __name__ == '__main__':
     run()
