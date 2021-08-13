@@ -26,16 +26,16 @@ thread_exception = None
 baudrate = 115200
 serial_device = "/dev/ttyUSB0"
 
-audiosettings = {
-    'activeMode' : '0',
-    'frontRearBalance' : '0',
-    'leftRightBalance' : '0',
-    'automaticVolume' : '0',
-    'equalizer' : '0',
-    'bass' : '0',
-    'treble' : '0',
-    'loudness' : '0',
-}
+#audiosettings = {
+#    'activeMode' : '0',
+#    'frontRearBalance' : '0',
+#    'leftRightBalance' : '0',
+#    'automaticVolume' : '0',
+#    'equalizer' : '0',
+#    'bass' : '0',
+#    'treble' : '0',
+#    'loudness' : '0',
+#}
 
 def isInfoMessage(data, b1 , b2, b3 ):
     # Fonction qui compare les trois bytes du premier parametre avec les trois bytes des autres parametres en omettant le premier quartet et le dernier
@@ -98,11 +98,10 @@ def reading_loop(source_handler, root):
                 RadioFMType ="FMAST"
             elif temp == 5 :
                 RadioFMType ="AM"
-            root.RadioType.setText("Radio "+ RadioFMType)
+            root.RadioType.setText(str(temp) " Radio : "+ RadioFMType)
 
         elif frame_id == RADIO_SOURCE_FRAME:
             temp = format_data_ascii(data)
-            print("Radio source frame data : %s; and type %s  (non validé)" % (temp , type(temp))
             Source = "wait..."
             if temp == 0x01:
                 Source = "Tuner"
@@ -119,7 +118,8 @@ def reading_loop(source_handler, root):
             elif temp == 0x07:
                 Source = "BLUETOOTH"
             root.RadioSource.setText(Source)                 
-
+            print("Radio source frame data : %s; and type %s src : %s (non validé)" % (temp , type(temp), Source)
+                  
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)      
             root.RadioDesc.setText(temp)
@@ -165,7 +165,6 @@ def reading_loop(source_handler, root):
             
         elif frame_id == TRIP_MODE_FRAME:
             temp = int(format_data_hex(data))
-            print("Trip mode frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
             tripInfoMode =""
             if temp == 0:
                 tripInfoMode = "instant"
@@ -175,6 +174,7 @@ def reading_loop(source_handler, root):
                 tripInfoMode = "trip2"
             #Update de display text      
             root.tripInfoMode.setText(tripInfoMode)
+            print("Trip mode frame data : %s; and type : %s ..Tripinfomode :  %s (non validé)" % (str(temp) , type(temp), tripInfoMode)
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
             activeMode = 0
