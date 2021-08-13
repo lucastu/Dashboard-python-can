@@ -1,3 +1,7 @@
+def isInfoMessage(data, b1 , b2, b3 ):
+    # Fonction qui compare les trois bytes du premier parametre avec les trois bytes des autres parametres en omettant le premier quartet et le dernier
+    return (data[0] & 0b00001111) == b1 & (data[1] & 0b11111111) == b2 & (data[2] & 0b11110000) == (b3 & 0b11110000)
+
 def parseInfoMessage(data, root):
     infomessage = "none"
     if isInfoMessage(data, 0x01, 0x2F, 0xC4):
