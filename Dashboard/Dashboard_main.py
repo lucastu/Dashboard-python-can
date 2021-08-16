@@ -295,6 +295,7 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
         self.setStyleSheet(„ background-image: url(/home/pi/lucas/bg.jpg);“)
+        self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
                   
         #test darkmode         
         dark_palette = QPalette()
