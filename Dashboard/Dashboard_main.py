@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: ISO-8859-1 -*-
 from PyQt5 import QtWidgets, uic
-
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPalette, QColor
 import sys
 import threading
 import traceback
@@ -26,16 +27,16 @@ thread_exception = None
 baudrate = 115200
 serial_device = "/dev/ttyUSB0"
 
-#audiosettings = {
-#    'activeMode' : '0',
-#    'frontRearBalance' : '0',
-#    'leftRightBalance' : '0',
-#    'automaticVolume' : '0',
-#    'equalizer' : '0',
-#    'bass' : '0',
-#    'treble' : '0',
-#    'loudness' : '0',
-#}
+audiosettings = {
+   'activeMode' : '0',
+   'frontRearBalance' : '0',
+   'leftRightBalance' : '0',
+   'automaticVolume' : '0',
+   'equalizer' : '0',
+   'bass' : '0',
+   'treble' : '0',
+   'loudness' : '0',
+}
 
 def isInfoMessage(data, b1 , b2, b3 ):
     # Fonction qui compare les trois bytes du premier parametre avec les trois bytes des autres parametres en omettant le premier quartet et le dernier
@@ -74,18 +75,19 @@ def reading_loop(source_handler, root):
             break
 
         if frame_id == VOLUME_FRAME:
-            temp = int(format_data_hex(data),16)
+            temp = str(int(format_data_hex(data),16))
             root.Volume.setText(temp)
             # ICI DECLENCHER LE CHANGEMENT DE VOLUME
 
         elif frame_id == TEMPERATURE_FRAME:
-            root.Temperature.setText(str(int(format_data_hex(data), 16))+"°C")
+            root.Temperature.setText(str(int(format_data_hex(data), 16))+ "�C")
 
         elif frame_id == RADIO_NAME_FRAME:
             root.RadioName.setText(format_data_ascii(data))
 
         elif frame_id == RADIO_FREQ_FRAME:
-            root.RadioFreq.setText(format_data_hex(data))
+            temp = format_data_hex(data)
+            root.RadioFreq.setText(str(float(int(temp.replace(" ", ""),16))/10)+ "MHz")
 
         elif frame_id == RADIO_FMTYPE_FRAME:
             temp = int(format_data_hex(data))
@@ -98,7 +100,7 @@ def reading_loop(source_handler, root):
                 RadioFMType ="FMAST"
             elif temp == 5 :
                 RadioFMType ="AM"
-            root.RadioType.setText(str(temp) " Radio : "+ RadioFMType)
+            root.RadioType.setText(str(temp) + " Radio : "+ RadioFMType)
 
         elif frame_id == RADIO_SOURCE_FRAME:
             temp = format_data_ascii(data)
@@ -122,23 +124,25 @@ def reading_loop(source_handler, root):
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)      
             root.RadioDesc.setText(temp)
-            print("Radio desc frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
+            print("Radio desc frame data : %s; and type : %s  (non validé)" % (temp , type(temp)))
                   
         elif frame_id == INFO_MSG_FRAME:
             parseInfoMessage(data, root)
-            print("Radio desc frame data : %s; and type : %s  (non validé)" % (format_data_ascii(data) , type(temp))
+            print("Radio desc frame data : %s; and type : %s  (non validé)" % (format_data_ascii(data) , type(temp)))
                   
         elif frame_id == RADIO_STATIONS_FRAME:
-            temp = format_data_ascii(data)  
+            temp = format_data_hex(data)
             #print("Radio Stations frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
-            radio_list = temp.split("|")            
-            root.radioList0.setText("1 : "+radio_list[0])
-            root.radioList1.setText("1 : "+radio_list[1])
-            root.radioList2.setText("1 : "+radio_list[2])
-            root.radioList3.setText("1 : "+radio_list[3])
-            root.radioList4.setText("1 : "+radio_list[4])
-            root.radioList5.setText("1 : "+radio_list[5])
-
+            try :
+                radio_list = temp.split("|")
+                root.radioList0.setText("1 : "+radio_list[0])
+                root.radioList1.setText("2 : "+radio_list[1])
+                root.radioList2.setText("3 : "+radio_list[2])
+                root.radioList3.setText("4 : "+radio_list[3])
+                root.radioList4.setText("5 : "+radio_list[4])
+                root.radioList5.setText("6 : "+radio_list[5])
+            except() :
+                continue
         elif frame_id == SEATBELTS_FRAME:
             # Est-ce que j'en fais quelque chose de cette info ??
             continue
@@ -147,12 +151,12 @@ def reading_loop(source_handler, root):
             # Est-ce que j'en fais quelque chose de cette info ?? AIRBAG PASSAGER
             continue
 
-        elif frame_id == INFO_TRIP1_FRAME or :
+        elif frame_id == INFO_TRIP1_FRAME :
             tripInfo = format_data_ascii(data)  
-            print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
-            print("distance= %s %s " %(data[1], data[2])
-            print("averageFuelUsage= %s %s " %(data[3], data[4])
-            print("averageSpeed= %s %s " %(data[0]])
+            print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  )
+            print("distance= %s %s " %(data[1], data[2]))
+            print("averageFuelUsage= %s %s " %(data[3], data[4]))
+            print("averageSpeed= %s " %(data[0]))
 
         # info de trip, idem pour les deux, a voir comment je le traite..
         # tripInfo = TripInfo(   distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
@@ -162,15 +166,15 @@ def reading_loop(source_handler, root):
         elif  frame_id == INFO_TRIP2_FRAME :
             #tripInfo = format_data_ascii(data)  
             #print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
-            print("distance= %s %s " %          (data[1], data[2])
-            print("averageFuelUsage= %s %s " %  (data[3], data[4])
-            print("averageSpeed= %s " %         (data[0]])                 
+            print("distance= %s %s " %          (data[1], data[2]))
+            print("averageFuelUsage= %s %s " %  (data[3], data[4]))
+            print("averageSpeed= %s " %         (data[0]))
             
-        elif frame_id == INFO_INSTANT_FRAME:
+        elif frame_id == INFO_INSTANT_FRAME :
             #tripInfo = format_data_ascii(data)  
             #print("Radio Stations frame data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
-            print("autonomy= %s %s " %(data[3], data[4])
-            print("fuelUsage= %s  " %(data[1])      
+            print("autonomy= %s %s " %(data[3], data[4]))
+            print("fuelUsage= %s  " %(data[1]))
             # instantInfo = InstantInfo(autonomy: data[3] == 0b11111111 ? -1: Int(UInt16(highByte: data[3], lowByte: data[4])),
             #                           fuelUsage: data[1] == 0b11111111 ? 0: Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
             
@@ -185,7 +189,7 @@ def reading_loop(source_handler, root):
                 tripInfoMode = "trip2"
             #Update de display text      
             root.tripInfoMode.setText(tripInfoMode)
-            print("Trip mode frame data : %s; and type : %s ..Tripinfomode :  %s (non validé)" % (str(temp) , type(temp), tripInfoMode)
+            print("Trip mode frame data : %s; and type : %s ..Tripinfomode :  %s (non validé)" % (str(temp) , type(temp), tripInfoMode))
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
             activeMode = 0
@@ -256,11 +260,10 @@ def reading_loop(source_handler, root):
                   
         #Si un mode de réglage est actif, on change de tab pour afficher les reglages
         if audiosettings['activeMode'] != 0:
-            self.tabs.setCurrentIndex(1)
-        else           
-            self.tabs.setCurrentIndex(0)   
-                  
-                  
+            root.tabWidget.setCurrentIndex(1)
+        else :
+            root.tabWidget.setCurrentIndex(0)
+
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
     # Bytes are separated by spaces.
@@ -305,30 +308,30 @@ class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
-        self.setStyleSheet(„ background-image: url(/home/pi/lucas/bg.jpg);“)
+        self.MainWindow.setStyleSheet("border-image: url(/home/pi/lucas/bg.jpg);")
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
                   
         #test darkmode         
-        dark_palette = QPalette()
-        dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
-        dark_palette.setColor(QPalette.WindowText, Qt.white)
-        dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
-        dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-        dark_palette.setColor(QPalette.ToolTipBase, QColor(25, 25, 25))
-        dark_palette.setColor(QPalette.ToolTipText, Qt.white)
-        dark_palette.setColor(QPalette.Text, Qt.white)
-        dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
-        dark_palette.setColor(QPalette.ButtonText, Qt.white)
-        dark_palette.setColor(QPalette.BrightText, Qt.red)
-        dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
-        dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-        dark_palette.setColor(QPalette.HighlightedText, QColor(35, 35, 35))
-        dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
-        dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
-        dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
-        dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
-        dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))          
-        self.setPalette(dark_palette)           
+        # dark_palette = QPalette()
+        # dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
+        # dark_palette.setColor(QPalette.WindowText, Qt.white)
+        # dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
+        # dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+        # dark_palette.setColor(QPalette.ToolTipBase, QColor(25, 25, 25))
+        # dark_palette.setColor(QPalette.ToolTipText, Qt.white)
+        # dark_palette.setColor(QPalette.Text, Qt.white)
+        # dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
+        # dark_palette.setColor(QPalette.ButtonText, Qt.white)
+        # dark_palette.setColor(QPalette.BrightText, Qt.red)
+        # dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
+        # dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+        # dark_palette.setColor(QPalette.HighlightedText, QColor(35, 35, 35))
+        # dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
+        # dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
+        # dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
+        # dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
+        # dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
+        # self.setPalette(dark_palette)
          #FIN TEST        
         self.closebutton.clicked.connect(self.close_all)                  
         self.showMaximized()  # Show the GUI
