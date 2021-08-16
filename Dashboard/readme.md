@@ -5,11 +5,9 @@ my bad...
 
 **Dashboard_main.py**  => main script contain everything 
 
-**alert.py** => exemple of multiple windows grammar
-
 **interface.ui** => XML file that contains the mainwindow graphical setup
 
-**launcher.sh** => bash file to launch main script if it's not open, else it put the window in front
+**other/launcher.sh** => bash file to launch main script if it's not open, else it put the window in front
 
 **notif.py** => ancien script of display a notif base of what I need to write 
 
