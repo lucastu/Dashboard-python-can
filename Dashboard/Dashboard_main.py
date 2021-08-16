@@ -102,7 +102,7 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_SOURCE_FRAME:
             temp = format_data_ascii(data)
-            Source = "wait..."
+            Source = "Aucune source..."
             if temp == 0x01:
                 Source = "Tuner"
             elif temp == 0x02:
@@ -118,7 +118,6 @@ def reading_loop(source_handler, root):
             elif temp == 0x07:
                 Source = "BLUETOOTH"
             root.RadioSource.setText(Source)                 
-            print("Radio source frame data : %s; and type %s src : %s (non validé)" % (temp , type(temp), Source)
                   
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)      
@@ -131,7 +130,14 @@ def reading_loop(source_handler, root):
                   
         elif frame_id == RADIO_STATIONS_FRAME:
             temp = format_data_ascii(data)  
-            print("Radio Stations frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
+            #print("Radio Stations frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
+            radio_list = temp.split("|")            
+            root.radioList0.setText("1 : "+radio_list[0])
+            root.radioList1.setText("1 : "+radio_list[1])
+            root.radioList2.setText("1 : "+radio_list[2])
+            root.radioList3.setText("1 : "+radio_list[3])
+            root.radioList4.setText("1 : "+radio_list[4])
+            root.radioList5.setText("1 : "+radio_list[5])
 
         elif frame_id == SEATBELTS_FRAME:
             # Est-ce que j'en fais quelque chose de cette info ??
@@ -141,27 +147,32 @@ def reading_loop(source_handler, root):
             # Est-ce que j'en fais quelque chose de cette info ?? AIRBAG PASSAGER
             continue
 
-        elif frame_id == INFO_TRIP1_FRAME or frame_id == INFO_TRIP2_FRAME:
+        elif frame_id == INFO_TRIP1_FRAME or :
             tripInfo = format_data_ascii(data)  
-            print("Radio Stations frame data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
-                  
-        # info de trip, idem pour les deux, a voir comment je le traite..
-        # tripInfo = TripInfo(distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
-        #                        averageFuelUsage: data[3] == 0b11111111 ?
-        #                            -1 :
-        #                            Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
-        #                        averageSpeed: data[0] == 0b11111111 ? -1 : Int(data[0]))
+            print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
+            print("distance= %s %s " %(data[1], data[2])
+            print("averageFuelUsage= %s %s " %(data[3], data[4])
+            print("averageSpeed= %s %s " %(data[0]])
 
-             if frameID == 0x0C
-                tripInfo1 = tripInfo
-             else
-                tripInfo2 = tripInfo
+        # info de trip, idem pour les deux, a voir comment je le traite..
+        # tripInfo = TripInfo(   distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
+        #                        averageFuelUsage: data[3] == 0b11111111 ?-1 : Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
+        #                        averageSpeed: data[0] == 0b11111111 ? -1 : Int(data[0]))
+                  
+        elif  frame_id == INFO_TRIP2_FRAME :
+            #tripInfo = format_data_ascii(data)  
+            #print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
+            print("distance= %s %s " %          (data[1], data[2])
+            print("averageFuelUsage= %s %s " %  (data[3], data[4])
+            print("averageSpeed= %s " %         (data[0]])                 
             
         elif frame_id == INFO_INSTANT_FRAME:
-            tripInfo = format_data_ascii(data)  
-            print("Radio Stations frame data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
+            #tripInfo = format_data_ascii(data)  
+            #print("Radio Stations frame data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
+            print("autonomy= %s %s " %(data[3], data[4])
+            print("fuelUsage= %s  " %(data[1])      
             # instantInfo = InstantInfo(autonomy: data[3] == 0b11111111 ? -1: Int(UInt16(highByte: data[3], lowByte: data[4])),
-            # fuelUsage: data[1] == 0b11111111 ? 0: Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
+            #                           fuelUsage: data[1] == 0b11111111 ? 0: Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
             
         elif frame_id == TRIP_MODE_FRAME:
             temp = int(format_data_hex(data))
