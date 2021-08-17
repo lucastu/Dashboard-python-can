@@ -137,14 +137,18 @@ def reading_loop(source_handler, root):
             #print("Radio Stations frame data : %s; and type : %s  (non validÃ©)" % (temp , type(temp))
             try :
                 radio_list = temp.split("|")
-                root.radioList0.setText("1 : "+radio_list[0])
-                root.radioList1.setText("2 : "+radio_list[1])
-                root.radioList2.setText("3 : "+radio_list[2])
-                root.radioList3.setText("4 : "+radio_list[3])
-                root.radioList4.setText("5 : "+radio_list[4])
-                root.radioList5.setText("6 : "+radio_list[5])
+                  
             except() :
-                continue
+                for i in radio_list :
+                  radio_list[i] = "vide"            
+            
+            root.radioList0.setText("1 : "+radio_list[0])
+            root.radioList1.setText("2 : "+radio_list[1])
+            root.radioList2.setText("3 : "+radio_list[2])
+            root.radioList3.setText("4 : "+radio_list[3])
+            root.radioList4.setText("5 : "+radio_list[4])
+            root.radioList5.setText("6 : "+radio_list[5])
+
                   
         elif frame_id == SEATBELTS_FRAME:
             # Est-ce que j'en fais quelque chose de cette info ??
