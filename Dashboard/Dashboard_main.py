@@ -302,6 +302,7 @@ def run():
 
     app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
     app.setStyleSheet( """ MainWindow {border-image: url("/home/pi/lucas/bg.jpg");  }""")     # <--- test
+    app.setStyle('Fusion')                                                                    # <
     root = Ui()  # Create an instance of our class for the MainWindow
 
     # Creation du Thread pour la boucle de lecture, args : source_handler pour l'usb et root pour l'UI
@@ -325,26 +326,26 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
                   
         # test darkmode         
-        # dark_palette = QPalette()
+        dark_palette = QPalette()
         # dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
-        # dark_palette.setColor(QPalette.WindowText, Qt.white)
-        # dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
+        dark_palette.setColor(QPalette.WindowText, Qt.white)
+        dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
         # dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
         # dark_palette.setColor(QPalette.ToolTipBase, QColor(25, 25, 25))
         # dark_palette.setColor(QPalette.ToolTipText, Qt.white)
-        # dark_palette.setColor(QPalette.Text, Qt.white)
-        # dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
-        # dark_palette.setColor(QPalette.ButtonText, Qt.white)
-        # dark_palette.setColor(QPalette.BrightText, Qt.red)
+        dark_palette.setColor(QPalette.Text, Qt.white)
+        dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.ButtonText, Qt.white)
+        dark_palette.setColor(QPalette.BrightText, Qt.red)
         # dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
-        # dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+        dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
         # dark_palette.setColor(QPalette.HighlightedText, QColor(35, 35, 35))
-        # dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
-        # dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
-        # dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
-        # dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
-        # dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
-        # self.setPalette(dark_palette)
+        dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
+        dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
+        dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
+        dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
+        self.setPalette(dark_palette)
          #FIN TEST        
          
         self.closebutton.clicked.connect(self.close_all)                  
@@ -363,7 +364,7 @@ class Ui(QtWidgets.QMainWindow):
                 sys.stderr.flush()
                       
         print("Fermeture de l'application")              
-        #Fin de chantier, tous les threads sont fermÃ©s, on ferme la fenetre             
+        #After closing threads, closing the window            
         self.close()              
                       
 
