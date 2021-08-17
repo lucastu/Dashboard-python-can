@@ -297,6 +297,7 @@ def run():
     source_handler.open()
 
     app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
+    app.setStyleSheet( """ MainWindow {border-image: url("/home/pi/lucas/bg.jpg");  }""")     # <--- test
     root = Ui()  # Create an instance of our class for the MainWindow
 
     # Creation du Thread pour la boucle de lecture, args : source_handler pour l'usb et root pour l'UI
@@ -308,10 +309,15 @@ def run():
 
 
 class Ui(QtWidgets.QMainWindow):
-    def __init__(self):
+   #stylesheet = """
+   #   MainWindow {
+   #     border-image: url("/home/pi/lucas/bg.jpg"); 
+   #   }"""
+   
+   def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
-        self.MainWindow.setStyleSheet("border-image: url(/home/pi/lucas/bg.jpg);")
+        #self.MainWindow.setStyleSheet("border-image: url(/home/pi/lucas/bg.jpg);")
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
                   
         # test darkmode         
