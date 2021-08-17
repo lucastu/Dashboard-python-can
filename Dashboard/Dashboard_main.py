@@ -3,9 +3,10 @@
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QColor
+
 import sys
 import threading
-import traceback
+#import traceback
 import time
 import os
 
@@ -14,6 +15,7 @@ from sound_level import volumewindow
 from ombre import Ombre
 from InfoMSG_parser import parseInfoMessage
 
+#Display on the device display in case of SSH launch of the script
 os.environ.__setitem__('DISPLAY', ':0.0')
 
 stop_reading = threading.Event()
@@ -23,7 +25,7 @@ can_messages_lock = threading.Lock()
 
 thread_exception = None
 
-# Parametres de la lecture USB
+# USB Arduino parameters
 baudrate = 115200
 serial_device = "/dev/ttyUSB0"
 
@@ -43,25 +45,25 @@ def isInfoMessage(data, b1 , b2, b3 ):
     return (data[0] & 0b00001111) == b1 & (data[1] & 0b11111111) == b2 & (data[2] & 0b11110000) == (b3 & 0b11110000)
 
 def reading_loop(source_handler, root):
-    """Background thread for reading."""
+    """Background thread for reading data from Arduino."""
 
     # Variables de l'ID des types de frames
-    INIT_STATUS_FRAME = 0x00
-    VOLUME_FRAME =      0x01
-    TEMPERATURE_FRAME = 0x02
-    RADIO_SOURCE_FRAME =0x03
-    RADIO_NAME_FRAME =  0x04
-    RADIO_FREQ_FRAME =  0x05
-    RADIO_FMTYPE_FRAME =0x06
-    RADIO_DESC_FRAME =  0x07
-    INFO_MSG_FRAME =    0x08
-    RADIO_STATIONS_FRAME =0x09
-    SEATBELTS_FRAME =   0x0A
-    AIRBAG_STATUS_FRAME =0x0B
-    INFO_TRIP1_FRAME =  0x0C
-    INFO_TRIP2_FRAME =  0x0D
-    INFO_INSTANT_FRAME = 0x0E
-    TRIP_MODE_FRAME =    0x0F
+    INIT_STATUS_FRAME =    0x00
+    VOLUME_FRAME =         0x01
+    TEMPERATURE_FRAME =    0x02
+    RADIO_SOURCE_FRAME =   0x03
+    RADIO_NAME_FRAME =     0x04
+    RADIO_FREQ_FRAME =     0x05
+    RADIO_FMTYPE_FRAME =   0x06
+    RADIO_DESC_FRAME =     0x07
+    INFO_MSG_FRAME =       0x08
+    RADIO_STATIONS_FRAME = 0x09
+    SEATBELTS_FRAME =      0x0A
+    AIRBAG_STATUS_FRAME =  0x0B
+    INFO_TRIP1_FRAME =     0x0C
+    INFO_TRIP2_FRAME =     0x0D
+    INFO_INSTANT_FRAME =   0x0E
+    TRIP_MODE_FRAME =      0x0F
     AUDIO_SETTINGS_FRAME = 0x10
     SECRET_FRAME =         0x42
     
@@ -80,7 +82,7 @@ def reading_loop(source_handler, root):
             # ICI DECLENCHER LE CHANGEMENT DE VOLUME
 
         elif frame_id == TEMPERATURE_FRAME:
-            root.Temperature.setText(str(int(format_data_hex(data), 16))+ "�C")
+            root.Temperature.setText(str(int(format_data_hex(data), 16))+ "°C")
 
         elif frame_id == RADIO_NAME_FRAME:
             root.RadioName.setText(format_data_ascii(data))
@@ -91,7 +93,7 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_FMTYPE_FRAME:
             temp = int(format_data_hex(data))
-            RadioFMType ="wait..."
+            RadioFMType ="No Type"
             if temp == 1:
                 RadioFMType ="FM1"
             elif temp == 2:
@@ -124,15 +126,15 @@ def reading_loop(source_handler, root):
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)      
             root.RadioDesc.setText(temp)
-            print("Radio desc frame data : %s; and type : %s  (non validé)" % (temp , type(temp)))
+            print("Radio desc frame data : %s; and type : %s  (non validÃ©)" % (temp , type(temp)))
                   
         elif frame_id == INFO_MSG_FRAME:
             parseInfoMessage(data, root)
-            print("Radio desc frame data : %s; and type : %s  (non validé)" % (format_data_ascii(data) , type(temp)))
+            print("Radio desc frame data : %s; and type : %s  (non validÃ©)" % (format_data_ascii(data) , type(temp)))
                   
         elif frame_id == RADIO_STATIONS_FRAME:
             temp = format_data_hex(data)
-            #print("Radio Stations frame data : %s; and type : %s  (non validé)" % (temp , type(temp))
+            #print("Radio Stations frame data : %s; and type : %s  (non validÃ©)" % (temp , type(temp))
             try :
                 radio_list = temp.split("|")
                 root.radioList0.setText("1 : "+radio_list[0])
@@ -143,6 +145,7 @@ def reading_loop(source_handler, root):
                 root.radioList5.setText("6 : "+radio_list[5])
             except() :
                 continue
+                  
         elif frame_id == SEATBELTS_FRAME:
             # Est-ce que j'en fais quelque chose de cette info ??
             continue
@@ -153,7 +156,7 @@ def reading_loop(source_handler, root):
 
         elif frame_id == INFO_TRIP1_FRAME :
             tripInfo = format_data_ascii(data)  
-            print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  )
+            print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  )
             print("distance= %s %s " %(data[1], data[2]))
             print("averageFuelUsage= %s %s " %(data[3], data[4]))
             print("averageSpeed= %s " %(data[0]))
@@ -165,14 +168,14 @@ def reading_loop(source_handler, root):
                   
         elif  frame_id == INFO_TRIP2_FRAME :
             #tripInfo = format_data_ascii(data)  
-            #print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
+            #print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  
             print("distance= %s %s " %          (data[1], data[2]))
             print("averageFuelUsage= %s %s " %  (data[3], data[4]))
             print("averageSpeed= %s " %         (data[0]))
             
         elif frame_id == INFO_INSTANT_FRAME :
             #tripInfo = format_data_ascii(data)  
-            #print("Radio Stations frame data : %s; and type : %s  (non validé)" % (tripInfo , type(tripInfo))  
+            #print("Radio Stations frame data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  
             print("autonomy= %s %s " %(data[3], data[4]))
             print("fuelUsage= %s  " %(data[1]))
             # instantInfo = InstantInfo(autonomy: data[3] == 0b11111111 ? -1: Int(UInt16(highByte: data[3], lowByte: data[4])),
@@ -187,9 +190,9 @@ def reading_loop(source_handler, root):
                 tripInfoMode = "trip1"
             elif temp == 2:
                 tripInfoMode = "trip2"
-            #Update de display text      
+            #Update de displayed text      
             root.tripInfoMode.setText(tripInfoMode)
-            print("Trip mode frame data : %s; and type : %s ..Tripinfomode :  %s (non validé)" % (str(temp) , type(temp), tripInfoMode))
+            print("Trip mode frame data : %s; and type : %s ..Tripinfomode :  %s (non validÃ©)" % (str(temp) , type(temp), tripInfoMode))
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
             activeMode = 0
@@ -258,7 +261,7 @@ def reading_loop(source_handler, root):
             print ("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
                   
-        #Si un mode de réglage est actif, on change de tab pour afficher les reglages
+        #If there is an activeMode of audio settings, switch to the audiosettings tab 
         if audiosettings['activeMode'] != 0:
             root.tabWidget.setCurrentIndex(1)
         else :
@@ -311,7 +314,7 @@ class Ui(QtWidgets.QMainWindow):
         self.MainWindow.setStyleSheet("border-image: url(/home/pi/lucas/bg.jpg);")
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
                   
-        #test darkmode         
+        # test darkmode         
         # dark_palette = QPalette()
         # dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
         # dark_palette.setColor(QPalette.WindowText, Qt.white)
@@ -333,11 +336,12 @@ class Ui(QtWidgets.QMainWindow):
         # dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
         # self.setPalette(dark_palette)
          #FIN TEST        
+         
         self.closebutton.clicked.connect(self.close_all)                  
         self.showMaximized()  # Show the GUI
                       
     def close_all(self):
-        #on indique qu'on souhaite fermer              
+        # set flag of              
         if reading_thread:
             stop_reading.set()
             if source_handler:
@@ -349,7 +353,7 @@ class Ui(QtWidgets.QMainWindow):
                 sys.stderr.flush()
                       
         print("Fermeture de l'application")              
-        #Fin de chantier, tous les threads sont fermés, on ferme la fenetre             
+        #Fin de chantier, tous les threads sont fermÃ©s, on ferme la fenetre             
         self.close()              
                       
 
