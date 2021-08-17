@@ -12,7 +12,7 @@ import os
 
 from source_handler import InvalidFrame, SerialHandler
 from sound_level import volumewindow
-from ombre import Ombre
+from ombre import ombre
 from InfoMSG_parser import parseInfoMessage
 
 #Display on the device display in case of SSH launch of the script
@@ -41,13 +41,13 @@ audiosettings = {
 }
 
 def isInfoMessage(data, b1 , b2, b3 ):
-    # Fonction qui compare les trois bytes du premier parametre avec les trois bytes des autres parametres en omettant le premier quartet et le dernier
+   # Compare the 3 firsts bytes of "data" with b1, b2 and b3, ommiting the first and the last quartet
     return (data[0] & 0b00001111) == b1 & (data[1] & 0b11111111) == b2 & (data[2] & 0b11110000) == (b3 & 0b11110000)
 
 def reading_loop(source_handler, root):
     """Background thread for reading data from Arduino."""
 
-    # Variables de l'ID des types de frames
+    #FRAMETYPES and their IDs
     INIT_STATUS_FRAME =    0x00
     VOLUME_FRAME =         0x01
     TEMPERATURE_FRAME =    0x02
@@ -126,15 +126,15 @@ def reading_loop(source_handler, root):
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)      
             root.RadioDesc.setText(temp)
-            print("Radio desc frame data : %s; and type : %s  (non validÃ©)" % (temp , type(temp)))
+            print("Radio desc frame data : %s; and type : %s  " % (temp , type(temp)))
                   
         elif frame_id == INFO_MSG_FRAME:
             parseInfoMessage(data, root)
-            print("Radio desc frame data : %s; and type : %s  (non validÃ©)" % (format_data_ascii(data) , type(temp)))
+            print("Radio desc frame data : %s; and type : %s  " % (format_data_ascii(data) , type(temp)))
                   
         elif frame_id == RADIO_STATIONS_FRAME:
             temp = format_data_hex(data)
-            #print("Radio Stations frame data : %s; and type : %s  (non validÃ©)" % (temp , type(temp))
+            #print("Radio Stations frame data : %s; and type : %s  " % (temp , type(temp))
             try :
                 radio_list = temp.split("|")
                   
@@ -265,7 +265,7 @@ def reading_loop(source_handler, root):
             print ("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
                   
-        #If there is an activeMode of audio settings, switch to the audiosettings tab 
+        # f there is an activeMode of audio settings, switch to the audiosettings tab 
         if audiosettings['activeMode'] != 0:
             root.tabWidget.setCurrentIndex(1)
         else :
@@ -355,13 +355,14 @@ class Ui(QtWidgets.QMainWindow):
         # set flag of              
         if reading_thread:
             stop_reading.set()
-            if source_handler:
-                source_handler.close()
             reading_thread.join()
+        if source_handler:
+            source_handler.close()
+
             # If the thread returned an exception, print it
-            if thread_exception:
-                traceback.print_exception(*thread_exception)
-                sys.stderr.flush()
+        if thread_exception:
+             traceback.print_exception(*thread_exception)
+             sys.stderr.flush()
                       
         print("Fermeture de l'application")              
         #After closing threads, closing the window            
