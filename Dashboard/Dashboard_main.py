@@ -130,6 +130,14 @@ def reading_loop(source_handler, root):
                   
         elif frame_id == INFO_MSG_FRAME:
             parseInfoMessage(data, root)
+            #PARSER LE PREMIER 
+            if not (data[0] & 0b01110000) :
+               root.show_alert()
+            else :
+               root.hide_alert()
+            #0x80 - show window
+            #0x7F - hide window
+            #0xFF - clear window (default)
             print("Radio desc frame data : %s; and type : %s  " % (format_data_ascii(data) , type(temp)))
                   
         elif frame_id == RADIO_STATIONS_FRAME:
