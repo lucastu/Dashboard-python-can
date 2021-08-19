@@ -347,9 +347,13 @@ class Ui(QtWidgets.QMainWindow):
         dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
         self.setPalette(dark_palette)
          #FIN TEST        
-         
+        self.shadowbutton.clicked.connect(self.show_shadow_window)
         self.closebutton.clicked.connect(self.close_all)                  
         self.showMaximized()  # Show the GUI
+    
+    def show_shadow_window(self, checked):
+        Ombre = ombre()
+
                       
     def close_all(self):
         # set flag of              
