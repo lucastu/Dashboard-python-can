@@ -324,7 +324,8 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
         #self.MainWindow.setStyleSheet("border-image: url(/home/pi/lucas/bg.jpg);")
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
-                  
+        #Initialisation of the alert window
+        self.init_alert_window()          
         # test darkmode         
         dark_palette = QPalette()
         # dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
@@ -347,12 +348,26 @@ class Ui(QtWidgets.QMainWindow):
         dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
         self.setPalette(dark_palette)
          #FIN TEST        
-        self.shadowbutton.clicked.connect(self.show_shadow_window)
+         
+        self.AlertONbutton.clicked.connect(self.show_alert)
+        self.AlertOFFbutton.clicked.connect(self.hide_alert)
         self.closebutton.clicked.connect(self.close_all)                  
         self.showMaximized()  # Show the GUI
     
-    def show_shadow_window(self, checked):
-        Ombre = ombre()
+    #def show_shadow_window(self, checked):
+    #    Ombre = ombre()
+   
+    def init_alert_window()
+        Ombre = ombre()   
+        #Alert = alert() 
+         
+    def show_alert()
+         Ombre.showMaximized()
+         #Alert.show()
+         
+    def hide_alert()
+         Ombre.hide()
+         #Alert.hide()   
 
                       
     def close_all(self):
