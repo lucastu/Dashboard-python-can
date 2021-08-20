@@ -63,7 +63,7 @@ def reading_loop(source_handler, root):
     AUDIO_SETTINGS_FRAME = 0x10
     REMOTE_COMMAND_FRAME = 0x11  
     OPEN_DOOR_FRAME      = 0x12
-    SECRET_FRAME =         0x42
+    RADIO_FACE_BUTTON =    0x13
     
     while not stop_reading.is_set():
         try:
@@ -84,7 +84,6 @@ def reading_loop(source_handler, root):
                 # ICI cacher le volume
 
         elif frame_id == REMOTE_COMMAND_FRAME:
-            #temp = int(format_data_hex(data),16)
             if (data[0] & 0b11000000) == 0b11000000 :
                 #Both button pressed : Pause/play      
                 print("Pause-play")
@@ -94,6 +93,23 @@ def reading_loop(source_handler, root):
             elif (data[0] & 0b01000000) == 0b01000000 :
                 #Previous button pressed
                 print("Previous")  
+               
+        elif frame_id == RADIO_FACE_BUTTON:
+            if (data[2] & 0b01000000) == 0b01000000 :
+                #Both button pressed : OK     
+                print("OK")
+            if (data[5] & 0b01000000) == 0b01000000 :
+                #UP button pressed
+                print("UP")
+            if (data[5] & 0b00010000) == 0b00010000 :
+                #Down button pressed
+                print("Down")  
+            if (data[5] & 0b00000100) == 0b00000100 :
+                #RIGHT button pressed
+                print("RIGHT")
+            if (data[5] & 0b00000001) == 0b00000001 :
+                #LEFT button pressed
+                print("LEFT")            
                
         elif frame_id == OPEN_DOOR_FRAME:
             if (data[0] & 0b10000000) == 0b10000000 :
