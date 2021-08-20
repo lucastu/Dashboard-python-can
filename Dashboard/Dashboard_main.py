@@ -61,7 +61,8 @@ def reading_loop(source_handler, root):
     INFO_INSTANT_FRAME =   0x0E
     TRIP_MODE_FRAME =      0x0F
     AUDIO_SETTINGS_FRAME = 0x10
-    REMOTE_COMMAND_FRAME = 0x11     
+    REMOTE_COMMAND_FRAME = 0x11  
+    OPEN_DOOR_FRAME      = 0x12
     SECRET_FRAME =         0x42
     
     while not stop_reading.is_set():
@@ -84,13 +85,33 @@ def reading_loop(source_handler, root):
 
         elif frame_id == REMOTE_COMMAND_FRAME:
             #temp = int(format_data_hex(data),16)
-            elif (data[0] & 0b11000000) == 0b11000000 :
-                #Both button pressed : Pause/play            
+            if (data[0] & 0b11000000) == 0b11000000 :
+                #Both button pressed : Pause/play      
+                print("Pause-play")
             elif (data[0] & 0b10000000) == 0b10000000 :
                 #Next button pressed
+                print("Next")
             elif (data[0] & 0b01000000) == 0b01000000 :
                 #Previous button pressed
-            
+                print("Previous")  
+               
+        elif frame_id == OPEN_DOOR_FRAME:
+            if (data[0] & 0b10000000) == 0b10000000 :
+                #Door Front Left     
+                print("Door Front Left")
+            if (data[0] & 0b01000000) == 0b01000000 :
+                #Door Front Right
+                print("Door Front Right")
+            if (data[0] & 0b00100000) == 0b00100000 :
+                #Door Back Left
+                print("Door Back Left")
+            if (data[0] & 0b00010000) == 0b00010000 :
+                #Door Back Right
+                print("Door Back Right")
+            if (data[0] & 0b00001000) == 0b00001000 :
+                #Door Trunk    
+                print("Door Trunk ")
+      
         elif frame_id == TEMPERATURE_FRAME:
             temp = str(int(format_data_hex(data),16))
             root.Temperature.setText( temp + "°C")
@@ -175,36 +196,25 @@ def reading_loop(source_handler, root):
             continue
 
         elif frame_id == INFO_TRIP1_FRAME :
-            #tripInfo = format_data_ascii(data)  
-            # print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃƒÂ©)" % (tripInfo , type(tripInfo))  )
+            #a mettre en forme mais tout correspond
             root.tripinfo3.setText("averageSpeed 1 = %s " %(data[0])) 
-            root.tripinfo1.setText("distance 1= %s %s " %(data[1], data[2]))
+            root.tripinfo1.setText("distance after reset= %s %s " %(data[1], data[2]))
             
             averageFuelUsage=int(data[3]+data[4])/10
             print(data[3], data[4])
             print(averageFuelUsage)
             root.tripinfo2.setText("averageFuelUsage = %s " % averageFuelUsage)
-
-
-           # info de trip, idem pour les deux, a voir comment je le traite..
-           # tripInfo = TripInfo(   distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
-           #                        averageFuelUsage: data[3] == 0b11111111 ?-1 : Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
-           #                        averageSpeed: data[0] == 0b11111111 ? -1 : Int(data[0]))
                   
         elif  frame_id == INFO_TRIP2_FRAME :
-            #tripInfo = format_data_ascii(data)  
-            #print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃƒÂ©)" % (tripInfo , type(tripInfo))  
+            #Censé être exactement la meme chose que trip1 mais une deuxièeme memoire... bizarre
+            
             root.tripinfo4.setText("distance 2= %s %s " %          (data[1], data[2]))
             root.tripinfo5.setText("averageFuelUsage 2= %s %s " %  (data[3], data[4]))
             root.tripinfo6.setText("averageSpeed 2 = %s " %         (data[0]))
             
         elif frame_id == INFO_INSTANT_FRAME :
-            #tripInfo = format_data_ascii(data)  
-            #print("Radio Stations frame data : %s; and type : %s  (non validÃƒÂ©)" % (tripInfo , type(tripInfo))  
             print("autonomy= %s %s " %(data[3], data[4]))
-            print("fuelUsage= %s  " %(data[1]))
-            # instantInfo = InstantInfo(autonomy: data[3] == 0b11111111 ? -1: Int(UInt16(highByte: data[3], lowByte: data[4])),
-            #                           fuelUsage: data[1] == 0b11111111 ? 0: Double(UInt16(highByte: data[1], lowByte: data[2])) / 10.0)
+            print("fuelUsage= %s  " %(data[1], data[2]))
             
         elif frame_id == TRIP_MODE_FRAME:
             temp = int(format_data_hex(data))
