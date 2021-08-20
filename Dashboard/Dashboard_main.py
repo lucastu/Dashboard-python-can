@@ -40,10 +40,6 @@ audiosettings = {
    'loudness' : '0',
 }
 
-def isInfoMessage(data, b1 , b2, b3 ):
-   # Compare the 3 firsts bytes of "data" with b1, b2 and b3, ommiting the first and the last quartet
-    return (data[0] & 0b00001111) == b1 & (data[1] & 0b11111111) == b2 & (data[2] & 0b11110000) == (b3 & 0b11110000)
-
 def reading_loop(source_handler, root):
     """Background thread for reading data from Arduino."""
 
