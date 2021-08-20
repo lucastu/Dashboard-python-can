@@ -158,25 +158,25 @@ def parseInfoMessage(data, root) :
     
         if doorByte1 & 0b00000100 == 0b00000100:
             # decodedCarDoors.insert(.Hood)
-            print("Capot ouvert")
+            infomessage ="Capot ouvert"
         if doorByte1 & 0b00001000 == 0b00001000:
             # decodedCarDoors.insert(.Trunk)
-            print("Coffre ouvert")
+            infomessage ="Coffre ouvert"
         if doorByte1 & 0b00010000 == 0b00010000:
             # decodedCarDoors.insert(.RearLeft)
-            print("porte arriÃ¨re gauche ouverte")
+            infomessage ="porte arriÃ¨re gauche ouverte"
         if doorByte1 & 0b00100000 == 0b00100000:
             # decodedCarDoors.insert(.RearRight)
-            print("porte arriÃ¨re droite ouverte")
+            infomessage ="porte arriÃ¨re droite ouverte"
         if doorByte1 & 0b01000000 == 0b01000000:
             # decodedCarDoors.insert(.FrontLeft)
-            print("porte conducteur ouverte")
+            infomessage ="porte conducteur ouverte"
         if doorByte1 & 0b10000000 == 0b10000000:
             # decodedCarDoors.insert(.FrontRight)
-            print("porte passager ouverte")
+            infomessage ="porte passager ouverte"
         if doorByte2 & 0b01000000 == 0b01000000:
             # decodedCarDoors.insert(.FuelFlap)
-            print("trappe essence ouverte")
+            infomessage ="trappe essence ouverte"
 
     elif data[1] == 0xDF:
         infomessage = "Niveau liquide lave-glace insuffisant"
