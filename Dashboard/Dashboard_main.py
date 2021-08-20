@@ -61,6 +61,7 @@ def reading_loop(source_handler, root):
     INFO_INSTANT_FRAME =   0x0E
     TRIP_MODE_FRAME =      0x0F
     AUDIO_SETTINGS_FRAME = 0x10
+    REMOTE_COMMAND_FRAME = 0x11     
     SECRET_FRAME =         0x42
     
     while not stop_reading.is_set():
@@ -81,7 +82,15 @@ def reading_loop(source_handler, root):
             else
                 # ICI cacher le volume
 
-
+        elif frame_id == REMOTE_COMMAND_FRAME:
+            #temp = int(format_data_hex(data),16)
+            elif (data[0] & 0b11000000) == 0b11000000 :
+                #Both button pressed : Pause/play            
+            elif (data[0] & 0b10000000) == 0b10000000 :
+                #Next button pressed
+            elif (data[0] & 0b01000000) == 0b01000000 :
+                #Previous button pressed
+            
         elif frame_id == TEMPERATURE_FRAME:
             temp = str(int(format_data_hex(data),16))
             root.Temperature.setText( temp + "°C")
