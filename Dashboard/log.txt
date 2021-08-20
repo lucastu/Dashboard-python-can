@@ -1,0 +1,119 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+FRAME ID NON TRAITE : 0  :  00 00 00 00 00 00 00 00  ........
+Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
+Radio desc frame data : ??.?????; and type : <class 'int'>  
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
+Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
+Radio desc frame data : ????????; and type : <class 'int'>  
+Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
+Radio desc frame data : ??.?????; and type : <class 'int'>  
+Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
+Radio desc frame data : ????????; and type : <class 'int'>  
+Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
+Radio desc frame data : ??.?????; and type : <class 'int'>  
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
+autonomy= 1 214 
+fuelUsage= 255  
+autonomy= 1 214 
+fuelUsage= 255  
+Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
+Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
+Radio desc frame data : ????????; and type : <class 'int'>  
+Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
+Radio desc frame data : ??.?????; and type : <class 'int'>  
+Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
+Radio desc frame data : ????????; and type : <class 'int'>  
+Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
+Radio desc frame data : ??.?????; and type : <class 'int'>  
+Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
+Radio desc frame data : ????????; and type : <class 'int'>  
+Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
+Radio desc frame data : ??.?????; and type : <class 'int'>  
+
+Averagefuelusage 1 = ok avec 1 chiffre après la virgule
+radio ko

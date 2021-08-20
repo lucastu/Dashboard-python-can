@@ -13,18 +13,18 @@ class ombre(QtWidgets.QDialog):
 
     def initUI(self):
         # Creation de la fenetre
-        #self.setWindowTitle('shadow')
+        self.setWindowTitle('Ombre')
         #self.setFixedSize(ScreenWidth, ScreenHeight)
         self.setStyleSheet("background-color: black;")
         self.setWindowOpacity(0.5)
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
-        self.showMaximized()
+        # self.showMaximized()
 
-     def mousePressEvent(self, QMouseEvent):
+    def mousePressEvent(self, QMouseEvent):
         self.close()
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    shadow = Ombre()
+    shadow = ombre()
     sys.exit(app.exec_())

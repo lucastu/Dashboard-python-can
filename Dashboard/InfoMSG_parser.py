@@ -4,6 +4,7 @@ def isInfoMessage(data, b1 , b2, b3 ):
 
 def parseInfoMessage(data, root):
     infomessage = "none"
+    print("Data : %s" % data)
     if isInfoMessage(data, 0x01, 0x2F, 0xC4):
         infomessage = "Essuie-vitre automatique activÃ©"
     elif isInfoMessage(data, 0x01, 0x30, 0xC4):

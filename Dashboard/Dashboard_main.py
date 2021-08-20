@@ -17,7 +17,7 @@ from InfoMSG_parser import parseInfoMessage
 
 #Display on the device display in case of SSH launch of the script
 os.environ.__setitem__('DISPLAY', ':0.0')
-
+# os.environ["QT_LOGGING_RULES"] = "qt5ct.debug=false"
 stop_reading = threading.Event()
 
 can_messages = {}
@@ -82,7 +82,7 @@ def reading_loop(source_handler, root):
             # ICI DECLENCHER LE CHANGEMENT DE VOLUME
 
         elif frame_id == TEMPERATURE_FRAME:
-            root.Temperature.setText(str(int(format_data_hex(data), 16))+ "°C")
+            root.Temperature.setText(str(int(format_data_hex(data), 16))+ "�C")
 
         elif frame_id == RADIO_NAME_FRAME:
             root.RadioName.setText(format_data_ascii(data))
@@ -142,20 +142,15 @@ def reading_loop(source_handler, root):
                   
         elif frame_id == RADIO_STATIONS_FRAME:
             temp = format_data_hex(data)
-            #print("Radio Stations frame data : %s; and type : %s  " % (temp , type(temp))
-            try :
+            if '|' in temp:
                 radio_list = temp.split("|")
-                  
-            except() :
-                for i in radio_list :
-                  radio_list[i] = "vide"            
             
-            root.radioList0.setText("1 : "+radio_list[0])
-            root.radioList1.setText("2 : "+radio_list[1])
-            root.radioList2.setText("3 : "+radio_list[2])
-            root.radioList3.setText("4 : "+radio_list[3])
-            root.radioList4.setText("5 : "+radio_list[4])
-            root.radioList5.setText("6 : "+radio_list[5])
+                root.radioList0.setText("1 : "+radio_list[0])
+                root.radioList1.setText("2 : "+radio_list[1])
+                root.radioList2.setText("3 : "+radio_list[2])
+                root.radioList3.setText("4 : "+radio_list[3])
+                root.radioList4.setText("5 : "+radio_list[4])
+                root.radioList5.setText("6 : "+radio_list[5])
 
                   
         elif frame_id == SEATBELTS_FRAME:
@@ -168,10 +163,10 @@ def reading_loop(source_handler, root):
 
         elif frame_id == INFO_TRIP1_FRAME :
             tripInfo = format_data_ascii(data)  
-            print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  )
-            print("distance= %s %s " %(data[1], data[2]))
-            print("averageFuelUsage= %s %s " %(data[3], data[4]))
-            print("averageSpeed= %s " %(data[0]))
+            # print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  )
+            root.tripinfo1.setText("distance 1= %s %s " %(data[1], data[2]))
+            root.tripinfo2.setText("averageFuelUsage 1= %s %s " %(data[3], data[4]))
+            root.tripinfo3.setText("averageSpeed 1 = %s " %(data[0]))
 
         # info de trip, idem pour les deux, a voir comment je le traite..
         # tripInfo = TripInfo(   distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
@@ -181,9 +176,9 @@ def reading_loop(source_handler, root):
         elif  frame_id == INFO_TRIP2_FRAME :
             #tripInfo = format_data_ascii(data)  
             #print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  
-            print("distance= %s %s " %          (data[1], data[2]))
-            print("averageFuelUsage= %s %s " %  (data[3], data[4]))
-            print("averageSpeed= %s " %         (data[0]))
+            root.tripinfo4.setText("distance 2= %s %s " %          (data[1], data[2]))
+            root.tripinfo5.setText("averageFuelUsage 2= %s %s " %  (data[3], data[4]))
+            root.tripinfo6.setText("averageSpeed 2 = %s " %         (data[0]))
             
         elif frame_id == INFO_INSTANT_FRAME :
             #tripInfo = format_data_ascii(data)  
@@ -246,19 +241,19 @@ def reading_loop(source_handler, root):
             audiosettings['equalizer']          = equalizerSetting
             audiosettings['bass']               = int(data[2] & 0b01111111) - 63
             audiosettings['treble']             = int(data[4] & 0b01111111) - 63
-            audiosettings['loudness']           = ((data[5] & 0b00000100) == 0b00000100)
+            audiosettings['loudness']           = ((data[5] & 0b01000000) == 0b01000000)
 
             #pour le debug
-            print("***************Audio Settings****************")      
-            print("activeMode" + audiosettings['activeMode'])
-            print("frontRearBalance " + audiosettings['frontRearBalance'])
-            print("leftRightBalance " + audiosettings['leftRightBalance'])
-            print("automaticVolume " + audiosettings['automaticVolume'])   
-            print("equalizer " + audiosettings['equalizer'])       
-            print("bass " + audiosettings['bass'])           
-            print("treble " + audiosettings['treble'])         
-            print("loudness " + audiosettings['loudness'])              
-            print("**********************************************")
+            # print("***************Audio Settings****************")
+            # print("activeMode" + str(audiosettings['activeMode']))
+            # print("frontRearBalance " + str(audiosettings['frontRearBalance']))
+            # print("leftRightBalance " + str(audiosettings['leftRightBalance']))
+            # print("automaticVolume " + str(audiosettings['automaticVolume'])   )
+            # print("equalizer " + str(audiosettings['equalizer'])       )
+            # print("bass " + str(audiosettings['bass'])           )
+            # print("treble " + str(audiosettings['treble']))
+            # print("loudness " + str(audiosettings['loudness']))
+            # print("**********************************************")
                   
             #Update de l'affichage dans l'onglet Settings
             root.SliderBasses.setValue(audiosettings['bass'])
@@ -267,17 +262,17 @@ def reading_loop(source_handler, root):
             root.leftRightBalance.setValue(audiosettings['leftRightBalance'])                      
             root.Loudness.setChecked(audiosettings['loudness'])
             root.automaticVolume.setChecked(audiosettings['automaticVolume'])
-            root.equalizer.setText(audiosettings['equalizer'])                      
+            root.equalizer.setText(str(audiosettings['equalizer']))
 
         else:
             print ("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
                   
         # f there is an activeMode of audio settings, switch to the audiosettings tab 
-        if audiosettings['activeMode'] != 0:
-            root.tabWidget.setCurrentIndex(1)
-        else :
-            root.tabWidget.setCurrentIndex(0)
+        # if audiosettings['activeMode'] != 0:
+        #     root.tabWidget.setCurrentIndex(1)
+        # else :
+        #     root.tabWidget.setCurrentIndex(0)
 
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
@@ -309,8 +304,7 @@ def run():
     source_handler.open()
 
     app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
-    app.setStyleSheet( """ MainWindow {border-image: url("/home/pi/lucas/bg.jpg");  }""")     # <--- test
-    app.setStyle('Fusion')                                                                    # <
+                                                                    # <
     root = Ui()  # Create an instance of our class for the MainWindow
 
     # Creation du Thread pour la boucle de lecture, args : source_handler pour l'usb et root pour l'UI
@@ -322,63 +316,59 @@ def run():
 
 
 class Ui(QtWidgets.QMainWindow):
-   #stylesheet = """
-   #   MainWindow {
-   #     border-image: url("/home/pi/lucas/bg.jpg"); 
-   #   }"""
-   
+
    def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
-        #self.MainWindow.setStyleSheet("border-image: url(/home/pi/lucas/bg.jpg);")
+        # self.setStyleSheet(self.stylesheet)
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
         #Initialisation of the alert window
         self.init_alert_window()          
-        # test darkmode         
+
         dark_palette = QPalette()
-        # dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.Background, QColor(53, 53, 53))
+
         dark_palette.setColor(QPalette.WindowText, Qt.white)
         dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
-        # dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-        # dark_palette.setColor(QPalette.ToolTipBase, QColor(25, 25, 25))
-        # dark_palette.setColor(QPalette.ToolTipText, Qt.white)
+        dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.ToolTipBase, QColor(25, 25, 25))
+        dark_palette.setColor(QPalette.ToolTipText, Qt.white)
         dark_palette.setColor(QPalette.Text, Qt.white)
         dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
         dark_palette.setColor(QPalette.ButtonText, Qt.white)
         dark_palette.setColor(QPalette.BrightText, Qt.red)
-        # dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
+        dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
         dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-        # dark_palette.setColor(QPalette.HighlightedText, QColor(35, 35, 35))
+        dark_palette.setColor(QPalette.HighlightedText, QColor(35, 35, 35))
         dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
         dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
         dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
         dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
         dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
         self.setPalette(dark_palette)
-         #FIN TEST        
+
          
         self.AlertONbutton.clicked.connect(self.show_alert)
         self.AlertOFFbutton.clicked.connect(self.hide_alert)
         self.closebutton.clicked.connect(self.close_all)                  
         self.showMaximized()  # Show the GUI
-    
-    #def show_shadow_window(self, checked):
-    #    Ombre = ombre()
+
    
-    def init_alert_window()
-        Ombre = ombre()   
+   def init_alert_window(self):
+        self.Ombre = ombre()
         #Alert = alert() 
          
-    def show_alert()
-         Ombre.showMaximized()
+   def show_alert(self):
+         self.Ombre.showMaximized()
          #Alert.show()
          
-    def hide_alert()
-         Ombre.hide()
+   def hide_alert(self):
+         self.Ombre.hide()
          #Alert.hide()   
 
                       
-    def close_all(self):
+   def close_all(self):
         # set flag of              
         if reading_thread:
             stop_reading.set()
