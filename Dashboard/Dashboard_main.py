@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: ISO-8859-1 -*-
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QColor
@@ -70,7 +69,6 @@ def reading_loop(source_handler, root):
     while not stop_reading.is_set():
         try:
             frame_id, data = source_handler.get_message()
-            #print ("FRAME ID %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
         except InvalidFrame:
             continue
         except EOFError:
@@ -82,7 +80,8 @@ def reading_loop(source_handler, root):
             # ICI DECLENCHER LE CHANGEMENT DE VOLUME
 
         elif frame_id == TEMPERATURE_FRAME:
-            root.Temperature.setText(str(int(format_data_hex(data), 16))+ "�C")
+            temp = str(int(format_data_hex(data),16))
+            root.Temperature.setText( temp + "°C")
 
         elif frame_id == RADIO_NAME_FRAME:
             root.RadioName.setText(format_data_ascii(data))
@@ -102,34 +101,37 @@ def reading_loop(source_handler, root):
                 RadioFMType ="FMAST"
             elif temp == 5 :
                 RadioFMType ="AM"
-            root.RadioType.setText(str(temp) + " Radio : "+ RadioFMType)
+            root.RadioType.setText("Radio "+ RadioFMType)
 
         elif frame_id == RADIO_SOURCE_FRAME:
-            temp = format_data_ascii(data)
+            temp = int(format_data_ascii(data))
             Source = "Aucune source..."
-            if temp == 0x01:
+            if temp == 1:
                 Source = "Tuner"
-            elif temp == 0x02:
+            elif temp == 2:
                 Source = "cd"
-            elif temp == 0x03:
+            elif temp == 3:
                 Source = "CDC"
-            elif temp == 0x04:
+            elif temp == 4:
                 Source = "AUX1"
-            elif temp == 0x05:
+            elif temp == 5:
                 Source = "AUX2"
-            elif temp == 0x06:
+            elif temp == 6:
                 Source = "USB"
-            elif temp == 0x07:
+            elif temp == 7:
                 Source = "BLUETOOTH"
             root.RadioSource.setText(Source)                 
                   
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)      
             root.RadioDesc.setText(temp)
-            print("Radio desc frame data : %s; and type : %s  " % (temp , type(temp)))
+            #This one never worked....
+            print("Radio desc frame data : %s  " % temp)
                   
         elif frame_id == INFO_MSG_FRAME:
-            parseInfoMessage(data, root)
+            infomessage = parseInfoMessage(data, root)
+            root.InfoMSG.setText(infomessage)
+            
             #PARSER LE PREMIER 
             if not (data[0] & 0b01110000) :
                root.show_alert()
@@ -144,13 +146,12 @@ def reading_loop(source_handler, root):
             temp = format_data_hex(data)
             if '|' in temp:
                 radio_list = temp.split("|")
-            
-                root.radioList0.setText("1 : "+radio_list[0])
-                root.radioList1.setText("2 : "+radio_list[1])
-                root.radioList2.setText("3 : "+radio_list[2])
-                root.radioList3.setText("4 : "+radio_list[3])
-                root.radioList4.setText("5 : "+radio_list[4])
-                root.radioList5.setText("6 : "+radio_list[5])
+                root.radioList0.setText("1 : "+ radio_list[0])
+                root.radioList1.setText("2 : "+ radio_list[1])
+                root.radioList2.setText("3 : "+ radio_list[2])
+                root.radioList3.setText("4 : "+ radio_list[3])
+                root.radioList4.setText("5 : "+ radio_list[4])
+                root.radioList5.setText("6 : "+ radio_list[5])
 
                   
         elif frame_id == SEATBELTS_FRAME:
@@ -162,27 +163,32 @@ def reading_loop(source_handler, root):
             continue
 
         elif frame_id == INFO_TRIP1_FRAME :
-            tripInfo = format_data_ascii(data)  
-            # print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  )
+            #tripInfo = format_data_ascii(data)  
+            # print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃƒÂ©)" % (tripInfo , type(tripInfo))  )
+            root.tripinfo3.setText("averageSpeed 1 = %s " %(data[0])) 
             root.tripinfo1.setText("distance 1= %s %s " %(data[1], data[2]))
-            root.tripinfo2.setText("averageFuelUsage 1= %s %s " %(data[3], data[4]))
-            root.tripinfo3.setText("averageSpeed 1 = %s " %(data[0]))
+            
+            averageFuelUsage=int(data[3]+data[4])/10
+            print(data[3], data[4])
+            print(averageFuelUsage)
+            root.tripinfo2.setText("averageFuelUsage = %s " % averageFuelUsage)
 
-        # info de trip, idem pour les deux, a voir comment je le traite..
-        # tripInfo = TripInfo(   distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
-        #                        averageFuelUsage: data[3] == 0b11111111 ?-1 : Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
-        #                        averageSpeed: data[0] == 0b11111111 ? -1 : Int(data[0]))
+
+           # info de trip, idem pour les deux, a voir comment je le traite..
+           # tripInfo = TripInfo(   distance: Int(UInt16(highByte: data[1], lowByte: data[2])),
+           #                        averageFuelUsage: data[3] == 0b11111111 ?-1 : Double(UInt16(highByte: data[3], lowByte: data[4])) / 10.0,
+           #                        averageSpeed: data[0] == 0b11111111 ? -1 : Int(data[0]))
                   
         elif  frame_id == INFO_TRIP2_FRAME :
             #tripInfo = format_data_ascii(data)  
-            #print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  
+            #print("INFO_TRIP1_FRAME data : %s; and type : %s  (non validÃƒÂ©)" % (tripInfo , type(tripInfo))  
             root.tripinfo4.setText("distance 2= %s %s " %          (data[1], data[2]))
             root.tripinfo5.setText("averageFuelUsage 2= %s %s " %  (data[3], data[4]))
             root.tripinfo6.setText("averageSpeed 2 = %s " %         (data[0]))
             
         elif frame_id == INFO_INSTANT_FRAME :
             #tripInfo = format_data_ascii(data)  
-            #print("Radio Stations frame data : %s; and type : %s  (non validÃ©)" % (tripInfo , type(tripInfo))  
+            #print("Radio Stations frame data : %s; and type : %s  (non validÃƒÂ©)" % (tripInfo , type(tripInfo))  
             print("autonomy= %s %s " %(data[3], data[4]))
             print("fuelUsage= %s  " %(data[1]))
             # instantInfo = InstantInfo(autonomy: data[3] == 0b11111111 ? -1: Int(UInt16(highByte: data[3], lowByte: data[4])),
@@ -197,13 +203,12 @@ def reading_loop(source_handler, root):
                 tripInfoMode = "trip1"
             elif temp == 2:
                 tripInfoMode = "trip2"
-            #Update de displayed text      
+            #Maybe useless for my integraation ?      
             root.tripInfoMode.setText(tripInfoMode)
-            print("Trip mode frame data : %s; and type : %s ..Tripinfomode :  %s (non validÃ©)" % (str(temp) , type(temp), tripInfoMode))
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
-            activeMode = 0
-            equalizerSetting = 0             
+            #activeMode = 0
+            #equalizerSetting = 0             
                   
             #Active selected mode in audio settings      
             if (data[0] & 0b10000000) == 0b10000000 :
@@ -220,9 +225,13 @@ def reading_loop(source_handler, root):
                 activeMode = 6  # .automaticVolume
             elif (data[6] & 0b00000100) == 0b00000100 :
                 activeMode = 7  # .equalizer
+            else :
+                activeMode = 0
 
             #Valeur de l'equalizer Setting
-            if (data[6] & 0b10111111) ==  0b00000111 :
+            if (data[6] & 0b10111111) ==  0b00000011 :
+                equalizerSetting = 0  # .none
+            elif (data[6] & 0b10111111) ==  0b00000111 :
                 equalizerSetting = 1  # .classical
             elif (data[6] & 0b10111111) == 0b00001011 :
                 equalizerSetting = 2  # .jazzBlues
@@ -232,7 +241,7 @@ def reading_loop(source_handler, root):
                 equalizerSetting = 4  # .vocals
             elif (data[6] & 0b10111111) == 0b00010111 :
                 equalizerSetting = 5  # .techno
-
+                  
             #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
             audiosettings['activeMode']         = activeMode
             audiosettings['frontRearBalance']   = int(data[1] & 0b01111111) - 63
@@ -242,19 +251,7 @@ def reading_loop(source_handler, root):
             audiosettings['bass']               = int(data[2] & 0b01111111) - 63
             audiosettings['treble']             = int(data[4] & 0b01111111) - 63
             audiosettings['loudness']           = ((data[5] & 0b01000000) == 0b01000000)
-
-            #pour le debug
-            # print("***************Audio Settings****************")
-            # print("activeMode" + str(audiosettings['activeMode']))
-            # print("frontRearBalance " + str(audiosettings['frontRearBalance']))
-            # print("leftRightBalance " + str(audiosettings['leftRightBalance']))
-            # print("automaticVolume " + str(audiosettings['automaticVolume'])   )
-            # print("equalizer " + str(audiosettings['equalizer'])       )
-            # print("bass " + str(audiosettings['bass'])           )
-            # print("treble " + str(audiosettings['treble']))
-            # print("loudness " + str(audiosettings['loudness']))
-            # print("**********************************************")
-                  
+             
             #Update de l'affichage dans l'onglet Settings
             root.SliderBasses.setValue(audiosettings['bass'])
             root.SliderAigus.setValue(audiosettings['treble'])
@@ -269,10 +266,10 @@ def reading_loop(source_handler, root):
 
                   
         # f there is an activeMode of audio settings, switch to the audiosettings tab 
-        # if audiosettings['activeMode'] != 0:
-        #     root.tabWidget.setCurrentIndex(1)
-        # else :
-        #     root.tabWidget.setCurrentIndex(0)
+        if audiosettings['activeMode'] != 0 :
+            root.tabWidget.setCurrentIndex(1)
+        else :
+            root.tabWidget.setCurrentIndex(0)
 
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
@@ -304,7 +301,6 @@ def run():
     source_handler.open()
 
     app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
-                                                                    # <
     root = Ui()  # Create an instance of our class for the MainWindow
 
     # Creation du Thread pour la boucle de lecture, args : source_handler pour l'usb et root pour l'UI
@@ -316,7 +312,6 @@ def run():
 
 
 class Ui(QtWidgets.QMainWindow):
-
    def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
