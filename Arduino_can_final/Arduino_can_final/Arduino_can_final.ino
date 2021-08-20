@@ -37,7 +37,7 @@ typedef enum {
   AUDIO_SETTINGS_FRAME = 0x10,
   REMOTE_COMMAND_FRAME = 0x11
   OPEN_DOOR_FRAME      = 0x12
-  SECRET_FRAME         = 0x42, // Dark button
+  RADIO_FACE_BUTTON    = 0x13,
 } FrameType;
 
 // Screen power state
@@ -106,8 +106,8 @@ boolean tripModeButtonPressed = false;
 boolean tripDidReset = false;
 unsigned long timeSinceTripInfoButtonPressed = 0;
 
-// Secret button state
-byte secretButtonPressed = 0;
+// State of the buttons on the radio
+byte buttonfaceradio[3];
 
 void setup() {
   Serial.begin(SERIAL_SPEED);
@@ -196,43 +196,11 @@ void loop() {
         wantedScreenState = buffer[0];
       }
     } else if (id == 997) {
-      // Switch LCD power manually when pressing MENU + OK simultaneously
-      // (in case it gets out of sync for any reason)
-      if ((buffer[2] & 0b01010000) == 0b01010000) {
-        //Allumer l ecran, a supprimer
-        //digitalWrite(screenPin, HIGH);
-        delay(1);
-        //digitalWrite(screenPin, LOW);
-      }
-      
-      // Reset all data stored in memory when pressing MENU + ESC
-      // Forces a resend of all data on the next loop() iteration
-      // (in case we restarted the iOS app)
-      if ((buffer[2] & 0b00010000) && (buffer[0] & 0b01000000)) {
-        volume = 0;
-        temperature = 0;
-        radioSource = 0;
-        fmType = 0;
-        fmFreq = 0;
-        memset(radioName, 0, sizeof radioName);
-        memset(radioMsg, 0, sizeof radioMsg);
-        memset(stations, 0, sizeof stations);
-        seatBeltStatus = 0;
-        airbagStatus = 0;
-        memset(messageInfo, 0, sizeof messageInfo);
-        memset(infoTrip1, 0, sizeof infoTrip1);
-        memset(infoTrip2, 0, sizeof infoTrip2);
-        memset(infoInstant, 0, sizeof infoInstant);
-        memset(audioSettings, 0, sizeof audioSettings);
-        secretButtonPressed = 0;
-      }
-      
-      // Check whether the DARK button is pressed or not
-      tempValue = (buffer[2] & 0x04) == 0x04;
-      if (secretButtonPressed != tempValue) {
-        secretButtonPressed = tempValue;
-        
-        sendByteWithType(SECRET_FRAME, secretButtonPressed);
+      //Buttons on the face of the radio 
+      if (strncmp((char*)buffer, buttonfaceradio, len)) {
+        strncpy(buttonfaceradio, (char*)buffer, len);
+
+        sendFrameWithType(RADIO_FACE_BUTTON, buffer, len);
       }
     } else if (id == 677) {
       // Radio station name
