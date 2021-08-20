@@ -12,6 +12,7 @@ import os
 from source_handler import InvalidFrame, SerialHandler
 from sound_level import volumewindow
 from ombre import ombre
+from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
 
 #Display on the device display in case of SSH launch of the script
@@ -317,6 +318,7 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
         # self.setStyleSheet(self.stylesheet)
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
+      
         #Initialisation of the alert window
         self.init_alert_window()          
 
@@ -352,15 +354,15 @@ class Ui(QtWidgets.QMainWindow):
    
    def init_alert_window(self):
         self.Ombre = ombre()
-        #Alert = alert() 
+        self.AlertMSG = alertmsg() 
          
    def show_alert(self):
          self.Ombre.showMaximized()
-         #Alert.show()
+         self.AlertMSG.show()
          
    def hide_alert(self):
          self.Ombre.hide()
-         #Alert.hide()   
+         self.AlertMSG.hide()   
 
                       
    def close_all(self):
