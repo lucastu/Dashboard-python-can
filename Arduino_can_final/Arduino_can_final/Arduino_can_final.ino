@@ -36,6 +36,7 @@ typedef enum {
   TRIP_MODE_FRAME      = 0x0F,
   AUDIO_SETTINGS_FRAME = 0x10,
   REMOTE_COMMAND_FRAME = 0x11
+  OPEN_DOOR_FRAME      = 0x12
   SECRET_FRAME         = 0x42, // Dark button
 } FrameType;
 
@@ -78,6 +79,9 @@ byte seatBeltStatus = 0;
 
 // Steering wheel button 
 byte remotecommand = 0;
+
+// Open doors 
+byte opendoors = 0;
 
 // Passenger airbag state
 boolean airbagStatus = 0;
@@ -166,8 +170,14 @@ void loop() {
         remotecommand = tempValue;
         sendByteWithType(REMOTE_COMMAND_FRAME, remotecommand); 
       }
-    
-    else if (id == 357) {
+    } else if (id == 544) {
+      // Openned doors
+      tempValue = buffer[0];
+      if (opendoors != tempValue) { 
+        opendoors = tempValue;
+        sendByteWithType(OPEN_DOOR_FRAME, opendoors); 
+      }
+    } else if (id == 357) {
       // Radio source
       tempValue = buffer[2] >> 4;
       if (radioSource != tempValue) { 
