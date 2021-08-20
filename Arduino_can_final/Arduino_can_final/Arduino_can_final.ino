@@ -149,7 +149,8 @@ void loop() {
     
     if (id==421) {
       // Volume
-      tempValue = buffer[0] & 0b00011111;
+      //tempValue = buffer[0] & 0b00011111;
+      tempValue = buffer[0];
       if (volume != tempValue) {
         volume = tempValue;
         sendByteWithType(VOLUME_FRAME, volume);    
