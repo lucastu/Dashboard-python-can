@@ -211,4 +211,4 @@ def parseInfoMessage(data, root) :
     else:
         infomessage = "Aucun message"
         
-    root.InfoMSG.setText(infomessage.encode('latin1').decode())
+    return infomessage.encode('latin1').decode()
