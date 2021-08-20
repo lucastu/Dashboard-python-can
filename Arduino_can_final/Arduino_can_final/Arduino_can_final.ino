@@ -107,7 +107,7 @@ boolean tripDidReset = false;
 unsigned long timeSinceTripInfoButtonPressed = 0;
 
 // State of the buttons on the radio
-byte buttonfaceradio[3];
+byte buttonfaceradio[6];
 
 void setup() {
   Serial.begin(SERIAL_SPEED);
