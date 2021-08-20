@@ -76,9 +76,15 @@ def reading_loop(source_handler, root):
             break
 
         if frame_id == VOLUME_FRAME:
-            temp = str(int(format_data_hex(data),16))
+            temp = str(int(format_data_hex(data & 0b00011111),16))
             root.Volume.setText(temp)
-            # ICI DECLENCHER LE CHANGEMENT DE VOLUME
+            root.Volumewindow.progress.setValue(int(temp))   
+            
+            if not (data & 0b11100000 == 0b11100000)
+                # ICI DECLENCHER LE CHANGEMENT DE VOLUME  
+            else
+                # ICI cacher le volume
+
 
         elif frame_id == TEMPERATURE_FRAME:
             temp = str(int(format_data_hex(data),16))
@@ -320,8 +326,11 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
       
         #Initialisation of the alert window
-        self.init_alert_window()          
-
+        self.init_alert_window()
+        #Initialisation of the volume window
+        self.Volumewindow=volumewindow()
+         
+         
         dark_palette = QPalette()
         dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
         dark_palette.setColor(QPalette.Background, QColor(53, 53, 53))
