@@ -9,30 +9,39 @@ from PyQt5.QtGui import QIcon, QPixmap, QFont
 import threading
 import subprocess
 
+# Recuperation du Type de notif
+try:
+    Info_type=sys.argv[1]
+except :
+    Info_type="gas"
+
+# Recuperation du Texte
+try:
+    Info_text=sys.argv[2]
+except :
+    Info_text="pas de variable"
+
+
 # Pour le dev : affiche sur l ecran de la raspberry
 os.environ.__setitem__('DISPLAY', ':0.0')
 #Definition de la taille de lecran
+ScreenHeight = 720
+ScreenWidth = 1280
+# Definition de la taille de la fenetre
+WindowHeight = 400
+WindowWidth =800
 
-
-class alertmsg(QDialog):
+class Actions(QDialog):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-      
-        ScreenHeight = 720
-        ScreenWidth = 1280
-        # Definition de la taille de la fenetre
-        WindowHeight = 400
-        WindowWidth =800
-        
-        Info_type="gas"
-        Info_text=""
         # Creation de la fenetre
+        # self.setWindowTitle('sound_level')
         self.setFixedSize(WindowWidth, WindowHeight)
         self.move(ScreenWidth / 2 - WindowWidth / 2, -WindowHeight)
-        #self.setStyleSheet("background-color: grey;")
+        self.setStyleSheet("background-color: grey;")
 
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
@@ -46,11 +55,13 @@ class alertmsg(QDialog):
         self.label = QLabel(self)
         self.label.setPixmap(self.image)
 
+        # Pourquoi?
         self.grid = QGridLayout(self)
         self.grid.addWidget(self.label,1,1)
         self.grid.addWidget(self.texte,1,1)
         self.setLayout(self.grid)
-        #self.show()
+        self.show()
+        print ("INIT OK ")
 
     def movedown(self):
         size = self.size()
@@ -68,13 +79,11 @@ class alertmsg(QDialog):
             # Application nouvelle geometrie
             self.move(emplacement_x, emplacement_y)
             time.sleep(.03)
-            
-    def mousePressEvent(self, QMouseEvent):
-        self.close()
-        
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Actions()
-    #QTimer.singleShot (100, window.movedown)
+    QTimer.singleShot (100, window.movedown)
 
+    QTimer.singleShot (6000, window.close)
     sys.exit(app.exec_())

@@ -108,7 +108,7 @@ class volumewindow(QtWidgets.QDialog):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = volumeWindow()
+    window = VolumeWindow()
     # On lance la boucle qui attend le changment de volume
     threading.Thread(target=window.volume_loop).start()
     sys.exit(app.exec_())
