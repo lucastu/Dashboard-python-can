@@ -38,7 +38,7 @@ def parseInfoMessage(data, root) :
     elif data[1] == 0xFE:
         infomessage = "MÃ©canisme toit escamotable dÃ©faillant"
     elif data[1] == 0xFF:
-        infomessage = "Manoeuvre impossible: lunette ouverte"
+        infomessage = ""
     elif data[1] == 0x00:
         infomessage = "Diagnostic OK"
     elif data[1] == 0x01:

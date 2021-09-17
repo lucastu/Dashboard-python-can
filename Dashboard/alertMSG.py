@@ -24,15 +24,15 @@ class alertmsg(QDialog):
         ScreenHeight = 720
         ScreenWidth = 1280
         # Definition de la taille de la fenetre
-        WindowHeight = 400
+        WindowHeight = 200
         WindowWidth =800
         
         Info_type="gas"
-        Info_text=""
+        Info_text="un deux trois quatre cinq six sept huit neuf"
         # Creation de la fenetre
         self.setFixedSize(WindowWidth, WindowHeight)
-        self.move(ScreenWidth / 2 - WindowWidth / 2, -WindowHeight)
-        #self.setStyleSheet("background-color: grey;")
+        self.move(ScreenWidth / 2 - WindowWidth / 2, ScreenHeight/2- WindowHeight/2)
+        # self.setStyleSheet("background-color: grey;")
 
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
@@ -40,6 +40,7 @@ class alertmsg(QDialog):
         self.texte.setFont(QFont('Roboto', 50))
         self.texte.setText(Info_text)
         self.texte.setAlignment(Qt.AlignCenter)
+        self.texte.setWordWrap(True)
         # Create widget
         self.image = QPixmap("/home/pi/lucas/%s.png" % Info_type)
         self.image = self.image.scaledToHeight(WindowHeight)
@@ -48,7 +49,7 @@ class alertmsg(QDialog):
 
         self.grid = QGridLayout(self)
         self.grid.addWidget(self.label,1,1)
-        self.grid.addWidget(self.texte,1,1)
+        self.grid.addWidget(self.texte,1,2)
         self.setLayout(self.grid)
         #self.show()
 

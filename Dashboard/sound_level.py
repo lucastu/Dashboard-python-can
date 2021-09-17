@@ -1,10 +1,10 @@
-#import sys
-#import time
-#import os
-# from PyQt5.QtWidgets import (QApplication, QDialog,
-#                             QProgressBar, QPushButton)
+import sys
+import time
+import os
+from PyQt5.QtWidgets import (QApplication, QDialog,
+                             QProgressBar, QPushButton)
 # from PyQt5.QtCore import QTimer
-# from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt
 # import threading
 from PyQt5 import QtWidgets, uic
 
@@ -15,58 +15,61 @@ class volumewindow(QtWidgets.QDialog):
     def __init__(self):
         Volume =0
         #Definition de la taille de lecran
-        ScreenHeight = 720
-        ScreenWidth = 1280
+        self.ScreenHeight = 720
+        self.ScreenWidth = 1280
         # Definition de la taille de la fenetre
-        WindowHeight = 100
-        WindowWidth =1000
+        self.WindowHeight = 80
+        self.WindowWidth =1000
         super().__init__()
         self.initUI()
 
     def initUI(self):
         # Creation de la fenetre
         self.setWindowTitle('sound_level')
-        self.setFixedSize(WindowWidth, WindowHeight)
-        self.move(ScreenWidth / 2 - WindowWidth / 2, ScreenHeight)
+        self.setFixedSize(self.WindowWidth, self.WindowHeight)
+        self.move(self.ScreenWidth / 2 - self.WindowWidth / 2, self.ScreenHeight)
         # Creation de la barre
         self.progress = QProgressBar(self)
         # Taille de la fenetre
-        self.progress.setGeometry(0, 0, WindowWidth, WindowHeight)
+        self.progress.setGeometry(0, 0, self.WindowWidth, self.WindowHeight)
         # Maxmimum de valeur de volume
         self.progress.setMaximum(30)
         # Retire le text du pourcentage dans la barre
         self.progress.setTextVisible(0)
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
+        self.visible=False
 
     def moveup(self):
+        self.visible=True
         self.show()
         size = self.size()
         # Emplacement de la fenetre en fonction de la taille de l ecran et de la fenetre pour etre centre
-        emplacement_y_cible = int(ScreenHeight - size.height())
-        emplacement_x = int(ScreenWidth / 2 - size.width() / 2)
-        emplacement_y = int(ScreenHeight)
+        emplacement_y_cible = int(self.ScreenHeight - size.height())
+        emplacement_x = int(self.ScreenWidth / 2 - size.width() / 2)
+        # emplacement_y = int(self.ScreenHeight)
+        emplacement_y = emplacement_y_cible
         # Application nouvelle geometry
+
         self.move(emplacement_x, emplacement_y)
-        add = 30
-        while emplacement_y > emplacement_y_cible:
-            velocity = 5
-            if add - velocity > 0:
-                add = add - velocity
-            emplacement_y = (emplacement_y - add)
-            # Application nouvelle geometry
-            self.move(emplacement_x, emplacement_y)
-            time.sleep(.01)
-        self.update()
-        self.movedown()
+        # add = 30
+        # while emplacement_y > emplacement_y_cible:
+        #     velocity = 5
+        #     if add - velocity > 0:
+        #         add = add - velocity
+        #     emplacement_y = (emplacement_y - add)
+        #     # Application nouvelle geometry
+        #     self.move(emplacement_x, emplacement_y)
+        #     time.sleep(.01)
+
 
 
     def movedown(self):
         size = self.size()
         # Emplacement de la fenetre en fonction de la taille de l ecran et de la fenetre pour etre centre
-        emplacement_y_cible =  ScreenHeight
-        emplacement_x = int(ScreenWidth / 2 - size.width() / 2)
-        emplacement_y = int(ScreenHeight - size.height())
+        emplacement_y_cible =  self.ScreenHeight
+        emplacement_x = int(self.ScreenWidth / 2 - size.width() / 2)
+        emplacement_y = int(self.ScreenHeight - size.height())
         # Application nouvelle geometry
         self.move(emplacement_x, emplacement_y)
 
@@ -81,6 +84,8 @@ class volumewindow(QtWidgets.QDialog):
             time.sleep(.01)
         # On se cache arrivé en bas
         self.hide()
+        self.visible=False
+        # print("Fin movedown")
 
     def volume_loop(self):
           positionup = False
