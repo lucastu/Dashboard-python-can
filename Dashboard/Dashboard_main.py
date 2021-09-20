@@ -8,6 +8,7 @@ import threading
 #import traceback
 import time
 import os
+import logging
 
 from source_handler import InvalidFrame, SerialHandler
 from sound_level import volumewindow
@@ -24,6 +25,9 @@ can_messages = {}
 can_messages_lock = threading.Lock()
 
 thread_exception = None
+
+#Configure the log file and format
+logging.basicConfig(filename="log.txt",format="%(asctime)s:%(levelname)s:%(message)s")
 
 # USB Arduino parameters
 baudrate = 115200
@@ -74,16 +78,12 @@ def reading_loop(source_handler, root):
             continue
         except EOFError:
             break
-
+            
         if frame_id == VOLUME_FRAME:
             temp = str(data[0] & 0b00011111)
-            # print("volume : " + temp)
-            # temp = str(int(format_data_hex(data[0] & 0b00011111),16))
             root.Volume.setText(temp)
             root.Volumewindow.progress.setValue(int(temp))   
-            # print(not(data[0] & 0b11100000 == 0b11100000))
-            # print(not root.Volumewindow.visible)
-            # print()
+
             if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible) :
                 root.Volumewindow.moveup()
 
@@ -94,51 +94,56 @@ def reading_loop(source_handler, root):
         elif frame_id == REMOTE_COMMAND_FRAME:
             if (data[0] & 0b11000000) == 0b11000000 :
                 #Both button pressed : Pause/play      
-                print("Pause-play")
+                logging.info("Play pause track")
             elif (data[0] & 0b10000000) == 0b10000000 :
                 #Next button pressed
-                print("Next")
+                cmd = 'xdotool key N'
+                os.system(cmd)
+                logging.info("Next track")
             elif (data[0] & 0b01000000) == 0b01000000 :
                 #Previous button pressed
-                print("Previous")  
+                cmd = 'xdotool key P'
+                os.system(cmd)
+                logging.info("Previous track") 
                
         elif frame_id == RADIO_FACE_BUTTON:
             if (data[2] & 0b01000000) == 0b01000000 :
-                #Both button pressed : OK     
-                print("OK")
+                #Both  button pressed : OK     
+                logging.info("button pressed :OK")
             if (data[5] & 0b01000000) == 0b01000000 :
                 #UP button pressed
-                print("UP")
+                logging.info("button pressed :UP")
             if (data[5] & 0b00010000) == 0b00010000 :
                 #Down button pressed
-                print("Down")  
+                logging.info("button pressed :Down")  
             if (data[5] & 0b00000100) == 0b00000100 :
                 #RIGHT button pressed
-                print("RIGHT")
+                logging.info("button pressed :RIGHT")
             if (data[5] & 0b00000001) == 0b00000001 :
                 #LEFT button pressed
-                print("LEFT")            
+                logging.info("button pressed :LEFT")            
                
         elif frame_id == OPEN_DOOR_FRAME:
             if (data[0] & 0b10000000) == 0b10000000 :
                 #Door Front Left     
-                print("Door Front Left")
+                logging.info("Door Front Left")
             if (data[0] & 0b01000000) == 0b01000000 :
                 #Door Front Right
-                print("Door Front Right")
+                logging.info("Door Front Right")
             if (data[0] & 0b00100000) == 0b00100000 :
                 #Door Back Left
-                print("Door Back Left")
+                logging.info("Door Back Left")
             if (data[0] & 0b00010000) == 0b00010000 :
                 #Door Back Right
-                print("Door Back Right")
+                logging.info("Door Back Right")
             if (data[0] & 0b00001000) == 0b00001000 :
                 #Door Trunk    
-                print("Door Trunk ")
+                logging.info("Door Trunk ")
       
         elif frame_id == TEMPERATURE_FRAME:
+            logging.info("Temperature data : "data)
             temp = str(int(format_data_hex(data),16))
-            print("temp : " + temp)
+            logging.info("temp : " + temp)
             root.Temperature.setText( temp + "°C")
 
         elif frame_id == RADIO_NAME_FRAME:
@@ -188,7 +193,7 @@ def reading_loop(source_handler, root):
             temp = format_data_ascii(data)      
             root.RadioDesc.setText(temp)
             #This one never worked....
-            print("Radio desc frame data : %s  " % temp)
+            logging.info("Radio desc frame data : %s  " % temp)
                   
         elif frame_id == INFO_MSG_FRAME:
             infomessage = parseInfoMessage(data, root)
@@ -199,14 +204,10 @@ def reading_loop(source_handler, root):
                root.show_alert()
             else :
                root.hide_alert()
-            #0x80 - show window
-            #0x7F - hide window
-            #0xFF - clear window (default)
-            # print("Radio desc frame data : %s; and type : %s  " % (format_data_ascii(data) , type(temp)))
                   
         elif frame_id == RADIO_STATIONS_FRAME:
-            temp = format_data_hex(data)
-            print("station liste : " + temp)
+            temp = format_data_ascii(data)
+            logging.info("station liste : " + temp)
             if '|' in temp:
                 radio_list = temp.split("|")
                 root.radioList0.setText("1 : "+ radio_list[0])
@@ -241,7 +242,7 @@ def reading_loop(source_handler, root):
         #     root.tripinfo6.setText("averageSpeed 2 = %s " %   (data[0]))
             
         elif frame_id == INFO_INSTANT_FRAME :
-            print("Reste en essence : %s %s " %(data[3], data[4]))
+            logging.info("Reste en essence : %s %s " %(data[3], data[4]))
             temp = format_data_hex(data)
             # root.tripinfo7.setText("conso instantanée : %s %s " + str(float(int((data[1], data[2]),16))/10))
             root.tripinfo7.setText("conso instantanée : %s %s " %(data[1], data[2]))
@@ -285,8 +286,6 @@ def reading_loop(source_handler, root):
             else :
                 activeMode = 0
 
-            # print(activeMode)
-
             #Valeur de l'equalizer Setting
             if (data[6] & 0b10111111) ==  0b00000011 :
                 equalizerSetting = 0  # .none
@@ -321,7 +320,7 @@ def reading_loop(source_handler, root):
             root.equalizer.setText(str(audiosettings['equalizer']))
 
         else:
-            print ("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
+            logging.info ("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
                   
         # f there is an activeMode of audio settings, switch to the audiosettings tab 
@@ -436,10 +435,10 @@ class Ui(QtWidgets.QMainWindow):
 
             # If the thread returned an exception, print it
         if thread_exception:
-             traceback.print_exception(*thread_exception)
+             #traceback.print_exception(*thread_exception)
              sys.stderr.flush()
                       
-        print("Fermeture de l'application")              
+        logging.info("Fermeture de l'application")              
         #After closing threads, closing the window            
         self.close()              
                       
