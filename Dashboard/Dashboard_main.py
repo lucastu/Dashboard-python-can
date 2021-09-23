@@ -61,7 +61,7 @@ def reading_loop(source_handler, root):
     INFO_MSG_FRAME =       0x08
     RADIO_STATIONS_FRAME = 0x09
     SEATBELTS_FRAME =      0x0A
-    AIRBAG_STATUS_FRAME =  0x0B
+      
     INFO_TRIP1_FRAME =     0x0C
     INFO_TRIP2_FRAME =     0x0D
     INFO_INSTANT_FRAME =   0x0E
@@ -92,6 +92,7 @@ def reading_loop(source_handler, root):
 
 
         elif frame_id == REMOTE_COMMAND_FRAME:
+            logging.info("REMOTE_COMMAND_FRAME data : " + data[0])
             if (data[0] & 0b11000000) == 0b11000000 :
                 #Both button pressed : Pause/play      
                 logging.info("Play pause track")
@@ -107,15 +108,16 @@ def reading_loop(source_handler, root):
                 logging.info("Previous track") 
                
         elif frame_id == RADIO_FACE_BUTTON:
+            logging.info("RADIO_FACE_BUTTON Data : %s %s %s %s %s %s" %(data[0], data[1], data[2], data[3], data[4], data[5]))
             if (data[2] & 0b01000000) == 0b01000000 :
-                #Both  button pressed : OK     
+                #button pressed : OK     
                 logging.info("button pressed :OK")
             if (data[5] & 0b01000000) == 0b01000000 :
                 #UP button pressed
                 logging.info("button pressed :UP")
             if (data[5] & 0b00010000) == 0b00010000 :
                 #Down button pressed
-                logging.info("button pressed :Down")  
+                logging.info("button pressed :DOWN")  
             if (data[5] & 0b00000100) == 0b00000100 :
                 #RIGHT button pressed
                 logging.info("button pressed :RIGHT")
@@ -141,8 +143,8 @@ def reading_loop(source_handler, root):
                 logging.info("Door Trunk ")
       
         elif frame_id == TEMPERATURE_FRAME:
-            logging.info("Temperature data : "data)
-            temp = str(int(format_data_hex(data),16))
+            #logging.info("Temperature data : "data)
+            temp = str(data[0])
             logging.info("temp : " + temp)
             root.Temperature.setText( temp + "°C")
 
@@ -220,10 +222,6 @@ def reading_loop(source_handler, root):
                   
         elif frame_id == SEATBELTS_FRAME:
             # Est-ce que j'en fais quelque chose de cette info ??
-            continue
-
-        elif frame_id == AIRBAG_STATUS_FRAME:
-            # Est-ce que j'en fais quelque chose de cette info ?? AIRBAG PASSAGER
             continue
 
         elif frame_id == INFO_TRIP1_FRAME :
