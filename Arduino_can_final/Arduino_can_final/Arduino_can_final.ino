@@ -162,6 +162,13 @@ void loop() {
       if (volume != tempValue) {
         volume = tempValue;
         sendByteWithType(VOLUME_FRAME, volume);    
+      }  
+    }else if (id == 246 && len == 8) {
+    // Decode temperature value and send it if it changed
+      tempValue = ceil((buf[5] & 0xFF) / 2.0) - 40;
+      if (temperature != tempValue) {
+          temperature = tempValue;
+          sendByteWithType(TEMPERATURE_FRAME, temperature);
       }
     }else if (id == 543) {
       // Steering wheel button command
