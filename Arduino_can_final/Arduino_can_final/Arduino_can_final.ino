@@ -29,7 +29,7 @@ typedef enum {
   INFO_MSG_FRAME       = 0x08,
   RADIO_STATIONS_FRAME = 0x09,
   SEATBELTS_FRAME      = 0x0A,
-  AIRBAG_STATUS_FRAME  = 0x0B,
+
   INFO_TRIP1_FRAME     = 0x0C,
   INFO_TRIP2_FRAME     = 0x0D,
   INFO_INSTANT_FRAME   = 0x0E,
@@ -82,9 +82,6 @@ byte remotecommand = 0;
 
 // Open doors 
 byte opendoors = 0;
-
-// Passenger airbag state
-boolean airbagStatus = 0;
 
 // Information message data (automatic wipers, open door, ...)
 byte messageInfo[8];
@@ -325,15 +322,6 @@ void loop() {
         seatBeltStatus = tempValue;
         
         sendByteWithType(SEATBELTS_FRAME, seatBeltStatus);
-      }
-    } else if (id == 24) {
-      // Passenger airbag state frame
-      tempValue = (buffer[0] >> 7) & 1;
-      
-      if (airbagStatus != tempValue) {
-        airbagStatus = tempValue;
-        //A corriger, problème de conversion
-        //sendByteWithType(AIRBAG_STATUS_FRAME, airbagStatus);
       }
     } else if (id == 417) {
       // Information message frame
