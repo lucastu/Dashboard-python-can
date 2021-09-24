@@ -269,34 +269,61 @@ def reading_loop(source_handler, root):
             #Active selected mode in audio settings      
             if (data[0] & 0b10000000) == 0b10000000 :
                 activeMode = 1  # .leftRightBalance
+                resetaudiosettingselector()
+                root.leftRightBalanceselector.setHidden(False)
             elif (data[1] & 0b10000000) == 0b10000000 :
                 activeMode = 2  # .frontRearBalance
+                resetaudiosettingselector()
+                root.frontRearBalanceselector.setHidden(False)
             elif (data[2] & 0b10000000) == 0b10000000 :
                 activeMode = 3  # .bass
+                resetaudiosettingselector()
+                root.SliderBassesselector.setHidden(False)
             elif (data[4] & 0b10000000) == 0b10000000 :
                 activeMode = 4  # .treble
+                resetaudiosettingselector()  
+                root.SliderAigusselector.setHidden(False)
             elif (data[5] & 0b10000000) == 0b10000000 :
                 activeMode = 5  # .loudness
+                resetaudiosettingselector()  
+                root.Loudnessselector.setHidden(False)
             elif (data[5] & 0b00000001) == 0b00000001 :
                 activeMode = 6  # .automaticVolume
+                resetaudiosettingselector()  
+                root.automaticVolumeselector.setHidden(False)
             elif (data[6] & 0b00000100) == 0b00000100 :
                 activeMode = 7  # .equalizer
+                resetaudiosettingselector()  
+                root.equalizerselector.setHidden(False)
             else :
                 activeMode = 0
+                resetaudiosettingselector()  
 
             #Valeur de l'equalizer Setting
             if (data[6] & 0b10111111) ==  0b00000011 :
                 equalizerSetting = 0  # .none
+                resetequalizerselector() 
+                root.equalizernone.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) ==  0b00000111 :
                 equalizerSetting = 1  # .classical
+                resetequalizerselector() 
+                root.equalizerclassical.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00001011 :
                 equalizerSetting = 2  # .jazzBlues
+                resetequalizerselector() 
+                root.equalizerjazzBlues.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00001111 :
                 equalizerSetting = 3  # .popRock
+                resetequalizerselector() 
+                root.equalizerpopRock.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00010011 :
                 equalizerSetting = 4  # .vocals
+                resetequalizerselector() 
+                root.equalizerpopRock.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00010111 :
                 equalizerSetting = 5  # .techno
+                resetequalizerselector() 
+                root.equalizertechno.setStyleSheet("color: white;")  
                   
             #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
             audiosettings['activeMode']         = activeMode
@@ -422,7 +449,26 @@ class Ui(QtWidgets.QMainWindow):
          self.Ombre.hide()
          self.AlertMSG.hide()   
 
-                      
+   def resetaudiosettingselector(self) :
+         #Each selelctor display go hidden
+         root.SliderBassesselector.setHidden(True)
+         root.SliderAigusselector.setHidden(True)
+         root.frontRearBalanceselector.setHidden(True)
+         root.leftRightBalanceselector.setHidden(True)                     
+         root.Loudnessselector.setHidden(True)
+         root.automaticVolumeselector.setHidden(True)
+         root.equalizerselector.setHidden(True)
+         
+   def resetequalizerselector(self) :
+         #Each selectorelctor display go grey
+         root.equalizernone.setStyleSheet("color: grey;")
+         root.equalizerclassical.setStyleSheet("color: grey;")
+         root.equalizerjazzBlues.setStyleSheet("color: grey;")
+         root.equalizerpopRock.setStyleSheet("color: grey;")
+         root.equalizerpopRock.setStyleSheet("color: grey;")
+         root.equalizertechno.setStyleSheet("color: grey;") 
+
+         
    def close_all(self):
         # set flag of              
         if reading_thread:
