@@ -106,6 +106,9 @@ unsigned long timeSinceTripInfoButtonPressed = 0;
 // State of the buttons on the radio
 byte buttonfaceradio[6];
 
+// Keeping time since la frame was sent to radio
+unsigned long lastCDCactivation =0;
+
 void setup() {
   Serial.begin(SERIAL_SPEED);
   byte canSpeed = CAN_SPEED;
@@ -120,6 +123,13 @@ void setup() {
 
 
 void loop() {
+  if (millis()-lastCDCactivation >=100){
+      byte dataInitCDC[] = {0x20, 0x01, 0x06, 0x05, 0x00, 0x08, 0x00};
+      byte dataInitCDC2[] = {0x01, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00};
+      CAN.sendMsgBuf(354, 0, 7, dataInitCDC);
+      CAN.sendMsgBuf(482, 0, 7, dataInitCDC2);
+      lastCDCactivation = millis();
+  }
   
   unsigned char len = 0;
   byte buffer[8];
@@ -132,7 +142,6 @@ void loop() {
     
     if (id==421) {
       // Volume
-      //tempValue = buffer[0] & 0b00011111;
       tempValue = buffer[0];
       if (volume != tempValue) {
         volume = tempValue;
@@ -140,7 +149,7 @@ void loop() {
       }  
     }else if (id == 246 && len == 8) {
     // Decode temperature value and send it if it changed
-      tempValue = ceil((buf[5] & 0xFF) / 2.0) - 40;
+      tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
       if (temperature != tempValue) {
           temperature = tempValue;
           sendByteWithType(TEMPERATURE_FRAME, temperature);
