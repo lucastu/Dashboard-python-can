@@ -271,30 +271,37 @@ def reading_loop(source_handler, root):
                 activeMode = 1  # .leftRightBalance
                 resetaudiosettingselector()
                 root.leftRightBalanceselector.setHidden(False)
+                root.leftRightBalanceselector_2.setHidden(False)
             elif (data[1] & 0b10000000) == 0b10000000 :
                 activeMode = 2  # .frontRearBalance
                 resetaudiosettingselector()
                 root.frontRearBalanceselector.setHidden(False)
+                root.frontRearBalanceselector_2.setHidden(False)
             elif (data[2] & 0b10000000) == 0b10000000 :
                 activeMode = 3  # .bass
                 resetaudiosettingselector()
                 root.SliderBassesselector.setHidden(False)
+                root.SliderBassesselector_2.setHidden(False)
             elif (data[4] & 0b10000000) == 0b10000000 :
                 activeMode = 4  # .treble
                 resetaudiosettingselector()  
                 root.SliderAigusselector.setHidden(False)
+                root.SliderAigusselector_2.setHidden(False)
             elif (data[5] & 0b10000000) == 0b10000000 :
                 activeMode = 5  # .loudness
                 resetaudiosettingselector()  
                 root.Loudnessselector.setHidden(False)
+                root.Loudnessselector_2.setHidden(False)
             elif (data[5] & 0b00000001) == 0b00000001 :
                 activeMode = 6  # .automaticVolume
                 resetaudiosettingselector()  
                 root.automaticVolumeselector.setHidden(False)
+                root.automaticVolumeselector_2.setHidden(False)
             elif (data[6] & 0b00000100) == 0b00000100 :
                 activeMode = 7  # .equalizer
                 resetaudiosettingselector()  
                 root.equalizerselector.setHidden(False)
+                root.equalizerselector_2.setHidden(False)
             else :
                 activeMode = 0
                 resetaudiosettingselector()  
@@ -452,19 +459,25 @@ class Ui(QtWidgets.QMainWindow):
    def resetaudiosettingselector(self) :
          #Each selelctor display go hidden
          root.SliderBassesselector.setHidden(True)
+         root.SliderBassesselector_2.setHidden(True)
          root.SliderAigusselector.setHidden(True)
+         root.SliderAigusselector_2.setHidden(True)
          root.frontRearBalanceselector.setHidden(True)
-         root.leftRightBalanceselector.setHidden(True)                     
+         root.frontRearBalanceselector_2.setHidden(True)
+         root.leftRightBalanceselector.setHidden(True)
+         root.leftRightBalanceselector_2.setHidden(True)
          root.Loudnessselector.setHidden(True)
+         root.Loudnessselector_2.setHidden(True)
          root.automaticVolumeselector.setHidden(True)
+         root.automaticVolumeselector_2.setHidden(True)
          root.equalizerselector.setHidden(True)
-         
+         root.equalizerselector_2.setHidden(True)
+
    def resetequalizerselector(self) :
          #Each selectorelctor display go grey
          root.equalizernone.setStyleSheet("color: grey;")
          root.equalizerclassical.setStyleSheet("color: grey;")
          root.equalizerjazzBlues.setStyleSheet("color: grey;")
-         root.equalizerpopRock.setStyleSheet("color: grey;")
          root.equalizerpopRock.setStyleSheet("color: grey;")
          root.equalizertechno.setStyleSheet("color: grey;") 
 
