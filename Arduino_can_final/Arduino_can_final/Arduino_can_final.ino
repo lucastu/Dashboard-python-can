@@ -28,7 +28,6 @@ typedef enum {
   RADIO_DESC_FRAME     = 0x07,
   INFO_MSG_FRAME       = 0x08,
   RADIO_STATIONS_FRAME = 0x09,
-  SEATBELTS_FRAME      = 0x0A,
 
   INFO_TRIP1_FRAME     = 0x0C,
   INFO_TRIP2_FRAME     = 0x0D,
@@ -40,10 +39,6 @@ typedef enum {
   RADIO_FACE_BUTTON    = 0x13,
 } FrameType;
 
-// Screen power state
-byte screenOn = 0;
-byte wantedScreenState = 0;
-unsigned long timeSinceSourceChange = 0;
 ///////////////////////
 // Variables tampons //
 ///////////////////////
@@ -74,9 +69,6 @@ char stations[100];
 char stationsRecvCount = 0;
 char tempBuffer[100];
 
-// Seat belts status bitmask
-byte seatBeltStatus = 0;
-
 // Steering wheel button 
 byte remotecommand = 0;
 
@@ -99,7 +91,6 @@ byte tripMode = 0;
 
 // Trip mode button state
 boolean tripModeButtonPressed = false;
-
 boolean tripDidReset = false;
 unsigned long timeSinceTripInfoButtonPressed = 0;
 
@@ -116,11 +107,9 @@ void setup() {
   if (CAN.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK) {
     CAN.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
     pinMode(CAN0_INT, INPUT);
-    // Si on est ok envoi de la trame check
-    Serial.println("FRAME:ID=0:LEN=8:00:00:00:00:00:00:00:00");      
+    Serial.println("FRAME:ID=0:LEN=8:00:00:00:00:00:00:00:00");     // If everything good, send this init OK frame
   }
 }
-
 
 void loop() {
   if (millis()-lastCDCactivation >=100){
@@ -181,11 +170,6 @@ void loop() {
         strncpy(radioName, (char*)buffer, len);
         sendFrameWithType(RADIO_NAME_FRAME, buffer, len); 
       }    
-    } else if (id == 480) {
-      // Radio power state, turns the screen on when turning on the ignition
-      if (wantedScreenState != buffer[0]) {
-        wantedScreenState = buffer[0];
-      }
     } else if (id == 997) {
       //Buttons on the face of the radio 
       if (strncmp((char*)buffer, buttonfaceradio, len)) {
@@ -302,14 +286,6 @@ void loop() {
         }
         stationsRecvCount = 0;
       }
-    } else if (id == 296) {
-      // Seat belts frame
-      tempValue = (buffer[0] | (buffer[5] << 1)) & 0xFF;
-      if (seatBeltStatus != tempValue) {
-        seatBeltStatus = tempValue;
-        
-        sendByteWithType(SEATBELTS_FRAME, seatBeltStatus);
-      }
     } else if (id == 417) {
       // Information message frame
       // We send the raw frame over serial as there is many different data
@@ -352,6 +328,7 @@ void loop() {
       }
       
       if (id == 545) {
+        // MAYBE TO REMOVE IF I CAN SEND TRIP BUTTON PRESSED MY OWN WAY
         // Special treatment for the instant data frame
         // which contains the trip data button state
         if ((buffer[0] & 0x0F) == 0x08 && !tripModeButtonPressed) {
@@ -405,24 +382,23 @@ void loop() {
     }
 } 
     
-    //Fonction d'envoi du message à la raspberry
-    void sendFrameWithType( long unsigned int id,  byte data[] , int len) {
-      //byte data[] = { 0x12, 0xF0, 0x0F, 0x11 };
-      Serial.print("FRAME:ID=");
-      Serial.print(id);
-      Serial.print(":LEN=");
-      Serial.print(len);  
-      char tmp[3];
-      for(int i = 0; i<len; i++) {
-        Serial.print(":");
-        snprintf(tmp, 3, "%02X", data[i]);   
-        Serial.print(tmp);
-      }
-      Serial.println();   
-    }  
-    
-    inline void sendByteWithType( long unsigned int frameType,  byte byteToSend[]) {
-      //on crée un tableau du byte du buffer
-      byte arr[] = { byteToSend };
-      sendFrameWithType(frameType, arr, 1);
-    }  
+//Function that sends the data to the raspberry
+void sendFrameWithType( long unsigned int id,  byte data[] , int len) {
+  Serial.print("FRAME:ID=");
+  Serial.print(id);
+  Serial.print(":LEN=");
+  Serial.print(len);  
+  char tmp[3];
+  for(int i = 0; i<len; i++) {
+    Serial.print(":");
+    snprintf(tmp, 3, "%02X", data[i]);   
+    Serial.print(tmp);
+  }
+  Serial.println();   
+}  
+
+inline void sendByteWithType( long unsigned int frameType,  byte byteToSend[]) {
+  //Make an array from the byte 
+  byte arr[] = { byteToSend };
+  sendFrameWithType(frameType, arr, 1);
+}  
