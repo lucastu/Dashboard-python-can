@@ -1,13 +1,12 @@
 import sys
-import time
+#import time
 import os
 from PyQt5.QtWidgets import (QApplication, QDialog, QLabel,
                              QProgressBar, QPushButton,QGridLayout)
 from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap, QFont
-import threading
-import subprocess
+#import threading
 
 # Pour le dev : affiche sur l ecran de la raspberry
 os.environ.__setitem__('DISPLAY', ':0.0')
@@ -28,11 +27,10 @@ class alertmsg(QDialog):
         WindowWidth =800
         
         Info_type="gas"
-        Info_text="un deux trois quatre cinq six sept huit neuf"
+        Info_text=""
         # Creation de la fenetre
         self.setFixedSize(WindowWidth, WindowHeight)
         self.move(ScreenWidth / 2 - WindowWidth / 2, ScreenHeight/2- WindowHeight/2)
-        # self.setStyleSheet("background-color: grey;")
 
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
@@ -53,22 +51,22 @@ class alertmsg(QDialog):
         self.setLayout(self.grid)
         #self.show()
 
-    def movedown(self):
-        size = self.size()
-        # Emplacement de la fenetre en fonction de la taille de l ecran et de la fenetre pour etre centre
-        emplacement_y_cible = int(ScreenHeight/2 - size.height() /2)
-        emplacement_x = int(ScreenWidth / 2 - size.width() / 2)
-        emplacement_y = -WindowHeight
-        # Application nouvelle geometry
-        self.move(emplacement_x, emplacement_y)
-        velocity = 100
-        # print(emplacement_y_cible)
-        while emplacement_y < emplacement_y_cible:
-            velocity=int(velocity/1.1)
-            emplacement_y = (emplacement_y + velocity)
-            # Application nouvelle geometrie
-            self.move(emplacement_x, emplacement_y)
-            time.sleep(.03)
+#     def movedown(self):
+#         size = self.size()
+#         # Emplacement de la fenetre en fonction de la taille de l ecran et de la fenetre pour etre centre
+#         emplacement_y_cible = int(ScreenHeight/2 - size.height() /2)
+#         emplacement_x = int(ScreenWidth / 2 - size.width() / 2)
+#         emplacement_y = -WindowHeight
+#         # Application nouvelle geometry
+#         self.move(emplacement_x, emplacement_y)
+#         velocity = 100
+#         # print(emplacement_y_cible)
+#         while emplacement_y < emplacement_y_cible:
+#             velocity=int(velocity/1.1)
+#             emplacement_y = (emplacement_y + velocity)
+#             # Application nouvelle geometrie
+#             self.move(emplacement_x, emplacement_y)
+#             time.sleep(.03)
             
     def mousePressEvent(self, QMouseEvent):
         self.close()
@@ -76,6 +74,3 @@ class alertmsg(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Actions()
-    #QTimer.singleShot (100, window.movedown)
-
-    sys.exit(app.exec_())
