@@ -1,6 +1,6 @@
-#import sys
+import sys
 import time
-#import os
+import os
 from PyQt5.QtWidgets import (QApplication, QDialog,
                              QProgressBar, QPushButton)
 from PyQt5.QtCore import Qt
@@ -37,13 +37,15 @@ class volumewindow(QtWidgets.QDialog):
         self.visible=False
 
     def moveup(self):
+        self.visible=True
+        self.show()
         # Placement according to window and display size
         emplacement_x = int(self.ScreenWidth / 2 - self.WindowWidth / 2)
         emplacement_y = int(self.ScreenHeight - self.WindowHeight)
         # Application nouvelle geometry
         self.move(emplacement_x, emplacement_y)
-        self.visible=True
-        self.show()
+
+
 
     def movedown(self):
         # Placement according to window and display size

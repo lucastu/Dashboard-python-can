@@ -143,13 +143,13 @@ void loop() {
   // If power of radio off, shutdown raspberry 
   // Wait for it to be shutted down
   // And then shut the relay off
-  if (digitalRead(Radio_POWER_PIN ) == LOW)  {
-    sendByteWithType(SHUTDOWN_FRAME, 0x01);
-    while (digitalRead(RPI_State_PIN ) == HIGH ){
-      delay(100);
-    } 
-    digitalWrite(Relay_PIN, LOW);
-  }
+//  if (digitalRead(Radio_POWER_PIN ) == LOW)  {
+//    sendByteWithType(SHUTDOWN_FRAME, 0x01);
+//    while (digitalRead(RPI_State_PIN ) == HIGH ){
+//      delay(100);
+//    } 
+//    digitalWrite(Relay_PIN, LOW);
+//  }
   
   // If a msg is available from canbus
   if (CAN.checkReceive() == CAN_MSGAVAIL) {

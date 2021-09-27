@@ -747,9 +747,9 @@
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>360</x>
+        <x>590</x>
         <y>200</y>
-        <width>121</width>
+        <width>81</width>
         <height>31</height>
        </rect>
       </property>
@@ -763,10 +763,10 @@
      <widget class="QCheckBox" name="Loudness">
       <property name="geometry">
        <rect>
-        <x>480</x>
-        <y>210</y>
+        <x>670</x>
+        <y>200</y>
         <width>21</width>
-        <height>21</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -831,7 +831,7 @@
         <x>110</x>
         <y>410</y>
         <width>111</width>
-        <height>31</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
@@ -848,8 +848,8 @@
      <widget class="QLabel" name="equalizer">
       <property name="geometry">
        <rect>
-        <x>410</x>
-        <y>470</y>
+        <x>740</x>
+        <y>30</y>
         <width>101</width>
         <height>31</height>
        </rect>
@@ -861,8 +861,8 @@
      <widget class="QCheckBox" name="automaticVolume">
       <property name="geometry">
        <rect>
-        <x>700</x>
-        <y>210</y>
+        <x>690</x>
+        <y>370</y>
         <width>21</width>
         <height>21</height>
        </rect>
@@ -874,8 +874,8 @@
      <widget class="QLabel" name="label_15">
       <property name="geometry">
        <rect>
-        <x>600</x>
-        <y>200</y>
+        <x>590</x>
+        <y>360</y>
         <width>101</width>
         <height>31</height>
        </rect>
@@ -927,10 +927,10 @@
      <widget class="QLabel" name="Loudnessselector">
       <property name="geometry">
        <rect>
-        <x>320</x>
-        <y>200</y>
+        <x>550</x>
+        <y>190</y>
         <width>31</width>
-        <height>31</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
@@ -947,8 +947,8 @@
      <widget class="QLabel" name="automaticVolumeselector">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>200</y>
+        <x>540</x>
+        <y>360</y>
         <width>31</width>
         <height>31</height>
        </rect>
@@ -1007,8 +1007,8 @@
      <widget class="QLabel" name="automaticVolumeselector_2">
       <property name="geometry">
        <rect>
-        <x>730</x>
-        <y>200</y>
+        <x>720</x>
+        <y>360</y>
         <width>31</width>
         <height>31</height>
        </rect>
@@ -1107,10 +1107,10 @@
      <widget class="QLabel" name="Loudnessselector_2">
       <property name="geometry">
        <rect>
-        <x>510</x>
-        <y>200</y>
+        <x>710</x>
+        <y>190</y>
         <width>31</width>
-        <height>31</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
@@ -1127,7 +1127,7 @@
      <widget class="QLabel" name="equalizernone">
       <property name="geometry">
        <rect>
-        <x>250</x>
+        <x>260</x>
         <y>410</y>
         <width>71</width>
         <height>41</height>
@@ -1145,7 +1145,7 @@
      <widget class="QLabel" name="equalizerclassical">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>380</x>
         <y>410</y>
         <width>101</width>
         <height>41</height>
@@ -1163,7 +1163,7 @@
      <widget class="QLabel" name="equalizerjazzBlues">
       <property name="geometry">
        <rect>
-        <x>450</x>
+        <x>520</x>
         <y>410</y>
         <width>121</width>
         <height>41</height>
@@ -1181,7 +1181,7 @@
      <widget class="QLabel" name="equalizerpopRock">
       <property name="geometry">
        <rect>
-        <x>580</x>
+        <x>670</x>
         <y>410</y>
         <width>121</width>
         <height>41</height>
@@ -1196,12 +1196,12 @@
        <string>Pop/Rock</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_34">
+     <widget class="QLabel" name="equalizertechno">
       <property name="geometry">
        <rect>
-        <x>710</x>
+        <x>940</x>
         <y>410</y>
-        <width>131</width>
+        <width>101</width>
         <height>41</height>
        </rect>
       </property>
@@ -1217,10 +1217,10 @@
      <widget class="QLabel" name="equalizerselector">
       <property name="geometry">
        <rect>
-        <x>810</x>
+        <x>1080</x>
         <y>410</y>
         <width>31</width>
-        <height>31</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
@@ -1232,6 +1232,44 @@
       </property>
       <property name="text">
        <string>&lt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="equalizerselector_2">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>410</y>
+        <width>31</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>32</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="equalizervocal">
+      <property name="geometry">
+       <rect>
+        <x>820</x>
+        <y>410</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>18</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Vocal</string>
       </property>
      </widget>
     </widget>

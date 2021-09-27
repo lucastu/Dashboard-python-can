@@ -1,119 +1,66 @@
-QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
-FRAME ID NON TRAITE : 0  :  00 00 00 00 00 00 00 00  ........
-Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
-Radio desc frame data : ??.?????; and type : <class 'int'>  
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
-Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
-Radio desc frame data : ????????; and type : <class 'int'>  
-Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
-Radio desc frame data : ??.?????; and type : <class 'int'>  
-Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
-Radio desc frame data : ????????; and type : <class 'int'>  
-Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
-Radio desc frame data : ??.?????; and type : <class 'int'>  
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 1; and type : <class 'int'> ..Tripinfomode :  trip1 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 2; and type : <class 'int'> ..Tripinfomode :  trip2 (non validÃÂ©)
-autonomy= 1 214 
-fuelUsage= 255  
-autonomy= 1 214 
-fuelUsage= 255  
-Trip mode frame data : 0; and type : <class 'int'> ..Tripinfomode :  instant (non validÃÂ©)
-Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
-Radio desc frame data : ????????; and type : <class 'int'>  
-Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
-Radio desc frame data : ??.?????; and type : <class 'int'>  
-Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
-Radio desc frame data : ????????; and type : <class 'int'>  
-Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
-Radio desc frame data : ??.?????; and type : <class 'int'>  
-Data : b'\x80\xd9\xc3\xff\xff\xff\xff\xff'
-Radio desc frame data : ????????; and type : <class 'int'>  
-Data : b'\x7f\xff\x00\xff\xff\xff\xff\xff'
-Radio desc frame data : ??.?????; and type : <class 'int'>  
-
-Averagefuelusage 1 = ok avec 1 chiffre après la virgule
-radio ko
+09-27 19:11 root         INFO     FRAME ID NON TRAITE : 0  :  00 00 00 00 00 00 00 00  ........
+09-27 19:11 root         INFO     Door Front Left
+09-27 19:11 root         INFO     FRAME ID NON TRAITE : 13  :  41 27 0F 00 4C 23 CE  A'?.L#?
+09-27 19:11 root         INFO     Reste en essence : 2 8 
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 128
+09-27 19:11 root         INFO     Next track
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 64
+09-27 19:11 root         INFO     Previous track
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 4
+09-27 19:11 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 4
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 4
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 4
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     station liste : ??@??G??|HIT WEST|  NRJ   |CHERIEFM|  M FM  | LATINA |
+09-27 19:12 root         INFO     station liste : ??
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 128
+09-27 19:12 root         INFO     Next track
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 64
+09-27 19:12 root         INFO     Previous track
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:12 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 12
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 8
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 4
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 4
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 4
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 2
+09-27 19:13 root         INFO     REMOTE_COMMAND_FRAME data : 0
+09-27 19:14 root         INFO     RADIO_FACE_BUTTON Data : 64 0 0 0 0 0
+09-27 19:14 root         INFO     RADIO_FACE_BUTTON Data : 0 0 0 0 0 0
+09-27 19:14 root         INFO     RADIO_FACE_BUTTON Data : 64 0 0 0 0 0
+09-27 19:14 root         INFO     RADIO_FACE_BUTTON Data : 0 0 0 0 0 0
+09-27 19:14 root         INFO     RADIO_FACE_BUTTON Data : 64 0 0 0 0 0
+09-27 19:14 root         INFO     RADIO_FACE_BUTTON Data : 0 0 0 0 0 0

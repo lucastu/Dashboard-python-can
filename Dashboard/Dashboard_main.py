@@ -23,7 +23,7 @@ os.environ.__setitem__('DISPLAY', ':0.0')
 stop_reading = threading.Event()
 
 # If the app is started, RPI_State_PIN set to True
-RPI_State_PIN = 24 
+RPI_State_PIN = 0
 GPIO.setmode(GPIO.BCM)            # choose BCM or BOARD  
 GPIO.setup(RPI_State_PIN, GPIO.OUT) # set a port/pin as an output   
 GPIO.output(RPI_State_PIN, 1)       # set port/pin value to 1/GPIO.HIGH/True 
@@ -34,7 +34,16 @@ can_messages_lock = threading.Lock()
 thread_exception = None
 
 #Configure the log file and format
-logging.basicConfig(filename="log.txt",format="%(asctime)s:%(levelname)s:%(message)s")
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M',
+                    filename='/home/pi/lucas/log.txt',
+                    filemode='w')
+# define a Handler which writes INFO messages or higher to the sys.stderr
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+# add the handler to the root logger
+logging.getLogger('').addHandler(console)
 
 # USB Arduino parameters
 baudrate = 115200
@@ -73,9 +82,10 @@ def reading_loop(source_handler, root):
     AUDIO_SETTINGS_FRAME = 0x10
     REMOTE_COMMAND_FRAME = 0x11  
     OPEN_DOOR_FRAME      = 0x12
-    RADIO_FACE_BUTTON =    0x13
+    # RADIO_FACE_BUTTON =    0x13
     SHUTDOWN_FRAME    =    0x14
-   
+
+    root.resetequalizerselector()
     while not stop_reading.is_set():
         try:
             frame_id, data = source_handler.get_message()
@@ -83,7 +93,7 @@ def reading_loop(source_handler, root):
             continue
         except EOFError:
             break
-            
+
         if frame_id == VOLUME_FRAME:
             temp = str(data[0] & 0b00011111)
             root.Volume.setText(temp)
@@ -100,38 +110,39 @@ def reading_loop(source_handler, root):
             #os.system("sudo shutdown -h now")
             
         elif frame_id == REMOTE_COMMAND_FRAME:
-            logging.info("REMOTE_COMMAND_FRAME data : " + data[0])
-            if (data[0] & 0b11000000) == 0b11000000 :
+            logging.info("REMOTE_COMMAND_FRAME data : " + str(data[0]))
+            if ((data[0] & 0b00001100) == 0b11001100) :
                 #Both button pressed : Pause/play      
                 logging.info("Play pause track")
-            elif (data[0] & 0b10000000) == 0b10000000 :
+            elif ((data[0] & 0b10000000) == 0b10000000) :
                 #Next button pressed
                 cmd = 'xdotool key N'
                 os.system(cmd)
                 logging.info("Next track")
-            elif (data[0] & 0b01000000) == 0b01000000 :
+            elif ((data[0] & 0b01000000) == 0b01000000) :
                 #Previous button pressed
                 cmd = 'xdotool key P'
                 os.system(cmd)
                 logging.info("Previous track") 
                
-        elif frame_id == RADIO_FACE_BUTTON:
-            logging.info("RADIO_FACE_BUTTON Data : %s %s %s %s %s %s" %(data[0], data[1], data[2], data[3], data[4], data[5]))
-            if (data[2] & 0b01000000) == 0b01000000 :
-                #button pressed : OK     
-                logging.info("button pressed :OK")
-            if (data[5] & 0b01000000) == 0b01000000 :
-                #UP button pressed
-                logging.info("button pressed :UP")
-            if (data[5] & 0b00010000) == 0b00010000 :
-                #Down button pressed
-                logging.info("button pressed :DOWN")  
-            if (data[5] & 0b00000100) == 0b00000100 :
-                #RIGHT button pressed
-                logging.info("button pressed :RIGHT")
-            if (data[5] & 0b00000001) == 0b00000001 :
-                #LEFT button pressed
-                logging.info("button pressed :LEFT")            
+        # elif frame_id == RADIO_FACE_BUTTON:
+        #
+        #     logging.info("RADIO_FACE_BUTTON Data : %s %s %s %s %s %s" %(str(data[0]), str(data[1]), str(data[2]), str(data[3]), str(data[4]), str(data[5])))
+        #     if (data[2] & 0b01000000) == 0b01000000 :
+        #         #button pressed : OK
+        #         logging.info("button pressed :OK")
+        #     if (data[5] & 0b01000000) == 0b01000000 :
+        #         #UP button pressed
+        #         logging.info("button pressed :UP")
+        #     if (data[5] & 0b00010000) == 0b00010000 :
+        #         #Down button pressed
+        #         logging.info("button pressed :DOWN")
+        #     if (data[5] & 0b00000100) == 0b00000100 :
+        #         #RIGHT button pressed
+        #         logging.info("button pressed :RIGHT")
+        #     if (data[5] & 0b00000001) == 0b00000001 :
+        #         #LEFT button pressed
+        #         logging.info("button pressed :LEFT")
                
         elif frame_id == OPEN_DOOR_FRAME:
             if (data[0] & 0b10000000) == 0b10000000 :
@@ -151,9 +162,7 @@ def reading_loop(source_handler, root):
                 logging.info("Door Trunk ")
       
         elif frame_id == TEMPERATURE_FRAME:
-            #logging.info("Temperature data : "data)
             temp = str(data[0])
-            logging.info("temp : " + temp)
             root.Temperature.setText( temp + "°C")
 
         elif frame_id == RADIO_NAME_FRAME:
@@ -249,7 +258,7 @@ def reading_loop(source_handler, root):
             root.tripinfo7.setText("conso instantanée : %s %s " %(data[1], data[2]))
 
             if (data[0] & 0b00001000) == 0b00001000 :
-                # Si le Trip button est appuye on switch de window
+                # Si le Trip button witch window
                 cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
                 os.system(cmd)
 
@@ -272,67 +281,67 @@ def reading_loop(source_handler, root):
             #Active selected mode in audio settings      
             if (data[0] & 0b10000000) == 0b10000000 :
                 activeMode = 1  # .leftRightBalance
-                resetaudiosettingselector()
+                root.resetaudiosettingselector()
                 root.leftRightBalanceselector.setHidden(False)
                 root.leftRightBalanceselector_2.setHidden(False)
             elif (data[1] & 0b10000000) == 0b10000000 :
                 activeMode = 2  # .frontRearBalance
-                resetaudiosettingselector()
+                root.resetaudiosettingselector()
                 root.frontRearBalanceselector.setHidden(False)
                 root.frontRearBalanceselector_2.setHidden(False)
             elif (data[2] & 0b10000000) == 0b10000000 :
                 activeMode = 3  # .bass
-                resetaudiosettingselector()
+                root.resetaudiosettingselector()
                 root.SliderBassesselector.setHidden(False)
                 root.SliderBassesselector_2.setHidden(False)
             elif (data[4] & 0b10000000) == 0b10000000 :
                 activeMode = 4  # .treble
-                resetaudiosettingselector()  
+                root.resetaudiosettingselector()
                 root.SliderAigusselector.setHidden(False)
                 root.SliderAigusselector_2.setHidden(False)
             elif (data[5] & 0b10000000) == 0b10000000 :
                 activeMode = 5  # .loudness
-                resetaudiosettingselector()  
+                root.resetaudiosettingselector()
                 root.Loudnessselector.setHidden(False)
                 root.Loudnessselector_2.setHidden(False)
             elif (data[5] & 0b00000001) == 0b00000001 :
                 activeMode = 6  # .automaticVolume
-                resetaudiosettingselector()  
+                root.resetaudiosettingselector()
                 root.automaticVolumeselector.setHidden(False)
                 root.automaticVolumeselector_2.setHidden(False)
-            elif (data[6] & 0b00000100) == 0b00000100 :
+            elif (data[6] & 0b01000000) == 0b01000000 :
                 activeMode = 7  # .equalizer
-                resetaudiosettingselector()  
+                root.resetaudiosettingselector()
                 root.equalizerselector.setHidden(False)
                 root.equalizerselector_2.setHidden(False)
             else :
                 activeMode = 0
-                resetaudiosettingselector()  
+                root.resetaudiosettingselector()
 
             #Valeur de l'equalizer Setting
             if (data[6] & 0b10111111) ==  0b00000011 :
                 equalizerSetting = 0  # .none
-                resetequalizerselector() 
+                root.resetequalizerselector()
                 root.equalizernone.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) ==  0b00000111 :
                 equalizerSetting = 1  # .classical
-                resetequalizerselector() 
+                root.resetequalizerselector()
                 root.equalizerclassical.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00001011 :
                 equalizerSetting = 2  # .jazzBlues
-                resetequalizerselector() 
+                root.resetequalizerselector()
                 root.equalizerjazzBlues.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00001111 :
                 equalizerSetting = 3  # .popRock
-                resetequalizerselector() 
+                root.resetequalizerselector()
                 root.equalizerpopRock.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00010011 :
                 equalizerSetting = 4  # .vocals
-                resetequalizerselector() 
-                root.equalizerpopRock.setStyleSheet("color: white;")
+                root.resetequalizerselector()
+                root.equalizervocal.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00010111 :
                 equalizerSetting = 5  # .techno
-                resetequalizerselector() 
+                root.resetequalizerselector()
                 root.equalizertechno.setStyleSheet("color: white;")  
                   
             #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
@@ -424,15 +433,9 @@ class Ui(QtWidgets.QMainWindow):
         dark_palette.setColor(QPalette.WindowText, Qt.white)
         dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
         dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-#         dark_palette.setColor(QPalette.ToolTipBase, QColor(25, 25, 25))
-#         dark_palette.setColor(QPalette.ToolTipText, Qt.white)
         dark_palette.setColor(QPalette.Text, Qt.white)
         dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
         dark_palette.setColor(QPalette.ButtonText, Qt.white)
-#         dark_palette.setColor(QPalette.BrightText, Qt.red)
-#         dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
-#         dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-#         dark_palette.setColor(QPalette.HighlightedText, QColor(35, 35, 35))
         dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
         dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
         dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
@@ -461,29 +464,29 @@ class Ui(QtWidgets.QMainWindow):
 
    def resetaudiosettingselector(self) :
          #Each selelctor display go hidden
-         root.SliderBassesselector.setHidden(True)
-         root.SliderBassesselector_2.setHidden(True)
-         root.SliderAigusselector.setHidden(True)
-         root.SliderAigusselector_2.setHidden(True)
-         root.frontRearBalanceselector.setHidden(True)
-         root.frontRearBalanceselector_2.setHidden(True)
-         root.leftRightBalanceselector.setHidden(True)
-         root.leftRightBalanceselector_2.setHidden(True)
-         root.Loudnessselector.setHidden(True)
-         root.Loudnessselector_2.setHidden(True)
-         root.automaticVolumeselector.setHidden(True)
-         root.automaticVolumeselector_2.setHidden(True)
-         root.equalizerselector.setHidden(True)
-         root.equalizerselector_2.setHidden(True)
+         self.SliderBassesselector.setHidden(True)
+         self.SliderBassesselector_2.setHidden(True)
+         self.SliderAigusselector.setHidden(True)
+         self.SliderAigusselector_2.setHidden(True)
+         self.frontRearBalanceselector.setHidden(True)
+         self.frontRearBalanceselector_2.setHidden(True)
+         self.leftRightBalanceselector.setHidden(True)
+         self.leftRightBalanceselector_2.setHidden(True)
+         self.Loudnessselector.setHidden(True)
+         self.Loudnessselector_2.setHidden(True)
+         self.automaticVolumeselector.setHidden(True)
+         self.automaticVolumeselector_2.setHidden(True)
+         self.equalizerselector.setHidden(True)
+         self.equalizerselector_2.setHidden(True)
 
    def resetequalizerselector(self) :
          #Each selectorelctor display go grey
-         root.equalizernone.setStyleSheet("color: grey;")
-         root.equalizerclassical.setStyleSheet("color: grey;")
-         root.equalizerjazzBlues.setStyleSheet("color: grey;")
-         root.equalizerpopRock.setStyleSheet("color: grey;")
-         root.equalizertechno.setStyleSheet("color: grey;") 
-
+         self.equalizernone.setStyleSheet("color: grey;")
+         self.equalizerclassical.setStyleSheet("color: grey;")
+         self.equalizerjazzBlues.setStyleSheet("color: grey;")
+         self.equalizerpopRock.setStyleSheet("color: grey;")
+         self.equalizertechno.setStyleSheet("color: grey;")
+         self.equalizervocal.setStyleSheet("color: grey;")
          
    def close_all(self):
         # set flag of              
