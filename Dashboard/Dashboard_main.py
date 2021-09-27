@@ -46,9 +46,6 @@ audiosettings = {
 
 def reading_loop(source_handler, root):
     """Background thread for reading data from Arduino."""
-
-
-
     #FRAMETYPES and their IDs
     INIT_STATUS_FRAME =    0x00
     VOLUME_FRAME =         0x01
@@ -60,7 +57,7 @@ def reading_loop(source_handler, root):
     RADIO_DESC_FRAME =     0x07
     INFO_MSG_FRAME =       0x08
     RADIO_STATIONS_FRAME = 0x09
-    SEATBELTS_FRAME =      0x0A
+   
       
     INFO_TRIP1_FRAME =     0x0C
     INFO_TRIP2_FRAME =     0x0D
@@ -218,11 +215,6 @@ def reading_loop(source_handler, root):
                 root.radioList3.setText("4 : "+ radio_list[3])
                 root.radioList4.setText("5 : "+ radio_list[4])
                 root.radioList5.setText("6 : "+ radio_list[5])
-
-                  
-        elif frame_id == SEATBELTS_FRAME:
-            # Est-ce que j'en fais quelque chose de cette info ??
-            continue
 
         elif frame_id == INFO_TRIP1_FRAME :
             #a mettre en forme mais tout correspond
