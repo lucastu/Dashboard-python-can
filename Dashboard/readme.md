@@ -1,4 +1,4 @@
-## WORK IN PROGRESS, VERY NOT WELL WRITTEN,  
+## WORK IN PROGRESS
 my bad...
 
 # Files
@@ -9,13 +9,11 @@ my bad...
 
 **other/launcher.sh** => bash file to launch main script if it's not open, else it put the window in front
 
-**notif.py** => ancien script of display a notif base of what I need to write 
-
 **ombre.py** => empty window that is supposed to open fullscreen and with transparency
 
 **sound_level.py** => contain the class of the sound_level display script
 
-**source_handler** => contain what I need to handler the data from the arduino
+**source_handler** => contain the needed functions to handle the data from the arduino
 
 # TO DO
 ### UI
