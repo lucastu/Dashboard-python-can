@@ -111,8 +111,8 @@ void setup() {
   byte canSpeed = CAN_SPEED;
   
   //Input for monitoring 
-  pinMode(RPI_State_PIN , INPUT_PULLDOWN);  
-  pinMode(Radio_POWER_PIN , INPUT_PULLDOWN);  
+  pinMode(RPI_State_PIN , INPUT_PULLUP);  
+  pinMode(Radio_POWER_PIN , INPUT_PULLUP);  
   // Output for the relay
   pinMode(Relay_PIN, OUTPUT);
   digitalWrite(Relay_PIN, HIGH);
@@ -148,7 +148,7 @@ void loop() {
     while (digitalRead(RPI_State_PIN ) == HIGH ){
       delay(100);
     } 
-    digitalWrite(Relay_PIN, Low);
+    digitalWrite(Relay_PIN, LOW);
   }
   
   // If a msg is available from canbus
