@@ -9,6 +9,11 @@
 const int CS_PIN = 10;
 MCP_CAN CAN(CS_PIN);
 
+//Pin of rapsberry state
+int RPI_State_PIN = 2;
+int Radio_POWER_PIN = 3;
+int Relay_PIN = 4;
+
 // Serial port data rate
 const long SERIAL_SPEED = 115200;
 
@@ -37,6 +42,7 @@ typedef enum {
   REMOTE_COMMAND_FRAME = 0x11,
   OPEN_DOOR_FRAME      = 0x12,
   RADIO_FACE_BUTTON    = 0x13,
+  SHUTDOWN_FRAME       = 0x14,
 } FrameType;
 
 ///////////////////////
@@ -104,6 +110,13 @@ void setup() {
   Serial.begin(SERIAL_SPEED);
   byte canSpeed = CAN_SPEED;
   
+  //Input for monitoring 
+  pinMode(RPI_State_PIN , INPUT_PULLDOWN);  
+  pinMode(Radio_POWER_PIN , INPUT_PULLDOWN);  
+  // Output for the relay
+  pinMode(Relay_PIN, OUTPUT);
+  digitalWrite(Relay_PIN, HIGH);
+  
   if (CAN.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK) {
     CAN.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
     pinMode(CAN0_INT, INPUT);
@@ -112,6 +125,13 @@ void setup() {
 }
 
 void loop() {
+  unsigned char len = 0;
+  byte buffer[8];
+  byte tmp[9];
+  int tempValue;
+  long unsigned int id;
+  
+  // Send two msgs to the RD4 every 100ms to activate CDcharger Source
   if (millis()-lastCDCactivation >=100){
       byte dataInitCDC[] = {0x20, 0x01, 0x06, 0x05, 0x00, 0x08, 0x00};
       byte dataInitCDC2[] = {0x01, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -120,12 +140,18 @@ void loop() {
       lastCDCactivation = millis();
   }
   
-  unsigned char len = 0;
-  byte buffer[8];
-  byte tmp[9];
-  int tempValue;
-  long unsigned int id;
+  // If power of radio off, shutdown raspberry 
+  // Wait for it to be shutted down
+  // And then shut the relay off
+  if (digitalRead(Radio_POWER_PIN ) == LOW)  {
+    sendByteWithType(SHUTDOWN_FRAME, 0x01);
+    while (digitalRead(RPI_State_PIN ) == HIGH ){
+      delay(100);
+    } 
+    digitalWrite(Relay_PIN, Low);
+  }
   
+  // If a msg is available from canbus
   if (CAN.checkReceive() == CAN_MSGAVAIL) {
     CAN.readMsgBuf(&id, &len, buffer);
     
@@ -137,7 +163,6 @@ void loop() {
         sendByteWithType(VOLUME_FRAME, volume);    
       }  
     }else if (id == 246 && len == 8) {
-    // Decode temperature value and send it if it changed
       tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
       if (temperature != tempValue) {
           temperature = tempValue;
@@ -367,8 +392,7 @@ void loop() {
         }
       } else if (id == 485) {
         // Audio settings frame
-        // Same as information message frame: we send the raw frame and parse it
-        // in the iOS app
+        // Same as information message frame: we send the raw frame and parse it in the raspberry
         for (int i = 0; i < 7; ++i) {
           tempBuffer[i] = buffer[i];
         }
