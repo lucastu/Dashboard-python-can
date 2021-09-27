@@ -9,6 +9,7 @@ import threading
 import time
 import os
 import logging
+import RPi.GPIO as GPIO   
 
 from source_handler import InvalidFrame, SerialHandler
 from sound_level import volumewindow
@@ -20,6 +21,12 @@ from InfoMSG_parser import parseInfoMessage
 os.environ.__setitem__('DISPLAY', ':0.0')
 # os.environ["QT_LOGGING_RULES"] = "qt5ct.debug=false"
 stop_reading = threading.Event()
+
+# If the app is started, RPI_State_PIN set to True
+RPI_State_PIN = 24 
+GPIO.setmode(GPIO.BCM)            # choose BCM or BOARD  
+GPIO.setup(RPI_State_PIN, GPIO.OUT) # set a port/pin as an output   
+GPIO.output(RPI_State_PIN, 1)       # set port/pin value to 1/GPIO.HIGH/True 
 
 can_messages = {}
 can_messages_lock = threading.Lock()
@@ -67,7 +74,8 @@ def reading_loop(source_handler, root):
     REMOTE_COMMAND_FRAME = 0x11  
     OPEN_DOOR_FRAME      = 0x12
     RADIO_FACE_BUTTON =    0x13
-    
+    SHUTDOWN_FRAME    =    0x14
+   
     while not stop_reading.is_set():
         try:
             frame_id, data = source_handler.get_message()
@@ -86,8 +94,11 @@ def reading_loop(source_handler, root):
 
             elif ((data[0] & 0b11100000 == 0b11100000) and root.Volumewindow.visible):
                 root.Volumewindow.movedown()
-
-
+            
+        elif frame_id == SHUTDOWN_FRAME:
+            logging.info("Shut down data : " + data[0])
+            #os.system("sudo shutdown -h now")
+            
         elif frame_id == REMOTE_COMMAND_FRAME:
             logging.info("REMOTE_COMMAND_FRAME data : " + data[0])
             if (data[0] & 0b11000000) == 0b11000000 :
