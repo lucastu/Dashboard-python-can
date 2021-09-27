@@ -19,7 +19,6 @@ my bad...
 ### UI
 -Change separator
 -Add Background
--Audiosetting parameter selector to add
 ### Info message notification
 Change Icon
 ### Volume notification
@@ -69,6 +68,12 @@ Ex :
     /usr/local/bin/openauto
     /usr/local/bin/controller_service_watchdog.sh
 ```
+## To enable Shutdown via GPIO pin
+```
+sudo nano /boot/config.txt
+```
+Edit the file to add  :
+> dtoverlay=gpio-shutdown,gpio_pin=4
 
 ## Pour la barre de chargement du volume
 ```
