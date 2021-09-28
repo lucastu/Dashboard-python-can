@@ -2,6 +2,7 @@
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QColor
+from PyQt5.QtCore import pyqtSignal
 
 import sys
 import threading
@@ -85,7 +86,8 @@ def reading_loop(source_handler, root):
     # RADIO_FACE_BUTTON =    0x13
     SHUTDOWN_FRAME    =    0x14
 
-    root.resetequalizerselector()
+    self.signals = Communicate()
+    
     while not stop_reading.is_set():
         try:
             frame_id, data = source_handler.get_message()
@@ -98,7 +100,9 @@ def reading_loop(source_handler, root):
             temp = str(data[0] & 0b00011111)
             root.Volume.setText(temp)
             root.Volumewindow.progress.setValue(int(temp))   
-
+            
+            self.signals.signal_int.connect(root.Volumewindow.progress.setValue(int(temp))
+            
             if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible) :
                 root.Volumewindow.moveup()
 
@@ -505,6 +509,9 @@ class Ui(QtWidgets.QMainWindow):
         #After closing threads, closing the window            
         self.close()              
                       
+class Communicate(QObject):                                                 
+    signal_int = Signal(int)
 
+          
 if __name__ == '__main__':
     run()
