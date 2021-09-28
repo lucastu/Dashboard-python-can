@@ -114,9 +114,11 @@ def reading_loop(source_handler, root):
             #os.system("sudo shutdown -h now")
             
         elif frame_id == REMOTE_COMMAND_FRAME:
-            logging.info("REMOTE_COMMAND_FRAME data : " + str(data[0]))
+            #logging.info("REMOTE_COMMAND_FRAME data : " + str(data[0]))
             if ((data[0] & 0b00001100) == 0b11001100) :
                 #Both button pressed : Pause/play      
+                cmd = 'xdotool key B'
+                os.system(cmd)
                 logging.info("Play pause track")
             elif ((data[0] & 0b10000000) == 0b10000000) :
                 #Next button pressed
@@ -125,28 +127,9 @@ def reading_loop(source_handler, root):
                 logging.info("Next track")
             elif ((data[0] & 0b01000000) == 0b01000000) :
                 #Previous button pressed
-                cmd = 'xdotool key P'
+                cmd = 'xdotool key V'
                 os.system(cmd)
                 logging.info("Previous track") 
-               
-        # elif frame_id == RADIO_FACE_BUTTON:
-        #
-        #     logging.info("RADIO_FACE_BUTTON Data : %s %s %s %s %s %s" %(str(data[0]), str(data[1]), str(data[2]), str(data[3]), str(data[4]), str(data[5])))
-        #     if (data[2] & 0b01000000) == 0b01000000 :
-        #         #button pressed : OK
-        #         logging.info("button pressed :OK")
-        #     if (data[5] & 0b01000000) == 0b01000000 :
-        #         #UP button pressed
-        #         logging.info("button pressed :UP")
-        #     if (data[5] & 0b00010000) == 0b00010000 :
-        #         #Down button pressed
-        #         logging.info("button pressed :DOWN")
-        #     if (data[5] & 0b00000100) == 0b00000100 :
-        #         #RIGHT button pressed
-        #         logging.info("button pressed :RIGHT")
-        #     if (data[5] & 0b00000001) == 0b00000001 :
-        #         #LEFT button pressed
-        #         logging.info("button pressed :LEFT")
                
         elif frame_id == OPEN_DOOR_FRAME:
             if (data[0] & 0b10000000) == 0b10000000 :
@@ -190,11 +173,9 @@ def reading_loop(source_handler, root):
             root.RadioType.setText("Radio "+ RadioFMType)
 
         elif frame_id == RADIO_SOURCE_FRAME:
-            temp = 0
-            try :
-                temp = int(format_data_ascii(data))
-            except :
-                pass
+                                            
+            temp = int(format_data_ascii(data))
+
             Source = "Aucune source..."
             if temp == 1:
                 Source = "Tuner"
