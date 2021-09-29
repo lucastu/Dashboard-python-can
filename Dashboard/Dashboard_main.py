@@ -156,11 +156,15 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_FREQ_FRAME:
             temp = format_data_hex(data)
-            root.RadioFreq.setText(str(float(int(temp.replace(" ", ""),16))/10)+ "MHz")
+            #after mod of format_data_hex to remove ' '
+            #root.RadioFreq.setText(str(float(int(temp.replace(" ", ""),16))/10)+ "MHz")
+            root.RadioFreq.setText(str(float(int(temp,16))/10)+ "MHz")                                            
 
         elif frame_id == RADIO_FMTYPE_FRAME:
-            temp = int(format_data_hex(data))
-            RadioFMType ="No Type"
+            #if that                                 
+            #temp = int(format_data_hex(data))
+            temp = data[0]
+            radioFMType ="No Type"
             if temp == 1:
                 RadioFMType ="FM1"
             elif temp == 2:
@@ -173,8 +177,8 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_SOURCE_FRAME:
                                             
-            temp = int(format_data_ascii(data))
-
+           # temp = int(format_data_ascii(data))
+            temp = data[0]
             Source = "Aucune source..."
             if temp == 1:
                 Source = "Tuner"
@@ -223,6 +227,7 @@ def reading_loop(source_handler, root):
         elif frame_id == INFO_TRIP1_FRAME :
             #a mettre en forme mais tout correspond
             root.tripinfo3.setText("Vitesse moyenne = %s km/h" %(data[0]))
+                                            
             #on s'en fout...
             # root.tripinfo1.setText("Distance after reset= %s %s " %(data[1], data[2]))
             
@@ -236,10 +241,14 @@ def reading_loop(source_handler, root):
         #     root.tripinfo6.setText("averageSpeed 2 = %s " %   (data[0]))
             
         elif frame_id == INFO_INSTANT_FRAME :
-            logging.info("Reste en essence : %s %s " %(data[3], data[4]))
-            temp = format_data_hex(data)
-            # root.tripinfo7.setText("conso instantanée : %s %s " + str(float(int((data[1], data[2]),16))/10))
-            root.tripinfo7.setText("conso instantanée : %s %s " %(data[1], data[2]))
+                                            
+            fuelleftbyte= bytes([data[3],data[4]])
+            fuelleftbyte2=''.join('%02X' % byte for byte in fuelleftbyte)                   
+            logging.info("Reste en essence : %s" % (int(fuelleftbyte2,16)))
+            
+            consoinstantbyte= bytes([data[1],data[2]])
+            consoinstantbyte2=''.join('%02X' % byte for byte in consoinstantbyte)                                               
+            root.tripinfo7.setText("conso instantanée : %s " + str(float(int(consoinstantbyte2,16))/10))
 
             if (data[0] & 0b00001000) == 0b00001000 :
                 # Si le Trip button witch window
@@ -247,7 +256,8 @@ def reading_loop(source_handler, root):
                 os.system(cmd)
 
         elif frame_id == TRIP_MODE_FRAME:
-            temp = int(format_data_hex(data))
+            #temp = int(format_data_hex(data))
+            temp = data[0]
             tripInfoMode =""
             if temp == 0:
                 tripInfoMode = "instant"
@@ -359,8 +369,8 @@ def reading_loop(source_handler, root):
 
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
-    # Bytes are separated by spaces.
-    return ' '.join('%02X' % byte for byte in data)
+    # Bytes are separated by spaces. => not anymore
+    return ''.join('%02X' % byte for byte in data)
 
 
 def format_data_ascii(data):
