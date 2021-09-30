@@ -226,32 +226,48 @@ def reading_loop(source_handler, root):
 
         elif frame_id == INFO_TRIP1_FRAME :
             #a mettre en forme mais tout correspond
-            root.tripinfo3.setText("Vitesse moyenne = %s km/h" %(data[0]))
+            root.tripinfo3.setText("Vitesse moyenne : %s km/h" % (data[0]))
                                             
-            #on s'en fout...
-            # root.tripinfo1.setText("Distance after reset= %s %s " %(data[1], data[2]))
-            
-            averageFuelUsage=int(data[3]+data[4])/10
-            root.tripinfo2.setText("Conso. moyenne : %s l/100km " % averageFuelUsage)
-                  
-        # elif  frame_id == INFO_TRIP2_FRAME :
-        #
-        #     root.tripinfo4.setText("distance 2= %s %s " %          (data[1], data[2]))
-        #     root.tripinfo5.setText("averageFuelUsage 2= %s %s " %  (data[3], data[4]))
-        #     root.tripinfo6.setText("averageSpeed 2 = %s " %   (data[0]))
+            distanceafterresetbyte= bytes([data[1],data[2]])
+            distanceafterreset =int((''.join('%02X' % byte for byte in distanceafterresetbyte)),16)                   
+            logging.info("Distance after reset : %s" % distanceafterreset )
+            root.tripinfo1.setText("Distance after reset : %s" % distanceafterreset)
+                                            
+            #averageFuelUsage=int(data[3]+data[4])/10
+            #root.tripinfo2.setText("Conso. moyenne : %s l/100km " % averageFuelUsage)
+                                            
+            averageFuelUsagebyte= bytes([data[1],data[2]])
+            averageFuelUsage =int((''.join('%02X' % byte for byte in averageFuelUsagebyte)),16)                   
+            logging.info("Conso moyenne : %s" % averageFuelUsage )
+            root.tripinfo1.setText("Conso moyenne : %sl/100km" % averageFuelUsage)  
+                                            
+        elif  frame_id == INFO_TRIP2_FRAME :
+            distanceafterresetbyte= bytes([data[1],data[2]])
+            distanceafterreset =int((''.join('%02X' % byte for byte in distanceafterresetbyte)),16)                   
+            logging.info("Distance after reset2 : %s" % distanceafterreset )
+            root.tripinfo4.setText("Distance 2 : %s" % distanceafterreset)
+                                            
+            root.tripinfo6.setText("Vitesse moy2 : %s km/h" % (data[0]))                                            
+                                            
+            averageFuelUsagebyte= bytes([data[1],data[2]])
+            averageFuelUsage =int((''.join('%02X' % byte for byte in averageFuelUsagebyte)),16)                   
+            logging.info("Conso moyenne2 : %s" % averageFuelUsage )
+            root.tripinfo5.setText("Conso moyenne2 : %sl/100km" % averageFuelUsage)                                            
             
         elif frame_id == INFO_INSTANT_FRAME :
-                                            
             fuelleftbyte= bytes([data[3],data[4]])
             fuelleftbyte2=''.join('%02X' % byte for byte in fuelleftbyte)                   
             logging.info("Reste en essence : %s" % (int(fuelleftbyte2,16)))
-            
-            consoinstantbyte= bytes([data[1],data[2]])
-            consoinstantbyte2=''.join('%02X' % byte for byte in consoinstantbyte)                                               
-            root.tripinfo7.setText("conso instantanée : %s " + str(float(int(consoinstantbyte2,16))/10))
+                                            
+            if (data[0] & 0b10000000) == 0b10000000 : 
+              root.tripinfo7.setText("conso instantanée : -- ")
+            else :                                
+              consoinstantbyte= bytes([data[1],data[2]])
+              consoinstantbyte2=''.join('%02X' % byte for byte in consoinstantbyte)                                               
+              root.tripinfo7.setText("conso instantanée : %s " + str(float(int(consoinstantbyte2,16))/10))
 
             if (data[0] & 0b00001000) == 0b00001000 :
-                # Si le Trip button witch window
+                # if Tripbutton pressed : switch window
                 cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
                 os.system(cmd)
 
