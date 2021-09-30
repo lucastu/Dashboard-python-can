@@ -25,7 +25,7 @@ stop_reading = threading.Event()
 
 # If the app is started, RPI_State_PIN set to True
 RPI_State_PIN = 0
-GPIO.setmode(GPIO.BCM)            # choose BCM or BOARD  
+GPIO.setmode(GPIO.BCM)              # choose BCM or BOARD  
 GPIO.setup(RPI_State_PIN, GPIO.OUT) # set a port/pin as an output   
 GPIO.output(RPI_State_PIN, 1)       # set port/pin value to 1/GPIO.HIGH/True 
 
@@ -73,8 +73,6 @@ def reading_loop(source_handler, root):
     RADIO_DESC_FRAME =     0x07
     INFO_MSG_FRAME =       0x08
     RADIO_STATIONS_FRAME = 0x09
-   
-      
     INFO_TRIP1_FRAME =     0x0C
     INFO_TRIP2_FRAME =     0x0D
     INFO_INSTANT_FRAME =   0x0E
@@ -98,8 +96,8 @@ def reading_loop(source_handler, root):
         if frame_id == VOLUME_FRAME:
             temp = str(data[0] & 0b00011111)
             root.Volume.setText(temp)
-            root.Volumewindow.progress.setValue(int(temp))   
-            
+            #root.Volumewindow.progress.setValue(int(temp))   
+            #Not sure if this below works
             self.signals.signal_int.connect(root.Volumewindow.progress.setValue(int(temp))
             
             if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible) :
@@ -160,8 +158,7 @@ def reading_loop(source_handler, root):
             #root.RadioFreq.setText(str(float(int(temp.replace(" ", ""),16))/10)+ "MHz")
             root.RadioFreq.setText(str(float(int(temp,16))/10)+ "MHz")                                            
 
-        elif frame_id == RADIO_FMTYPE_FRAME:
-            #if that                                 
+        elif frame_id == RADIO_FMTYPE_FRAME:                               
             #temp = int(format_data_hex(data))
             temp = data[0]
             radioFMType ="No Type"
@@ -176,8 +173,7 @@ def reading_loop(source_handler, root):
             root.RadioType.setText("Radio "+ RadioFMType)
 
         elif frame_id == RADIO_SOURCE_FRAME:
-                                            
-           # temp = int(format_data_ascii(data))
+            # temp = int(format_data_ascii(data))
             temp = data[0]
             Source = "Aucune source..."
             if temp == 1:
@@ -206,7 +202,7 @@ def reading_loop(source_handler, root):
             infomessage = parseInfoMessage(data, root)
             root.InfoMSG.setText(infomessage)
             root.AlertMSG.texte.setText(infomessage)
-            #PARSER LE PREMIER 
+            
             if not (data[0] & 0b01110000) :
                root.show_alert()
             else :
@@ -242,9 +238,10 @@ def reading_loop(source_handler, root):
             root.tripinfo1.setText("Conso moyenne : %sl/100km" % averageFuelUsage)  
                                             
         elif  frame_id == INFO_TRIP2_FRAME :
+            #SUPPOSED TO BE THE SAME AS TRIP1, TO TEST IRL
             distanceafterresetbyte= bytes([data[1],data[2]])
             distanceafterreset =int((''.join('%02X' % byte for byte in distanceafterresetbyte)),16)                   
-            logging.info("Distance after reset2 : %s" % distanceafterreset )
+            logging.info("Distance 2 : %s" % distanceafterreset )
             root.tripinfo4.setText("Distance 2 : %s" % distanceafterreset)
                                             
             root.tripinfo6.setText("Vitesse moy2 : %s km/h" % (data[0]))                                            
@@ -273,6 +270,7 @@ def reading_loop(source_handler, root):
 
         elif frame_id == TRIP_MODE_FRAME:
             #temp = int(format_data_hex(data))
+            #Maybe useless for my integration ?
             temp = data[0]
             tripInfoMode =""
             if temp == 0:
@@ -281,7 +279,6 @@ def reading_loop(source_handler, root):
                 tripInfoMode = "trip1"
             elif temp == 2:
                 tripInfoMode = "trip2"
-            #Maybe useless for my integration ?
             root.tripInfoMode.setText(tripInfoMode)
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
@@ -324,6 +321,13 @@ def reading_loop(source_handler, root):
                 root.resetaudiosettingselector()
                 root.equalizerselector.setHidden(False)
                 root.equalizerselector_2.setHidden(False)
+                print("value 1 OK")
+            elif (data[6] & 0b10000000) == 0b10000000 :
+                activeMode = 7  # .equalizer
+                root.resetaudiosettingselector()
+                root.equalizerselector.setHidden(False)
+                root.equalizerselector_2.setHidden(False)    
+                print("value 2 OK")
             else :
                 activeMode = 0
                 root.resetaudiosettingselector()
@@ -359,7 +363,7 @@ def reading_loop(source_handler, root):
             audiosettings['frontRearBalance']   = int(data[1] & 0b01111111) - 63
             audiosettings['leftRightBalance']   = int(data[0] & 0b01111111) - 63
             audiosettings['automaticVolume']    = (data[5] & 0b00000111) == 0b00000111
-            audiosettings['equalizer']          = equalizerSetting
+            #audiosettings['equalizer']          = equalizerSetting
             audiosettings['bass']               = int(data[2] & 0b01111111) - 63
             audiosettings['treble']             = int(data[4] & 0b01111111) - 63
             audiosettings['loudness']           = ((data[5] & 0b01000000) == 0b01000000)
@@ -394,6 +398,7 @@ def format_data_ascii(data):
 
     Non printable characters are replaced by '?' except null character which
     is replaced by '.'.
+    DON'T TOUCH !!! WITCHCRAFT !!
     """
     msg_str = ''
     for byte in data:
@@ -415,9 +420,9 @@ def run():
     app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
     root = Ui()  # Create an instance of our class for the MainWindow
 
-    # Creation du Thread pour la boucle de lecture, args : source_handler pour l'usb et root pour l'UI
+    # Create Thread for the reading loop , args : source_handler for USB & root for UI
     reading_thread = threading.Thread(target=reading_loop, args=(source_handler, root,))
-    # Start the reading background thread              
+    # Start the reading in background thread              
     reading_thread.start()
     # Start the application              
     app.exec_() 
@@ -427,7 +432,6 @@ class Ui(QtWidgets.QMainWindow):
    def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
-        # self.setStyleSheet(self.stylesheet)
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
       
         #Initialisation of the alert window
@@ -490,7 +494,7 @@ class Ui(QtWidgets.QMainWindow):
          self.equalizerselector_2.setHidden(True)
 
    def resetequalizerselector(self) :
-         #Each selectorelctor display go grey
+         #Each equalizer selector display go grey
          self.equalizernone.setStyleSheet("color: grey;")
          self.equalizerclassical.setStyleSheet("color: grey;")
          self.equalizerjazzBlues.setStyleSheet("color: grey;")
@@ -506,7 +510,7 @@ class Ui(QtWidgets.QMainWindow):
         if source_handler:
             source_handler.close()
 
-            # If the thread returned an exception, print it
+        # If the thread returned an exception, print it
         if thread_exception:
              #traceback.print_exception(*thread_exception)
              sys.stderr.flush()
