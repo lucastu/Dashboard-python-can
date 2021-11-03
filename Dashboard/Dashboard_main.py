@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPalette, QColor
-from PyQt5.QtCore import pyqtSignal
+# from PyQt5.QtGui import QPalette, QColor
+from PyQt5.QtCore import pyqtSignal, QObject
 
 import sys
 import threading
@@ -20,14 +20,13 @@ from InfoMSG_parser import parseInfoMessage
 
 #Display on the device display in case of SSH launch of the script
 os.environ.__setitem__('DISPLAY', ':0.0')
-# os.environ["QT_LOGGING_RULES"] = "qt5ct.debug=false"
 stop_reading = threading.Event()
 
-# If the app is started, RPI_State_PIN set to True
-RPI_State_PIN = 0
-GPIO.setmode(GPIO.BCM)              # choose BCM or BOARD  
-GPIO.setup(RPI_State_PIN, GPIO.OUT) # set a port/pin as an output   
-GPIO.output(RPI_State_PIN, 1)       # set port/pin value to 1/GPIO.HIGH/True 
+# If the app is started, RPI_State_PIN set to True may be useless if I find a pin that goeas does when pi is shuted down
+# RPI_State_PIN = 0
+# GPIO.setmode(GPIO.BCM)              # choose BCM or BOARD
+# GPIO.setup(RPI_State_PIN, GPIO.OUT) # set a port/pin as an output
+# GPIO.output(RPI_State_PIN, 1)       # set port/pin value to 1/GPIO.HIGH/True
 
 can_messages = {}
 can_messages_lock = threading.Lock()
@@ -83,7 +82,7 @@ def reading_loop(source_handler, root):
     # RADIO_FACE_BUTTON =    0x13
     SHUTDOWN_FRAME    =    0x14
 
-    self.signals = Communicate()
+    signals = Communicate()
     
     while not stop_reading.is_set():
         try:
@@ -98,9 +97,9 @@ def reading_loop(source_handler, root):
             root.Volume.setText(temp)
             #root.Volumewindow.progress.setValue(int(temp))   
             #Not sure if this below works
-            self.signals.signal_int.connect(root.Volumewindow.progress.setValue(int(temp))
+            # signals.signal_int.connect(root.Volumewindow.progress.setValue(int(temp)))
             
-            if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible) :
+            if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible):
                 root.Volumewindow.moveup()
 
             elif ((data[0] & 0b11100000 == 0b11100000) and root.Volumewindow.visible):
@@ -256,7 +255,7 @@ def reading_loop(source_handler, root):
             fuelleftbyte2=''.join('%02X' % byte for byte in fuelleftbyte)                   
             logging.info("Reste en essence : %s" % (int(fuelleftbyte2,16)))
                                             
-            if (data[0] & 0b10000000) == 0b10000000 : 
+            if (data[1] & 0b10000000) == 0b10000000 : 
               root.tripinfo7.setText("conso instantanée : -- ")
             else :                                
               consoinstantbyte= bytes([data[1],data[2]])
@@ -440,27 +439,29 @@ class Ui(QtWidgets.QMainWindow):
         self.Volumewindow=volumewindow()
          
          
-        dark_palette = QPalette()
-        dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
-        dark_palette.setColor(QPalette.Background, QColor(53, 53, 53))
+        # dark_palette = QPalette()
+        # dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
+        # dark_palette.setColor(QPalette.Background, QColor(53, 53, 53))
+        #
+        # dark_palette.setColor(QPalette.WindowText, Qt.white)
+        # dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
+        # dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+        # dark_palette.setColor(QPalette.Text, Qt.white)
+        # dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
+        # dark_palette.setColor(QPalette.ButtonText, Qt.white)
+        # dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
+        # dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
+        # dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
+        # dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
+        # dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
+        #
+        # self.setPalette(dark_palette)
+        # self.setStyleSheet('background-color: QColor(53, 53, 53);')
 
-        dark_palette.setColor(QPalette.WindowText, Qt.white)
-        dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
-        dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-        dark_palette.setColor(QPalette.Text, Qt.white)
-        dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
-        dark_palette.setColor(QPalette.ButtonText, Qt.white)
-        dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
-        dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
-        dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
-        dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
-        dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
-        self.setPalette(dark_palette)
-
-         
         self.AlertONbutton.clicked.connect(self.show_alert)
         self.AlertOFFbutton.clicked.connect(self.hide_alert)
         self.closebutton.clicked.connect(self.close_all)                  
+        # self.closebutton.setStyleSheet('background-color: green;')
         self.showMaximized()  # Show the GUI
 
    
@@ -503,13 +504,18 @@ class Ui(QtWidgets.QMainWindow):
          self.equalizervocal.setStyleSheet("color: grey;")
          
    def close_all(self):
-        # set flag of              
-        if reading_thread:
-            stop_reading.set()
-            reading_thread.join()
-        if source_handler:
-            source_handler.close()
-
+        # set flag of
+        try :
+            if reading_thread:
+                stop_reading.set()
+                reading_thread.join()
+        except:
+            pass
+        try :
+            if source_handler:
+                source_handler.close()
+        except:
+            pass
         # If the thread returned an exception, print it
         if thread_exception:
              #traceback.print_exception(*thread_exception)
@@ -519,8 +525,8 @@ class Ui(QtWidgets.QMainWindow):
         #After closing threads, closing the window            
         self.close()              
                       
-class Communicate(QObject):                                                 
-    signal_int = Signal(int)
+class Communicate(QObject):
+    signal_int = pyqtSignal(int)
 
           
 if __name__ == '__main__':

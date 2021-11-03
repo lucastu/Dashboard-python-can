@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1366</width>
+    <width>1505</width>
     <height>768</height>
    </rect>
   </property>
@@ -14,7 +14,9 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background-color : QColor(53, 53, 53);
+color :white;
+</string>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Triangular</enum>
@@ -35,11 +37,8 @@
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>true</bool>
@@ -215,6 +214,124 @@
         <width>311</width>
         <height>171</height>
        </rect>
+      </property>
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>53</red>
+            <green>51</green>
+            <blue>42</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>53</red>
+            <green>51</green>
+            <blue>42</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>53</red>
+            <green>51</green>
+            <blue>42</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
       </property>
       <property name="text">
        <string>Close</string>
@@ -591,6 +708,35 @@
        <string>Trip info 7</string>
       </property>
      </widget>
+     <zorder>Temperature</zorder>
+     <zorder>RadioFreq</zorder>
+     <zorder>RadioName</zorder>
+     <zorder>RadioType</zorder>
+     <zorder>line</zorder>
+     <zorder>line_2</zorder>
+     <zorder>InfoMSG</zorder>
+     <zorder>tripInfoMode</zorder>
+     <zorder>closebutton</zorder>
+     <zorder>label_3</zorder>
+     <zorder>Volume</zorder>
+     <zorder>RadioSource</zorder>
+     <zorder>label_14</zorder>
+     <zorder>label_12</zorder>
+     <zorder>radioList0</zorder>
+     <zorder>radioList1</zorder>
+     <zorder>radioList2</zorder>
+     <zorder>radioList3</zorder>
+     <zorder>radioList4</zorder>
+     <zorder>radioList5</zorder>
+     <zorder>AlertOFFbutton</zorder>
+     <zorder>tripinfo1</zorder>
+     <zorder>tripinfo2</zorder>
+     <zorder>tripinfo3</zorder>
+     <zorder>tripinfo4</zorder>
+     <zorder>tripinfo5</zorder>
+     <zorder>tripinfo6</zorder>
+     <zorder>tripinfo7</zorder>
+     <zorder>AlertONbutton</zorder>
     </widget>
     <widget class="QWidget" name="AudioSettings">
      <attribute name="title">
