@@ -1,10 +1,10 @@
 import sys
 import os
-from PyQt5.QtCore import QTimer
+#from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QDialog)
 os.environ.__setitem__('DISPLAY', ':0.0')
-from PyQt5 import QtWidgets, uic
+#from PyQt5 import QtWidgets, uic
 
 class ombre(QtWidgets.QDialog):
     def __init__(self):
@@ -16,7 +16,8 @@ class ombre(QtWidgets.QDialog):
         self.setWindowTitle('Ombre')
         #self.setFixedSize(ScreenWidth, ScreenHeight)
         self.setStyleSheet("background-color: black;")
-        self.setWindowOpacity(0.5)
+        #self.setWindowOpacity(0.5)
+        # WindowOpacity handeled by picom (see picom conf file)
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
         # self.showMaximized()
