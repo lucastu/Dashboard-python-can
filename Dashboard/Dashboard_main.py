@@ -109,6 +109,9 @@ def reading_loop(source_handler, root):
             elif ((data[0] & 0b11100000 == 0b11100000) and root.Volumewindow.visible):
                 root.Volumewindow.movedown()
             
+        elif frame_id == INIT_STATUS_FRAME:
+            logging.info("Init communication with arduino OK")
+            
         elif frame_id == SHUTDOWN_FRAME:
             logging.info("Shut down data : " + data[0])
             #os.system("sudo shutdown -h now")
@@ -224,41 +227,43 @@ def reading_loop(source_handler, root):
                 root.radioList5.setText("6 : "+ radio_list[5])
 
         elif frame_id == INFO_TRIP1_FRAME :
-            #a mettre en forme mais tout correspond
-            root.tripinfo3.setText("Vitesse moyenne : %s km/h" % (data[0]))
+            #a mettre en forme mais tout correspond, mais je m'en fout ?
+            #root.tripinfo3.setText("Vitesse moyenne : %s km/h" % (data[0]))
                                             
             distanceafterresetbyte= bytes([data[1],data[2]])
             distanceafterreset =int((''.join('%02X' % byte for byte in distanceafterresetbyte)),16)                   
             logging.info("Distance after reset : %s" % distanceafterreset )
-            root.tripinfo1.setText("Distance after reset : %s" % distanceafterreset)
-                                            
-            #averageFuelUsage=int(data[3]+data[4])/10
-            #root.tripinfo2.setText("Conso. moyenne : %s l/100km " % averageFuelUsage)
-                                            
-            averageFuelUsagebyte= bytes([data[1],data[2]])
+            root.tripinfo1.setText("Distance trajet : %s" % distanceafterreset)
+                                             
+            averageFuelUsagebyte= bytes([data[3],data[4]])
             averageFuelUsage =int((''.join('%02X' % byte for byte in averageFuelUsagebyte)),16)                   
             logging.info("Conso moyenne : %s" % averageFuelUsage )
-            root.tripinfo1.setText("Conso moyenne : %sl/100km" % averageFuelUsage)  
+            root.tripinfo3.setText("Conso moyenne : %sl/100km" % averageFuelUsage)  
                                             
         elif  frame_id == INFO_TRIP2_FRAME :
             #SUPPOSED TO BE THE SAME AS TRIP1, TO TEST IRL
+            #Might be completely useless
+            
             distanceafterresetbyte= bytes([data[1],data[2]])
             distanceafterreset =int((''.join('%02X' % byte for byte in distanceafterresetbyte)),16)                   
             logging.info("Distance 2 : %s" % distanceafterreset )
+            #useless ? at 9999 all the time, must see value while driving
             root.tripinfo4.setText("Distance 2 : %s" % distanceafterreset)
-                                            
-            root.tripinfo6.setText("Vitesse moy2 : %s km/h" % (data[0]))                                            
+             
+            #useless  
+            #root.tripinfo6.setText("Vitesse moy2 : %s km/h" % (data[0]))                                            
                                             
             averageFuelUsagebyte= bytes([data[1],data[2]])
             averageFuelUsage =int((''.join('%02X' % byte for byte in averageFuelUsagebyte)),16)                   
             logging.info("Conso moyenne2 : %s" % averageFuelUsage )
+            #useless ? at 9999 all the time, must see value while driving
             root.tripinfo5.setText("Conso moyenne2 : %sl/100km" % averageFuelUsage)                                            
             
         elif frame_id == INFO_INSTANT_FRAME :
             fuelleftbyte= bytes([data[3],data[4]])
-            fuelleftbyte2=''.join('%02X' % byte for byte in fuelleftbyte)                   
-            logging.info("Reste en essence : %s" % (int(fuelleftbyte2,16)))
-                                            
+            fuelleftbyte2=''.join('%02X' % byte for byte in fuelleftbyte)
+            root.tripinfo2.setText("Reste en essence : %skm" % (int(fuelleftbyte2,16)))
+            
             if (data[1] & 0b10000000) == 0b10000000 : 
               root.tripinfo7.setText("conso instantanée : -- ")
             else :                                
@@ -271,18 +276,18 @@ def reading_loop(source_handler, root):
                 cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
                 os.system(cmd)
 
-        elif frame_id == TRIP_MODE_FRAME:
-            #temp = int(format_data_hex(data))
-            #Maybe useless for my integration ?
-            temp = data[0]
-            tripInfoMode =""
-            if temp == 0:
-                tripInfoMode = "instant"
-            elif temp == 1:
-                tripInfoMode = "trip1"
-            elif temp == 2:
-                tripInfoMode = "trip2"
-            root.tripInfoMode.setText(tripInfoMode)
+        #elif frame_id == TRIP_MODE_FRAME:
+        #    #temp = int(format_data_hex(data))
+        #    #Maybe useless for my integration ?
+        #    temp = data[0]
+        #    tripInfoMode =""
+        #    if temp == 0:
+        #        tripInfoMode = "instant"
+        #    elif temp == 1:
+        #        tripInfoMode = "trip1"
+        #    elif temp == 2:
+        #        tripInfoMode = "trip2"
+        #    root.tripInfoMode.setText(tripInfoMode)
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
             #activeMode = 0
