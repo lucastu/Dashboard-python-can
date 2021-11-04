@@ -35,7 +35,8 @@ class volumewindow(QtWidgets.QDialog):
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
         self.visible=False
-
+        self.change_volume.connect(self.setProgressVal)
+        
     def moveup(self):
         self.visible=True
         self.show()
@@ -44,8 +45,6 @@ class volumewindow(QtWidgets.QDialog):
         emplacement_y = int(self.ScreenHeight - self.WindowHeight)
         # Application nouvelle geometry
         self.move(emplacement_x, emplacement_y)
-
-
 
     def movedown(self):
         # Placement according to window and display size
@@ -66,6 +65,9 @@ class volumewindow(QtWidgets.QDialog):
         self.hide()
         self.visible=False
 
+    def setProgressVal(self, val):
+        self.progress.setValue(val)
+        
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = volumeWindow()
