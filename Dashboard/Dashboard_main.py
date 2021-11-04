@@ -28,10 +28,10 @@ stop_reading = threading.Event()
 # GPIO.setup(RPI_State_PIN, GPIO.OUT) # set a port/pin as an output
 # GPIO.output(RPI_State_PIN, 1)       # set port/pin value to 1/GPIO.HIGH/True
 
-can_messages = {}
-can_messages_lock = threading.Lock()
+# can_messages = {}
+# can_messages_lock = threading.Lock()
 
-thread_exception = None
+# thread_exception = None
 
 #Configure the log file and format
 logging.basicConfig(level=logging.INFO,
@@ -82,7 +82,7 @@ def reading_loop(source_handler, root):
     # RADIO_FACE_BUTTON =    0x13
     SHUTDOWN_FRAME    =    0x14
 
-    signals = Communicate()
+    change_volume = pyqtSignal(int)
     
     while not stop_reading.is_set():
         try:
@@ -95,9 +95,13 @@ def reading_loop(source_handler, root):
         if frame_id == VOLUME_FRAME:
             temp = str(data[0] & 0b00011111)
             root.Volume.setText(temp)
+            # This one works for a while but crash everything after
             #root.Volumewindow.progress.setValue(int(temp))   
             #Not sure if this below works
-            # signals.signal_int.connect(root.Volumewindow.progress.setValue(int(temp)))
+            # signals.signal_int.connect(root.Volumewindow.progress.setValue(int(temp)))  
+            #Emission du signal change_volume avec la valeur du volume
+            
+            self.change_volume.emit(int(temp))
             
             if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible):
                 root.Volumewindow.moveup()
@@ -386,6 +390,9 @@ def reading_loop(source_handler, root):
         # else :
         #     root.tabWidget.setCurrentIndex(0)
 
+def volume.changed():
+  #Send a signal to the Qprogress bar of volume window to change volume value
+        
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
     # Bytes are separated by spaces. => not anymore
