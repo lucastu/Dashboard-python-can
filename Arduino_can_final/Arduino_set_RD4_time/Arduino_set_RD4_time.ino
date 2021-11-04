@@ -28,7 +28,9 @@ void setup() {
     pinMode(CAN0_INT, INPUT);
 
   }
-  byte datadate[] = {0x00, 0x00, 0x00, 0x00, 0x00};
+  // autowp.github.io/#39B
+  //2021 Novembre 4 00:00
+  byte datadate[] = {0x95, 0x0b, 0x04, 0x00, 0x00};
   CAN.sendMsgBuf(859, 0, 5, datadate);
 }
 
