@@ -19,26 +19,9 @@ if __name__ == '__main__':
         BT_Media_iface = dbus.Interface(player, dbus_interface=ADAPTER_INTERFACE)
         break
 
-    while 1:
-        s = raw_input()
-        if s == 'quit': 
-            break
-        if s == 'play':
-            BT_Media_iface.Play()
-        if s == 'pause':
-            BT_Media_iface.Pause()
-        if s == 'stop':
-            BT_Media_iface.Stop()
-        if s == 'next':
-            BT_Media_iface.Next()
-        if s == 'pre':
-            BT_Media_iface.Previous()
-        if s == 'show':
-            track =  adapter.get('Track')
-            print 'Title: ' + track.get('Title') 
-            print 'Artist: ' + track.get('Artist')
-            print 'Album: ' + track.get('Album')
-            print 'Genre: ' + track.get('Genre')
-            print 'NumberOfTracks: ' + str(track.get('NumberOfTracks'))
-            print 'TrackNumber: ' + str(track.get('TrackNumber'))
-            print 'Duration: ' + str(track.get('Duration'))
+    track =  adapter.get('Track')
+    print('Title: ' + track.get('Title'))
+    print('Artist: ' + track.get('Artist'))
+    print('Album: ' + track.get('Album'))
+    print('Duration: ' + str(track.get('Duration')))
+    print('Timing: ' + str(adapter.get('Position')))
