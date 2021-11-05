@@ -449,31 +449,14 @@ class Ui(QtWidgets.QMainWindow):
         self.init_alert_window()
         #Initialisation of the volume window
         self.Volumewindow=volumewindow()
-         
-         
-        # dark_palette = QPalette()
-        # dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
-        # dark_palette.setColor(QPalette.Background, QColor(53, 53, 53))
-        #
-        # dark_palette.setColor(QPalette.WindowText, Qt.white)
-        # dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
-        # dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-        # dark_palette.setColor(QPalette.Text, Qt.white)
-        # dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
-        # dark_palette.setColor(QPalette.ButtonText, Qt.white)
-        # dark_palette.setColor(QPalette.Active, QPalette.Button, QColor(53, 53, 53))
-        # dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
-        # dark_palette.setColor(QPalette.Disabled, QPalette.WindowText, Qt.darkGray)
-        # dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
-        # dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
-        #
-        # self.setPalette(dark_palette)
-        # self.setStyleSheet('background-color: QColor(53, 53, 53);')
+        
+        self.setStyleSheet(“border-image : url(/home/pi/lucas/bg.png.png)") 
+        #self.setStyleSheet(“background-image : url(/home/pi/lucas/bg.png.png); background-repeat: no-repeat; background-position: center;")
+        #self.setStyleSheet(“background-image : url(/home/pi/lucas/bg.png.png); background-repeat: no-repeat; background-position: center;")
 
         self.AlertONbutton.clicked.connect(self.show_alert)
         self.AlertOFFbutton.clicked.connect(self.hide_alert)
-        self.closebutton.clicked.connect(self.close_all)                  
-        # self.closebutton.setStyleSheet('background-color: green;')
+        self.closebutton.clicked.connect(self.close_all)              
         self.showMaximized()  # Show the GUI
 
    
