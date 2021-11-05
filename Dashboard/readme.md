@@ -45,20 +45,20 @@ OPEN_DOOR_FRAME      => working, but maybe useless (redundant info w/ INFO_MSG_F
 
 ```
 # Dependancies
-## pour demarrer le gestionnaire de fenetre au demarrage
+### To launch Picom window manager on startup
 ```
 sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
 ```
 Edit the file to add  :
 
-> picom -b --config /home/pi/.../config2-picom.conf
+> picom -b --config /home/pi/.../config-picom.conf
 
 Ex :
 ```
     @lxpanel --profile LXDE-pi
     @pcmanfm --desktop --profile LXDE-pi
     @xscreensaver -no-splash
-    @picom -b --config /home/pi/lucas/config2-picom.conf
+    @picom -b --config /home/pi/lucas/config-picom.conf
     point-rpi
     xset s off
     xset s noblank
@@ -66,14 +66,22 @@ Ex :
     /usr/local/bin/openauto
     /usr/local/bin/controller_service_watchdog.sh
 ```
-## To enable Shutdown via GPIO pin //useless now
+### Install pyqt5
 ```
-sudo nano /boot/config.txt
+sudo apt-get install python3-pyqt5
 ```
-Edit the file to add  :
-> dtoverlay=gpio-shutdown,gpio_pin=4
 
-### install tksvg is useless ?
+### Install Picom,  yshui'fork
+```
+sudo apt install cmake meson git pkg-config asciidoc libxext-dev libxcb1-dev libxcb-damage0-dev libxcb-xfixes0-dev libxcb-shape0-dev libxcb-render-util0-dev libxcb-render0-dev libxcb-randr0-dev libxcb-composite0-dev libxcb-image0-dev libxcb-present-dev libxcb-xinerama0-dev libxcb-glx0-dev libpixman-1-dev libdbus-1-dev libconfig-dev libgl1-mesa-dev  libpcre2-dev  libevdev-dev uthash-dev libev-dev libx11-xcb-dev
+git clone https://github.com/yshui/picom
+cd picom
+git submodule update --init --recursive
+meson --buildtype=release . build
+ninja -C build
+sudo ninja -C build install
+```
+### Install tksvg is useless ?
 ```
 sudo apt install cmake build-essential tcl-dev tk-dev python3-tk
 python -m pip install scikit-build
@@ -89,19 +97,4 @@ sudo apt-get install python3
 ```
 sudo apt-get install -y python-pil.imagetk
 sudo pip3 install tksvg
-```
-
-### Install Picom, and the branch from yshui
-```
-sudo apt install cmake meson git pkg-config asciidoc libxext-dev libxcb1-dev libxcb-damage0-dev libxcb-xfixes0-dev libxcb-shape0-dev libxcb-render-util0-dev libxcb-render0-dev libxcb-randr0-dev libxcb-composite0-dev libxcb-image0-dev libxcb-present-dev libxcb-xinerama0-dev libxcb-glx0-dev libpixman-1-dev libdbus-1-dev libconfig-dev libgl1-mesa-dev  libpcre2-dev  libevdev-dev uthash-dev libev-dev libx11-xcb-dev
-git clone https://github.com/yshui/picom
-cd picom
-git submodule update --init --recursive
-meson --buildtype=release . build
-ninja -C build
-sudo ninja -C build install
-```
-### Install pyqt5
-```
-sudo apt-get install python3-pyqt5
 ```
