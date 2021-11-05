@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+# https://qiita.com/eggman/items/339a9c9b338634ac27a5
+# https://kernel.googlesource.com/pub/scm/bluetooth/bluez/+/5.43/doc/media-api.txt
+# https://linuxtut.com/fr/30cb07454670450e3adf/  
+  
 import dbus
 
 SERVICE_NAME = "org.bluez"
