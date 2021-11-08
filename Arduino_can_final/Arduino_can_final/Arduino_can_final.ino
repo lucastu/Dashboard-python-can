@@ -34,8 +34,7 @@ typedef enum {
   INFO_MSG_FRAME       = 0x08,
   RADIO_STATIONS_FRAME = 0x09,
 
-  INFO_TRIP1_FRAME     = 0x0C,
-  INFO_TRIP2_FRAME     = 0x0D,
+  INFO_TRIP_FRAME     = 0x0C,
   INFO_INSTANT_FRAME   = 0x0E,
   TRIP_MODE_FRAME      = 0x0F,
   AUDIO_SETTINGS_FRAME = 0x10,
@@ -324,9 +323,9 @@ void loop() {
         
         sendFrameWithType(INFO_MSG_FRAME, messageInfo, 8);
       }
-    } else if (id == 673 || id == 609 || id == 545) {
+    } else if (id == 673 || id == 545) {
       // Trip computer data frames
-      // There is 3 different frames (1 for each data set)
+      // There is 2 different frames (1 for each data set)
       // but they're all structured the same way
       byte* value;
       byte frameType;
@@ -334,11 +333,7 @@ void loop() {
       switch (id) {
         case 673:
         value = infoTrip1;
-        frameType = INFO_TRIP1_FRAME;
-        break;
-        case 609:
-        value = infoTrip2;
-        frameType = INFO_TRIP2_FRAME;
+        frameType = INFO_TRIP_FRAME;
         break;
         case 545:
         value = infoInstant;

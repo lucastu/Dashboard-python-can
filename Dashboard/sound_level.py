@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import (QApplication, QDialog,
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets, uic
 
+# os.environ.__setitem__('DISPLAY', ':0.0')
+
 class volumewindow(QtWidgets.QDialog):
     def __init__(self):
         Volume =0
@@ -31,11 +33,9 @@ class volumewindow(QtWidgets.QDialog):
         # Maxmimum de valeur de volume
         self.progress.setMaximum(30)
         # Retire le text du pourcentage dans la barre
-        #self.progress.setTextVisible(0)
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
         self.visible=False
-        self.change_volume.connect(self.setProgressVal)
         
     def moveup(self):
         self.visible=True
@@ -64,9 +64,6 @@ class volumewindow(QtWidgets.QDialog):
         # Hide when out of screen
         self.hide()
         self.visible=False
-
-    def setProgressVal(self, val):
-        self.progress.setValue(val)
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)

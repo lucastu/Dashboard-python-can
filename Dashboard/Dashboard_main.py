@@ -1,32 +1,26 @@
 #!/usr/bin/env python3
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtCore import Qt
-# from PyQt5.QtGui import QPalette, QColor
-from PyQt5.QtCore import pyqtSignal, QObject
-
+from PyQt5.QtCore import Qt, pyqtSignal, QObject
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLabel
 import sys
 import threading
-#import traceback
+import traceback
 import time
 import os
 import logging
 import RPi.GPIO as GPIO   
+from functools import partial
 
 from source_handler import InvalidFrame, SerialHandler
 from sound_level import volumewindow
 from ombre import ombre
 from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
-
+from Bluetooth_utils import bluetooth_utils
 #Display on the device display in case of SSH launch of the script
-os.environ.__setitem__('DISPLAY', ':0.0')
+# os.environ.__setitem__('DISPLAY', ':0.0')
 stop_reading = threading.Event()
-
-# If the app is started, RPI_State_PIN set to True may be useless if I find a pin that goeas does when pi is shuted down
-# RPI_State_PIN = 0
-# GPIO.setmode(GPIO.BCM)              # choose BCM or BOARD
-# GPIO.setup(RPI_State_PIN, GPIO.OUT) # set a port/pin as an output
-# GPIO.output(RPI_State_PIN, 1)       # set port/pin value to 1/GPIO.HIGH/True
 
 # can_messages = {}
 # can_messages_lock = threading.Lock()
@@ -72,18 +66,16 @@ def reading_loop(source_handler, root):
     RADIO_DESC_FRAME =     0x07
     INFO_MSG_FRAME =       0x08
     RADIO_STATIONS_FRAME = 0x09
-    INFO_TRIP1_FRAME =     0x0C
-    INFO_TRIP2_FRAME =     0x0D
+    INFO_TRIP_FRAME =     0x0C
+    # INFO_TRIP2_FRAME =     0x0D
     INFO_INSTANT_FRAME =   0x0E
-    TRIP_MODE_FRAME =      0x0F
+    # TRIP_MODE_FRAME =      0x0F
     AUDIO_SETTINGS_FRAME = 0x10
     REMOTE_COMMAND_FRAME = 0x11  
     OPEN_DOOR_FRAME      = 0x12
     # RADIO_FACE_BUTTON =    0x13
     SHUTDOWN_FRAME    =    0x14
 
-    change_volume = pyqtSignal(int)
-    
     while not stop_reading.is_set():
         try:
             frame_id, data = source_handler.get_message()
@@ -95,14 +87,8 @@ def reading_loop(source_handler, root):
         if frame_id == VOLUME_FRAME:
             temp = str(data[0] & 0b00011111)
             root.Volume.setText(temp)
-            # This one works for a while but crash everything after
-            #root.Volumewindow.progress.setValue(int(temp))   
-            #Not sure if this below works
-            # signals.signal_int.connect(root.Volumewindow.progress.setValue(int(temp)))  
-            #Emission du signal change_volume avec la valeur du volume
-            
-            self.change_volume.emit(int(temp))
-            
+            root.custom_signals.update_progress_volume_signal.emit()
+
             if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible):
                 root.Volumewindow.moveup()
 
@@ -160,12 +146,9 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_FREQ_FRAME:
             temp = format_data_hex(data)
-            #after mod of format_data_hex to remove ' '
-            #root.RadioFreq.setText(str(float(int(temp.replace(" ", ""),16))/10)+ "MHz")
             root.RadioFreq.setText(str(float(int(temp,16))/10)+ "MHz")                                            
 
-        elif frame_id == RADIO_FMTYPE_FRAME:                               
-            #temp = int(format_data_hex(data))
+        elif frame_id == RADIO_FMTYPE_FRAME:
             temp = data[0]
             radioFMType ="No Type"
             if temp == 1:
@@ -179,7 +162,6 @@ def reading_loop(source_handler, root):
             root.RadioType.setText("Radio "+ RadioFMType)
 
         elif frame_id == RADIO_SOURCE_FRAME:
-            # temp = int(format_data_ascii(data))
             temp = data[0]
             Source = "Aucune source..."
             if temp == 1:
@@ -187,7 +169,7 @@ def reading_loop(source_handler, root):
             elif temp == 2:
                 Source = "cd"
             elif temp == 3:
-                Source = "CDC"
+                Source = "OpenAuto"
             elif temp == 4:
                 Source = "AUX1"
             elif temp == 5:
@@ -226,38 +208,19 @@ def reading_loop(source_handler, root):
                 root.radioList4.setText("5 : "+ radio_list[4])
                 root.radioList5.setText("6 : "+ radio_list[5])
 
-        elif frame_id == INFO_TRIP1_FRAME :
+        elif frame_id == INFO_TRIP_FRAME :
             #a mettre en forme mais tout correspond, mais je m'en fout ?
             #root.tripinfo3.setText("Vitesse moyenne : %s km/h" % (data[0]))
                                             
             distanceafterresetbyte= bytes([data[1],data[2]])
             distanceafterreset =int((''.join('%02X' % byte for byte in distanceafterresetbyte)),16)                   
             logging.info("Distance after reset : %s" % distanceafterreset )
-            root.tripinfo1.setText("Distance trajet : %s" % distanceafterreset)
+            root.tripinfo1.setText("Distance trajet : %skm" % distanceafterreset)
                                              
             averageFuelUsagebyte= bytes([data[3],data[4]])
-            averageFuelUsage =int((''.join('%02X' % byte for byte in averageFuelUsagebyte)),16)                   
-            logging.info("Conso moyenne : %s" % averageFuelUsage )
-            root.tripinfo3.setText("Conso moyenne : %sl/100km" % averageFuelUsage)  
-                                            
-        elif  frame_id == INFO_TRIP2_FRAME :
-            #SUPPOSED TO BE THE SAME AS TRIP1, TO TEST IRL
-            #Might be completely useless
-            
-            distanceafterresetbyte= bytes([data[1],data[2]])
-            distanceafterreset =int((''.join('%02X' % byte for byte in distanceafterresetbyte)),16)                   
-            logging.info("Distance 2 : %s" % distanceafterreset )
-            #useless ? at 9999 all the time, must see value while driving
-            root.tripinfo4.setText("Distance 2 : %s" % distanceafterreset)
-             
-            #useless  
-            #root.tripinfo6.setText("Vitesse moy2 : %s km/h" % (data[0]))                                            
-                                            
-            averageFuelUsagebyte= bytes([data[1],data[2]])
-            averageFuelUsage =int((''.join('%02X' % byte for byte in averageFuelUsagebyte)),16)                   
-            logging.info("Conso moyenne2 : %s" % averageFuelUsage )
-            #useless ? at 9999 all the time, must see value while driving
-            root.tripinfo5.setText("Conso moyenne2 : %sl/100km" % averageFuelUsage)                                            
+            averageFuelUsage =int((''.join('%02X' % byte for byte in averageFuelUsagebyte)),16)/10
+            root.tripinfo3.setText("Conso moyenne : %sL/100km" % averageFuelUsage)
+
             
         elif frame_id == INFO_INSTANT_FRAME :
             fuelleftbyte= bytes([data[3],data[4]])
@@ -265,11 +228,11 @@ def reading_loop(source_handler, root):
             root.tripinfo2.setText("Reste en essence : %skm" % (int(fuelleftbyte2,16)))
             
             if (data[1] & 0b10000000) == 0b10000000 : 
-              root.tripinfo7.setText("conso instantanée : -- ")
+              root.tripinfo4.setText("conso instantanée : -- ")
             else :                                
               consoinstantbyte= bytes([data[1],data[2]])
               consoinstantbyte2=''.join('%02X' % byte for byte in consoinstantbyte)                                               
-              root.tripinfo7.setText("conso instantanée : %s " + str(float(int(consoinstantbyte2,16))/10))
+              root.tripinfo4.setText("conso instantanée : %s " + str(float(int(consoinstantbyte2,16))/10))
 
             if (data[0] & 0b00001000) == 0b00001000 :
                 # if Tripbutton pressed : switch window
@@ -388,16 +351,13 @@ def reading_loop(source_handler, root):
         else:
             logging.info ("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
-                  
         # f there is an activeMode of audio settings, switch to the audiosettings tab 
         # if audiosettings['activeMode'] != 0 :
         #     root.tabWidget.setCurrentIndex(1)
         # else :
         #     root.tabWidget.setCurrentIndex(0)
 
-def volume.changed():
-  #Send a signal to the Qprogress bar of volume window to change volume value
-        
+
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
     # Bytes are separated by spaces. => not anymore
@@ -422,9 +382,10 @@ def format_data_ascii(data):
             msg_str = msg_str + char
     return msg_str
 
+
 def run():
     source_handler = SerialHandler(serial_device, baudrate)
-    reading_thread = None
+    # reading_thread = None
     # Reading from a serial device, opened with timeout=0 (non-blocking read())
     source_handler.open()
 
@@ -435,11 +396,25 @@ def run():
     reading_thread = threading.Thread(target=reading_loop, args=(source_handler, root,))
     # Start the reading in background thread              
     reading_thread.start()
-    # Start the application              
-    app.exec_() 
+
+    B_read =threading.Thread(target=root.update_bluetooth_track)
+    B_read.start()
+    app.exec_()
 
 
 class Ui(QtWidgets.QMainWindow):
+   def update_progress_bluetooth_track(self):
+       try:
+           self.Bluetooth_progressBar.setValue(int(float(self.percent.text())))
+       except:
+           logging.info("Wrong type of value for track position")
+
+   def update_progress_volume(self):
+       # self.Volume.setText('5')
+       try:
+           self.Volumewindow.progress.setValue(int(self.Volume.text()))
+       except:
+           logging.info("Wrong type of value for Volume")
    def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
@@ -449,17 +424,30 @@ class Ui(QtWidgets.QMainWindow):
         self.init_alert_window()
         #Initialisation of the volume window
         self.Volumewindow=volumewindow()
-        
-        self.setStyleSheet(“border-image : url(/home/pi/lucas/bg.png.png)") 
-        #self.setStyleSheet(“background-image : url(/home/pi/lucas/bg.png.png); background-repeat: no-repeat; background-position: center;")
-        #self.setStyleSheet(“background-image : url(/home/pi/lucas/bg.png.png); background-repeat: no-repeat; background-position: center;")
+
+        # Init both tabs
+        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
         self.AlertONbutton.clicked.connect(self.show_alert)
         self.AlertOFFbutton.clicked.connect(self.hide_alert)
-        self.closebutton.clicked.connect(self.close_all)              
+        self.closebutton.clicked.connect(self.close_all)
+        self.Switchtab.clicked.connect(self.switchtab)
+        self.Switchtab1.clicked.connect(self.switchtab)
         self.showMaximized()  # Show the GUI
 
-   
+        self.custom_signals = Communicate()
+        self.custom_signals.update_progress_bluetooth_track_signal.connect(self.update_progress_bluetooth_track)
+        self.custom_signals.update_progress_volume_signal.connect(self.update_progress_volume)
+        # self.custom_signals.update_progress_volume_signal.emit()
+
+
+   def switchtab(self):
+       if self.tabWidget.currentIndex() :
+           self.tabWidget.setCurrentIndex(0)
+       else :
+           self.tabWidget.setCurrentIndex(1)
+
    def init_alert_window(self):
         self.Ombre = ombre()
         self.AlertMSG = alertmsg() 
@@ -497,7 +485,22 @@ class Ui(QtWidgets.QMainWindow):
          self.equalizerpopRock.setStyleSheet("color: grey;")
          self.equalizertechno.setStyleSheet("color: grey;")
          self.equalizervocal.setStyleSheet("color: grey;")
-         
+
+   def update_bluetooth_track(self):
+       while True :
+         try:
+             B = bluetooth_utils()
+             track_info = B.run()
+             self.Bluetooth_track.setText(track_info[0])
+             self.Bluetooth_artist.setText(track_info[1])
+             self.Bluetooth_album.setText(track_info[2])
+             self.Bluetooth_timing.setText(track_info[3])
+             self.Bluetooth_duration.setText(track_info[4])
+             self.percent.setText(str(track_info[5]))
+             self.custom_signals.update_progress_bluetooth_track_signal.emit()
+             time.sleep(.5)
+         except:
+             pass
    def close_all(self):
         # set flag of
         try :
@@ -518,11 +521,11 @@ class Ui(QtWidgets.QMainWindow):
                       
         logging.info("Fermeture de l'application")              
         #After closing threads, closing the window            
-        self.close()              
-                      
-class Communicate(QObject):
-    signal_int = pyqtSignal(int)
+        self.close()
 
-          
+class Communicate(QObject):
+    update_progress_bluetooth_track_signal = pyqtSignal()
+    update_progress_volume_signal = pyqtSignal()
+
 if __name__ == '__main__':
     run()

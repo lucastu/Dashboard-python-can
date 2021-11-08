@@ -25,7 +25,7 @@ void setup() {
   
   if (CAN.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK) {
     CAN.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
-    pinMode(CAN0_INT, INPUT);
+    
   }
 }
 
@@ -40,7 +40,7 @@ void loop() {
     if (Serial.readString() != 10){
       data++;
       Serial.println(data);  
-      byte infomsg[] = {0x80, data, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+      byte infomsg[] = {0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
       CAN.sendMsgBuf(417, 0, 8, infomsg);
   }
 }
