@@ -28,6 +28,7 @@ class alertmsg(QDialog):
         
         Info_type="gas"
         Info_text=""
+        self.setWindowTitle('AlertMSG')
         # Creation de la fenetre
         self.setFixedSize(WindowWidth, WindowHeight)
         self.move(ScreenWidth / 2 - WindowWidth / 2, ScreenHeight/2- WindowHeight/2)
