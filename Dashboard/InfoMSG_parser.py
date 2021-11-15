@@ -1,6 +1,6 @@
 def parseInfoMessage(data, root) :
     infomessage = "none"
-    print("Data : %s" % data)
+    # print("Data : %s" % data)
     if data[1] == 0x2F:
         infomessage = "Essuie-vitre automatique activÃ©"
     elif data[1] == 0x30:

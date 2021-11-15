@@ -33,14 +33,12 @@ typedef enum {
   RADIO_DESC_FRAME     = 0x07,
   INFO_MSG_FRAME       = 0x08,
   RADIO_STATIONS_FRAME = 0x09,
-
-  INFO_TRIP_FRAME     = 0x0C,
+  INFO_TRIP_FRAME      = 0x0C,
   INFO_INSTANT_FRAME   = 0x0E,
   TRIP_MODE_FRAME      = 0x0F,
   AUDIO_SETTINGS_FRAME = 0x10,
   REMOTE_COMMAND_FRAME = 0x11,
   OPEN_DOOR_FRAME      = 0x12,
-  RADIO_FACE_BUTTON    = 0x13,
   SHUTDOWN_FRAME       = 0x14,
 } FrameType;
 
@@ -194,14 +192,7 @@ void loop() {
         strncpy(radioName, (char*)buffer, len);
         sendFrameWithType(RADIO_NAME_FRAME, buffer, len); 
       }    
-    } else if (id == 997) {
-      //Buttons on the face of the radio 
-      if (strncmp((char*)buffer, buttonfaceradio, len)) {
-        strncpy(buttonfaceradio, (char*)buffer, len);
-
-        sendFrameWithType(RADIO_FACE_BUTTON, buffer, len);
-      }
-    } else if (id == 677) {
+    }  else if (id == 677) {
       // Radio station name
       if (strncmp((char*)buffer, radioName, len)) {
         strncpy(radioName, (char*)buffer, len);

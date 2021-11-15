@@ -10,6 +10,11 @@
     <height>692</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Calibri</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -53,41 +58,44 @@
     <property name="tabBarAutoHide">
      <bool>true</bool>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="Radio">
      <attribute name="title">
       <string>Home</string>
      </attribute>
      <widget class="QLabel" name="Temperature">
       <property name="geometry">
        <rect>
-        <x>500</x>
-        <y>10</y>
-        <width>101</width>
-        <height>21</height>
+        <x>1030</x>
+        <y>30</y>
+        <width>250</width>
+        <height>50</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>17</pointsize>
+        <pointsize>30</pointsize>
        </font>
       </property>
       <property name="text">
        <string>°C</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
      </widget>
      <widget class="QLabel" name="RadioFreq">
       <property name="geometry">
        <rect>
-        <x>480</x>
+        <x>440</x>
         <y>220</y>
-        <width>241</width>
-        <height>61</height>
+        <width>321</width>
+        <height>131</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Myanmar Text</family>
-        <pointsize>35</pointsize>
+        <family>Calibri</family>
+        <pointsize>44</pointsize>
        </font>
       </property>
       <property name="text">
@@ -100,7 +108,7 @@
      <widget class="QLabel" name="RadioName">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>80</x>
         <y>70</y>
         <width>501</width>
         <height>111</height>
@@ -120,7 +128,7 @@
      <widget class="QLabel" name="RadioType">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>50</x>
         <y>20</y>
         <width>321</width>
         <height>31</height>
@@ -153,42 +161,6 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="InfoMSG">
-      <property name="geometry">
-       <rect>
-        <x>830</x>
-        <y>310</y>
-        <width>471</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>24</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>infomsg</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="tripInfoMode">
-      <property name="geometry">
-       <rect>
-        <x>820</x>
-        <y>360</y>
-        <width>171</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>19</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>tripinfomod</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="closebutton">
       <property name="geometry">
        <rect>
@@ -205,111 +177,18 @@
        <string>Close</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>820</x>
-        <y>130</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Volume :</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Volume">
-      <property name="geometry">
-       <rect>
-        <x>900</x>
-        <y>130</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>0</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="RadioSource">
-      <property name="geometry">
-       <rect>
-        <x>920</x>
-        <y>100</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Rsrc</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_14">
-      <property name="geometry">
-       <rect>
-        <x>810</x>
-        <y>100</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>RadioSource : </string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_12">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>290</y>
-        <width>221</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>true</underline>
-       </font>
-      </property>
-      <property name="text">
-       <string>Radios enregistrées</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="radioList0">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>320</y>
-        <width>221</width>
-        <height>31</height>
+        <x>80</x>
+        <y>360</y>
+        <width>351</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>23</pointsize>
         <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
@@ -322,15 +201,15 @@
      <widget class="QLabel" name="radioList1">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>350</y>
-        <width>221</width>
-        <height>31</height>
+        <x>80</x>
+        <y>400</y>
+        <width>381</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>23</pointsize>
         <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
@@ -343,15 +222,15 @@
      <widget class="QLabel" name="radioList2">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>380</y>
-        <width>221</width>
-        <height>31</height>
+        <x>80</x>
+        <y>440</y>
+        <width>391</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>23</pointsize>
         <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
@@ -364,15 +243,15 @@
      <widget class="QLabel" name="radioList3">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>410</y>
-        <width>221</width>
-        <height>31</height>
+        <x>80</x>
+        <y>480</y>
+        <width>421</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>23</pointsize>
         <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
@@ -385,15 +264,15 @@
      <widget class="QLabel" name="radioList4">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>440</y>
-        <width>221</width>
-        <height>31</height>
+        <x>80</x>
+        <y>520</y>
+        <width>451</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>23</pointsize>
         <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
@@ -406,15 +285,15 @@
      <widget class="QLabel" name="radioList5">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>480</y>
-        <width>221</width>
-        <height>31</height>
+        <x>80</x>
+        <y>560</y>
+        <width>481</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>23</pointsize>
         <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
@@ -424,50 +303,18 @@
        <string>Radios </string>
       </property>
      </widget>
-     <widget class="QPushButton" name="AlertONbutton">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>560</y>
-        <width>91</width>
-        <height>121</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color : Qcolor(23,23,23);</string>
-      </property>
-      <property name="text">
-       <string>AlertONbutton</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="AlertOFFbutton">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>560</y>
-        <width>91</width>
-        <height>121</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color : Qcolor(23,23,23);</string>
-      </property>
-      <property name="text">
-       <string>AlertOFFbutton</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="tripinfo1">
       <property name="geometry">
        <rect>
-        <x>1020</x>
-        <y>110</y>
-        <width>341</width>
-        <height>21</height>
+        <x>1090</x>
+        <y>220</y>
+        <width>161</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>13</pointsize>
+        <pointsize>18</pointsize>
        </font>
       </property>
       <property name="text">
@@ -477,15 +324,15 @@
      <widget class="QLabel" name="tripinfo2">
       <property name="geometry">
        <rect>
-        <x>1020</x>
-        <y>140</y>
-        <width>351</width>
-        <height>21</height>
+        <x>1070</x>
+        <y>310</y>
+        <width>131</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>13</pointsize>
+        <pointsize>18</pointsize>
        </font>
       </property>
       <property name="text">
@@ -495,140 +342,37 @@
      <widget class="QLabel" name="tripinfo3">
       <property name="geometry">
        <rect>
-        <x>1020</x>
-        <y>170</y>
-        <width>351</width>
+        <x>1070</x>
+        <y>350</y>
+        <width>211</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>13</pointsize>
+        <pointsize>18</pointsize>
        </font>
       </property>
       <property name="text">
        <string>Trip info 3</string>
       </property>
      </widget>
-     <widget class="QLabel" name="tripinfo7">
+     <widget class="QLabel" name="tripinfo4">
       <property name="geometry">
        <rect>
-        <x>1020</x>
-        <y>210</y>
-        <width>341</width>
+        <x>1080</x>
+        <y>440</y>
+        <width>171</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>13</pointsize>
+        <pointsize>18</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>Trip info 7</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="Switchtab">
-      <property name="geometry">
-       <rect>
-        <x>1154</x>
-        <y>30</y>
-        <width>111</width>
-        <height>50</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Bluetooth_artist">
-      <property name="geometry">
-       <rect>
-        <x>830</x>
-        <y>440</y>
-        <width>361</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>19</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Artist</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Bluetooth_album">
-      <property name="geometry">
-       <rect>
-        <x>820</x>
-        <y>490</y>
-        <width>361</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>19</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Album</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Bluetooth_track">
-      <property name="geometry">
-       <rect>
-        <x>820</x>
-        <y>530</y>
-        <width>361</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>19</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Track</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Bluetooth_duration">
-      <property name="geometry">
-       <rect>
-        <x>1020</x>
-        <y>590</y>
-        <width>131</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>19</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Duration</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Bluetooth_timing">
-      <property name="geometry">
-       <rect>
-        <x>760</x>
-        <y>590</y>
-        <width>131</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>19</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Timing</string>
+       <string>Trip info 4</string>
       </property>
      </widget>
      <widget class="QLabel" name="background">
@@ -650,34 +394,347 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="separator">
+     <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>10</y>
-        <width>260</width>
-        <height>551</height>
+        <x>910</x>
+        <y>310</y>
+        <width>131</width>
+        <height>42</height>
        </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
       </property>
       <property name="text">
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>separator.png</pixmap>
+       <pixmap>images/gas_left.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>920</x>
+        <y>210</y>
+        <width>111</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>images/trajet.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>720</x>
+        <y>-10</y>
+        <width>261</width>
+        <height>761</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>images/separator.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <zorder>background</zorder>
+     <zorder>Temperature</zorder>
+     <zorder>RadioFreq</zorder>
+     <zorder>RadioName</zorder>
+     <zorder>RadioType</zorder>
+     <zorder>closebutton</zorder>
+     <zorder>radioList0</zorder>
+     <zorder>radioList1</zorder>
+     <zorder>radioList2</zorder>
+     <zorder>radioList3</zorder>
+     <zorder>radioList4</zorder>
+     <zorder>radioList5</zorder>
+     <zorder>tripinfo1</zorder>
+     <zorder>tripinfo2</zorder>
+     <zorder>tripinfo3</zorder>
+     <zorder>tripinfo4</zorder>
+     <zorder>line_2</zorder>
+     <zorder>label</zorder>
+     <zorder>label_2</zorder>
+     <zorder>label_3</zorder>
+    </widget>
+    <widget class="QWidget" name="Bluetooth">
+     <attribute name="title">
+      <string>Page</string>
+     </attribute>
+     <widget class="QLabel" name="Bluetooth_timing">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>490</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Timing</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="tripinfo4b">
+      <property name="geometry">
+       <rect>
+        <x>1020</x>
+        <y>210</y>
+        <width>341</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Trip info 4</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Bluetooth_album">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>220</y>
+        <width>611</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>22</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Album</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Temperatureb">
+      <property name="geometry">
+       <rect>
+        <x>1030</x>
+        <y>30</y>
+        <width>250</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>30</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>°C</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Bluetooth_duration">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>490</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Duration</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="tripinfo1b">
+      <property name="geometry">
+       <rect>
+        <x>1020</x>
+        <y>110</y>
+        <width>341</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Trip info 1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="percent">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>520</y>
+        <width>14</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Bluetooth_artist">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>140</y>
+        <width>641</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>38</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Artist</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Bluetooth_track">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>330</y>
+        <width>631</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>30</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Track</string>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="tripinfo3b">
+      <property name="geometry">
+       <rect>
+        <x>1020</x>
+        <y>170</y>
+        <width>351</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Trip info 3</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="closebutton_3">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>600</y>
+        <width>411</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color : Qcolor(23,23,23);</string>
+      </property>
+      <property name="text">
+       <string>Close</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="background_5">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1400</width>
+        <height>700</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>bg.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="tripinfo2b">
+      <property name="geometry">
+       <rect>
+        <x>1020</x>
+        <y>140</y>
+        <width>351</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Trip info 2</string>
+      </property>
+     </widget>
      <widget class="QProgressBar" name="Bluetooth_progressBar">
       <property name="geometry">
        <rect>
-        <x>797</x>
-        <y>625</y>
-        <width>349</width>
+        <x>60</x>
+        <y>530</y>
+        <width>600</width>
         <height>3</height>
        </rect>
       </property>
@@ -693,59 +750,78 @@
        <number>0</number>
       </property>
      </widget>
-     <widget class="QLabel" name="percent">
+     <widget class="QLabel" name="label_bluetooh">
       <property name="geometry">
        <rect>
-        <x>900</x>
-        <y>620</y>
-        <width>71</width>
-        <height>21</height>
+        <x>50</x>
+        <y>20</y>
+        <width>321</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>19</pointsize>
+        <pointsize>18</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>0</string>
+       <string>Bluetooth</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
       </property>
      </widget>
-     <zorder>background</zorder>
-     <zorder>Temperature</zorder>
-     <zorder>RadioFreq</zorder>
-     <zorder>RadioName</zorder>
-     <zorder>RadioType</zorder>
-     <zorder>line_2</zorder>
-     <zorder>InfoMSG</zorder>
-     <zorder>tripInfoMode</zorder>
-     <zorder>closebutton</zorder>
-     <zorder>label_3</zorder>
-     <zorder>Volume</zorder>
-     <zorder>RadioSource</zorder>
-     <zorder>label_14</zorder>
-     <zorder>label_12</zorder>
-     <zorder>radioList0</zorder>
-     <zorder>radioList1</zorder>
-     <zorder>radioList2</zorder>
-     <zorder>radioList3</zorder>
-     <zorder>radioList4</zorder>
-     <zorder>radioList5</zorder>
-     <zorder>AlertOFFbutton</zorder>
-     <zorder>tripinfo1</zorder>
-     <zorder>tripinfo2</zorder>
-     <zorder>tripinfo3</zorder>
-     <zorder>tripinfo7</zorder>
-     <zorder>AlertONbutton</zorder>
-     <zorder>Switchtab</zorder>
-     <zorder>Bluetooth_artist</zorder>
-     <zorder>Bluetooth_album</zorder>
-     <zorder>Bluetooth_track</zorder>
-     <zorder>Bluetooth_duration</zorder>
+     <widget class="Line" name="decor">
+      <property name="geometry">
+       <rect>
+        <x>46</x>
+        <y>49</y>
+        <width>431</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>720</x>
+        <y>0</y>
+        <width>261</width>
+        <height>761</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>images/separator.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <zorder>background_5</zorder>
      <zorder>Bluetooth_timing</zorder>
-     <zorder>separator</zorder>
-     <zorder>Bluetooth_progressBar</zorder>
+     <zorder>tripinfo4b</zorder>
+     <zorder>Bluetooth_album</zorder>
+     <zorder>Temperatureb</zorder>
+     <zorder>Bluetooth_duration</zorder>
+     <zorder>tripinfo1b</zorder>
      <zorder>percent</zorder>
+     <zorder>Bluetooth_artist</zorder>
+     <zorder>Bluetooth_track</zorder>
+     <zorder>tripinfo3b</zorder>
+     <zorder>closebutton_3</zorder>
+     <zorder>tripinfo2b</zorder>
+     <zorder>Bluetooth_progressBar</zorder>
+     <zorder>label_bluetooh</zorder>
+     <zorder>decor</zorder>
+     <zorder>label_12</zorder>
     </widget>
     <widget class="QWidget" name="AudioSettings">
      <attribute name="title">
@@ -769,11 +845,17 @@
       <property name="maximum">
        <number>9</number>
       </property>
+      <property name="value">
+       <number>0</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
       <property name="tickPosition">
-       <enum>QSlider::NoTicks</enum>
+       <enum>QSlider::TicksBothSides</enum>
+      </property>
+      <property name="tickInterval">
+       <number>0</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_4">
@@ -835,7 +917,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <property name="tickPosition">
-       <enum>QSlider::NoTicks</enum>
+       <enum>QSlider::TicksBothSides</enum>
       </property>
      </widget>
      <widget class="QSlider" name="frontRearBalance">
@@ -857,7 +939,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <property name="tickPosition">
-       <enum>QSlider::NoTicks</enum>
+       <enum>QSlider::TicksBothSides</enum>
       </property>
      </widget>
      <widget class="QLabel" name="label_7">
@@ -899,17 +981,22 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <property name="tickPosition">
-       <enum>QSlider::NoTicks</enum>
+       <enum>QSlider::TicksBothSides</enum>
       </property>
      </widget>
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>590</x>
+        <x>530</x>
         <y>200</y>
-        <width>81</width>
+        <width>141</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Loudness</string>
@@ -986,10 +1073,10 @@
      <widget class="QLabel" name="label_13">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>410</y>
-        <width>111</width>
-        <height>41</height>
+        <x>130</x>
+        <y>531</y>
+        <width>131</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="font">
@@ -1003,40 +1090,38 @@
        <string>Equalizer </string>
       </property>
      </widget>
-     <widget class="QLabel" name="equalizer">
-      <property name="geometry">
-       <rect>
-        <x>740</x>
-        <y>30</y>
-        <width>101</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Type</string>
-      </property>
-     </widget>
      <widget class="QCheckBox" name="automaticVolume">
       <property name="geometry">
        <rect>
-        <x>690</x>
-        <y>370</y>
-        <width>21</width>
-        <height>21</height>
+        <x>680</x>
+        <y>410</y>
+        <width>24</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
        <string/>
       </property>
+      <property name="iconSize">
+       <size>
+        <width>27</width>
+        <height>27</height>
+       </size>
+      </property>
      </widget>
      <widget class="QLabel" name="label_15">
       <property name="geometry">
        <rect>
-        <x>590</x>
-        <y>360</y>
-        <width>101</width>
+        <x>510</x>
+        <y>410</y>
+        <width>161</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Auto volume :</string>
@@ -1085,7 +1170,7 @@
      <widget class="QLabel" name="Loudnessselector">
       <property name="geometry">
        <rect>
-        <x>550</x>
+        <x>470</x>
         <y>190</y>
         <width>31</width>
         <height>41</height>
@@ -1105,8 +1190,8 @@
      <widget class="QLabel" name="automaticVolumeselector">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>360</y>
+        <x>460</x>
+        <y>410</y>
         <width>31</width>
         <height>31</height>
        </rect>
@@ -1166,7 +1251,7 @@
       <property name="geometry">
        <rect>
         <x>720</x>
-        <y>360</y>
+        <y>410</y>
         <width>31</width>
         <height>31</height>
        </rect>
@@ -1285,10 +1370,10 @@
      <widget class="QLabel" name="equalizernone">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>410</y>
-        <width>71</width>
-        <height>41</height>
+        <x>289</x>
+        <y>531</y>
+        <width>64</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="font">
@@ -1304,9 +1389,9 @@
       <property name="geometry">
        <rect>
         <x>380</x>
-        <y>410</y>
-        <width>101</width>
-        <height>41</height>
+        <y>531</y>
+        <width>98</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="font">
@@ -1321,10 +1406,10 @@
      <widget class="QLabel" name="equalizerjazzBlues">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>410</y>
-        <width>121</width>
-        <height>41</height>
+        <x>499</x>
+        <y>531</y>
+        <width>110</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="font">
@@ -1339,10 +1424,10 @@
      <widget class="QLabel" name="equalizerpopRock">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>410</y>
-        <width>121</width>
-        <height>41</height>
+        <x>640</x>
+        <y>531</y>
+        <width>100</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="font">
@@ -1357,10 +1442,10 @@
      <widget class="QLabel" name="equalizertechno">
       <property name="geometry">
        <rect>
-        <x>940</x>
-        <y>410</y>
-        <width>101</width>
-        <height>41</height>
+        <x>860</x>
+        <y>531</y>
+        <width>77</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="font">
@@ -1375,10 +1460,10 @@
      <widget class="QLabel" name="equalizerselector">
       <property name="geometry">
        <rect>
-        <x>1080</x>
-        <y>410</y>
+        <x>970</x>
+        <y>520</y>
         <width>31</width>
-        <height>41</height>
+        <height>52</height>
        </rect>
       </property>
       <property name="font">
@@ -1396,9 +1481,9 @@
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>410</y>
+        <y>520</y>
         <width>31</width>
-        <height>41</height>
+        <height>52</height>
        </rect>
       </property>
       <property name="font">
@@ -1415,10 +1500,10 @@
      <widget class="QLabel" name="equalizervocal">
       <property name="geometry">
        <rect>
-        <x>820</x>
-        <y>410</y>
-        <width>71</width>
-        <height>41</height>
+        <x>760</x>
+        <y>531</y>
+        <width>56</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="font">
@@ -1428,19 +1513,6 @@
       </property>
       <property name="text">
        <string>Vocal</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="Switchtab1">
-      <property name="geometry">
-       <rect>
-        <x>1154</x>
-        <y>30</y>
-        <width>111</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
       </property>
      </widget>
      <widget class="QLabel" name="background_2">
@@ -1462,6 +1534,84 @@
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="RadioType_2">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>20</y>
+        <width>581</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>18</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Paramètres audio de l'autoradio</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="Line" name="line_3">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>50</y>
+        <width>431</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Volume">
+      <property name="geometry">
+       <rect>
+        <x>1150</x>
+        <y>30</y>
+        <width>111</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Volume</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::RichText</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Volume_2">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>30</y>
+        <width>111</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Volume :</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::RichText</enum>
+      </property>
+     </widget>
      <zorder>background_2</zorder>
      <zorder>SliderBasses</zorder>
      <zorder>label_4</zorder>
@@ -1477,7 +1627,6 @@
      <zorder>label_10</zorder>
      <zorder>label_11</zorder>
      <zorder>label_13</zorder>
-     <zorder>equalizer</zorder>
      <zorder>automaticVolume</zorder>
      <zorder>label_15</zorder>
      <zorder>SliderBassesselector</zorder>
@@ -1500,7 +1649,10 @@
      <zorder>equalizerselector</zorder>
      <zorder>equalizerselector_2</zorder>
      <zorder>equalizervocal</zorder>
-     <zorder>Switchtab1</zorder>
+     <zorder>RadioType_2</zorder>
+     <zorder>line_3</zorder>
+     <zorder>Volume</zorder>
+     <zorder>Volume_2</zorder>
     </widget>
    </widget>
   </widget>

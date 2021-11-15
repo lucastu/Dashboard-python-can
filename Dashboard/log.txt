@@ -1,457 +1,62 @@
-11-03 20:08 root         INFO     Door Front Left
-11-03 20:08 root         INFO     Distance after reset : 4113
-11-03 20:08 root         INFO     Conso moyenne : 4113
-11-03 20:08 root         INFO     Distance 2 : 9999
-11-03 20:08 root         INFO     Conso moyenne2 : 9999
-11-03 20:08 root         INFO     Reste en essence : 500
-11-03 20:09 root         INFO     Distance after reset : 4113
-11-03 20:09 root         INFO     Conso moyenne : 4113
-11-05 18:24 root         INFO     Init communication with arduino OK
-11-05 18:24 root         INFO     Init communication with arduino OK
-11-05 18:25 root         INFO     Init communication with arduino OK
-11-05 18:26 root         INFO     Init communication with arduino OK
-11-05 18:27 root         INFO     Init communication with arduino OK
-11-05 18:28 root         INFO     Init communication with arduino OK
-11-05 18:29 root         INFO     Init communication with arduino OK
-11-05 18:31 root         INFO     Init communication with arduino OK
-11-05 18:32 root         INFO     Init communication with arduino OK
-11-05 18:34 root         INFO     Init communication with arduino OK
-11-05 18:36 root         INFO     Init communication with arduino OK
-11-05 18:37 root         INFO     Init communication with arduino OK
-11-05 18:38 root         INFO     Init communication with arduino OK
-11-05 18:38 root         INFO     Init communication with arduino OK
-11-05 18:39 root         INFO     Init communication with arduino OK
-11-05 18:40 root         INFO     Init communication with arduino OK
-11-05 18:42 root         INFO     Init communication with arduino OK
-11-05 18:43 root         INFO     Init communication with arduino OK
-11-05 18:43 root         INFO     Init communication with arduino OK
-11-05 18:44 root         INFO     Init communication with arduino OK
-11-05 18:45 root         INFO     Init communication with arduino OK
-11-05 18:46 root         INFO     Init communication with arduino OK
-11-05 18:46 root         INFO     Init communication with arduino OK
-11-05 18:49 root         INFO     Init communication with arduino OK
-11-05 18:49 root         INFO     Init communication with arduino OK
-11-05 18:50 root         INFO     Init communication with arduino OK
-11-05 18:51 root         INFO     Init communication with arduino OK
-11-05 18:54 root         INFO     Init communication with arduino OK
-11-05 18:55 root         INFO     Init communication with arduino OK
-11-05 18:55 root         INFO     Init communication with arduino OK
-11-05 18:56 root         INFO     Init communication with arduino OK
-11-05 18:56 root         INFO     Init communication with arduino OK
-11-05 19:05 root         INFO     Init communication with arduino OK
-11-05 19:08 root         INFO     Init communication with arduino OK
-11-05 19:11 root         INFO     Init communication with arduino OK
-11-05 19:12 root         INFO     Init communication with arduino OK
-11-05 19:13 root         INFO     Init communication with arduino OK
-11-05 19:13 root         INFO     Init communication with arduino OK
-11-05 19:14 root         INFO     Init communication with arduino OK
-11-05 19:14 root         INFO     Init communication with arduino OK
-11-05 19:16 root         INFO     Init communication with arduino OK
-11-05 19:25 root         INFO     Init communication with arduino OK
-11-05 19:26 root         INFO     Init communication with arduino OK
-11-05 19:26 root         INFO     Init communication with arduino OK
-11-05 19:27 root         INFO     Init communication with arduino OK
-11-05 19:31 root         INFO     Init communication with arduino OK
-11-05 19:31 root         INFO     Init communication with arduino OK
-11-05 19:32 root         INFO     Init communication with arduino OK
-11-05 19:32 root         INFO     Init communication with arduino OK
-11-05 19:38 root         INFO     Init communication with arduino OK
-11-06 12:03 root         INFO     Init communication with arduino OK
-11-06 12:03 root         INFO     Init communication with arduino OK
-11-06 12:04 root         INFO     Init communication with arduino OK
-11-06 12:05 root         INFO     Init communication with arduino OK
-11-06 12:06 root         INFO     Init communication with arduino OK
-11-06 12:10 root         INFO     Init communication with arduino OK
-11-06 12:14 root         INFO     Init communication with arduino OK
-11-06 12:14 root         INFO     Init communication with arduino OK
-11-06 12:15 root         INFO     Init communication with arduino OK
-11-06 12:16 root         INFO     Init communication with arduino OK
-11-06 12:16 root         INFO     Init communication with arduino OK
-11-06 12:39 root         INFO     Init communication with arduino OK
-11-06 12:47 root         INFO     Init communication with arduino OK
-11-06 12:48 root         INFO     Init communication with arduino OK
-11-06 12:48 root         INFO     Init communication with arduino OK
-11-06 12:49 root         INFO     Init communication with arduino OK
-11-06 12:49 root         INFO     Init communication with arduino OK
-11-06 12:49 root         INFO     Init communication with arduino OK
-11-06 12:52 root         INFO     Init communication with arduino OK
-11-06 12:52 root         INFO     Init communication with arduino OK
-11-06 12:53 root         INFO     Init communication with arduino OK
-11-06 12:54 root         INFO     Init communication with arduino OK
-11-06 12:55 root         INFO     Init communication with arduino OK
-11-06 12:56 root         INFO     Init communication with arduino OK
-11-06 14:31 root         INFO     Init communication with arduino OK
-11-06 14:31 root         INFO     Init communication with arduino OK
-11-06 14:32 root         INFO     Init communication with arduino OK
-11-06 14:39 root         INFO     Init communication with arduino OK
-11-06 14:42 root         INFO     Init communication with arduino OK
-11-06 14:42 root         INFO     Init communication with arduino OK
-11-06 14:45 root         INFO     Init communication with arduino OK
-11-06 14:46 root         INFO     Init communication with arduino OK
-11-06 14:49 root         INFO     Init communication with arduino OK
-11-06 14:50 root         INFO     Init communication with arduino OK
-11-06 14:52 root         INFO     Init communication with arduino OK
-11-06 15:21 root         INFO     Init communication with arduino OK
-11-07 11:29 root         INFO     Init communication with arduino OK
-11-07 11:41 root         INFO     Init communication with arduino OK
-11-07 12:00 root         INFO     Init communication with arduino OK
-11-07 12:03 root         INFO     Init communication with arduino OK
-11-07 12:14 root         INFO     Init communication with arduino OK
-11-07 12:16 root         INFO     Init communication with arduino OK
-11-07 12:19 root         INFO     Init communication with arduino OK
-11-07 12:31 root         INFO     Init communication with arduino OK
-11-07 12:42 root         INFO     Init communication with arduino OK
-11-07 12:47 root         INFO     Init communication with arduino OK
-11-07 12:50 root         INFO     Init communication with arduino OK
-11-07 12:51 root         INFO     Init communication with arduino OK
-11-07 12:51 root         INFO     Init communication with arduino OK
-11-07 12:53 root         INFO     Init communication with arduino OK
-11-07 12:54 root         INFO     Init communication with arduino OK
-11-07 12:55 root         INFO     Init communication with arduino OK
-11-07 12:56 root         INFO     Init communication with arduino OK
-11-07 13:00 root         INFO     Init communication with arduino OK
-11-07 13:14 root         INFO     Init communication with arduino OK
-11-07 13:14 root         INFO     Init communication with arduino OK
-11-07 13:18 root         INFO     Init communication with arduino OK
-11-07 13:19 root         INFO     Init communication with arduino OK
-11-07 13:21 root         INFO     Init communication with arduino OK
-11-07 13:23 root         INFO     Init communication with arduino OK
-11-07 13:25 root         INFO     Init communication with arduino OK
-11-07 13:26 root         INFO     Init communication with arduino OK
-11-07 13:27 root         INFO     Init communication with arduino OK
-11-07 13:28 root         INFO     Init communication with arduino OK
-11-07 13:58 root         INFO     Init communication with arduino OK
-11-07 14:01 root         INFO     Init communication with arduino OK
-11-07 14:04 root         INFO     Init communication with arduino OK
-11-07 14:06 root         INFO     Init communication with arduino OK
-11-07 14:08 root         INFO     Init communication with arduino OK
-11-07 14:11 root         INFO     Init communication with arduino OK
-11-07 14:13 root         INFO     Init communication with arduino OK
-11-07 15:10 root         INFO     Init communication with arduino OK
-11-07 15:19 root         INFO     Init communication with arduino OK
-11-07 15:20 root         INFO     Init communication with arduino OK
-11-07 15:20 root         INFO     Init communication with arduino OK
-11-07 15:28 root         INFO     Init communication with arduino OK
-11-07 15:29 root         INFO     Init communication with arduino OK
-11-07 15:29 root         INFO     Init communication with arduino OK
-11-07 15:30 root         INFO     Init communication with arduino OK
-11-07 15:33 root         INFO     Init communication with arduino OK
-11-07 15:39 root         INFO     Init communication with arduino OK
-11-07 15:43 root         INFO     Init communication with arduino OK
-11-07 16:45 root         INFO     Init communication with arduino OK
-11-07 16:45 root         INFO     Init communication with arduino OK
-11-07 16:46 root         INFO     Init communication with arduino OK
-11-07 16:48 root         INFO     Init communication with arduino OK
-11-07 16:49 root         INFO     Init communication with arduino OK
-11-07 16:50 root         INFO     Init communication with arduino OK
-11-07 16:59 root         INFO     Init communication with arduino OK
-11-07 18:41 root         INFO     Init communication with arduino OK
-11-07 18:45 root         INFO     Init communication with arduino OK
-11-07 18:47 root         INFO     Init communication with arduino OK
-11-07 19:19 root         INFO     Init communication with arduino OK
-11-07 19:22 root         INFO     Init communication with arduino OK
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:23 root         INFO     No bluetooth device
-11-07 19:25 root         INFO     Init communication with arduino OK
-11-07 19:40 root         INFO     Init communication with arduino OK
-11-07 19:41 root         INFO     Init communication with arduino OK
-11-07 20:15 root         INFO     Init communication with arduino OK
-11-07 20:36 root         INFO     Init communication with arduino OK
-11-07 20:38 root         INFO     Init communication with arduino OK
-11-07 20:44 root         INFO     Init communication with arduino OK
-11-07 20:47 root         INFO     Init communication with arduino OK
-11-07 20:48 root         INFO     Init communication with arduino OK
-11-07 22:26 root         INFO     Init communication with arduino OK
-11-07 22:26 root         INFO     Init communication with arduino OK
-11-07 22:29 root         INFO     Init communication with arduino OK
-11-07 22:29 root         INFO     Init communication with arduino OK
-11-07 22:31 root         INFO     Init communication with arduino OK
-11-07 22:50 root         INFO     Init communication with arduino OK
-11-07 22:51 root         INFO     Init communication with arduino OK
-11-07 22:52 root         INFO     Init communication with arduino OK
-11-07 22:53 root         INFO     Init communication with arduino OK
-11-07 22:53 root         INFO     Init communication with arduino OK
-11-07 22:55 root         INFO     Init communication with arduino OK
-11-08 10:22 root         INFO     Init communication with arduino OK
-11-08 10:25 root         INFO     Init communication with arduino OK
-11-08 10:45 root         INFO     Init communication with arduino OK
-11-08 11:04 root         INFO     Init communication with arduino OK
-11-08 11:05 root         INFO     Init communication with arduino OK
-11-08 11:06 root         INFO     Init communication with arduino OK
-11-08 11:07 root         INFO     Init communication with arduino OK
-11-08 11:13 root         INFO     Init communication with arduino OK
-11-08 11:21 root         INFO     Init communication with arduino OK
-11-08 11:26 root         INFO     Init communication with arduino OK
-11-08 11:26 root         INFO     Init communication with arduino OK
-11-08 11:30 root         INFO     Init communication with arduino OK
-11-08 11:31 root         INFO     Init communication with arduino OK
-11-08 11:32 root         INFO     Init communication with arduino OK
-11-08 11:38 root         INFO     Init communication with arduino OK
-11-08 11:40 root         INFO     Init communication with arduino OK
-11-08 11:44 root         INFO     Init communication with arduino OK
-11-08 11:56 root         INFO     Init communication with arduino OK
-11-08 11:56 root         INFO     Init communication with arduino OK
-11-08 11:57 root         INFO     Init communication with arduino OK
-11-08 12:01 root         INFO     Init communication with arduino OK
-11-08 12:08 root         INFO     Init communication with arduino OK
-11-08 12:10 root         INFO     Init communication with arduino OK
-11-08 12:18 root         INFO     Init communication with arduino OK
-11-08 12:18 root         INFO     Init communication with arduino OK
-11-08 12:20 root         INFO     Init communication with arduino OK
-11-08 12:20 root         INFO     Init communication with arduino OK
-11-08 12:24 root         INFO     Wrong type of value for Volume
-11-08 12:24 root         INFO     Init communication with arduino OK
-11-08 12:24 root         INFO     Init communication with arduino OK
-11-08 12:25 root         INFO     Init communication with arduino OK
-11-08 12:27 root         INFO     Door Front Left
-11-08 12:27 root         INFO     Distance after reset : 167
-11-08 12:27 root         INFO     Conso moyenne : 62
-11-08 12:27 root         INFO     Init communication with arduino OK
-11-08 12:27 root         INFO     Door Front Left
-11-08 12:27 root         INFO     Distance after reset : 167
-11-08 12:27 root         INFO     Conso moyenne : 62
-11-08 12:32 root         INFO     Init communication with arduino OK
-11-08 12:32 root         INFO     Door Front Left
-11-08 12:32 root         INFO     Distance after reset : 167
-11-08 12:32 root         INFO     Conso moyenne : 62
-11-08 12:32 root         INFO     Distance 2 : 9999
-11-08 12:32 root         INFO     Conso moyenne2 : 9999
-11-08 12:33 root         INFO     FRAME ID NON TRAITE : 15  :  01  ?
-11-08 12:33 root         INFO     FRAME ID NON TRAITE : 15  :  02  ?
-11-08 12:33 root         INFO     FRAME ID NON TRAITE : 15  :  00  .
-11-08 12:33 root         INFO     FRAME ID NON TRAITE : 15  :  01  ?
-11-08 12:33 root         INFO     FRAME ID NON TRAITE : 15  :  02  ?
-11-08 12:33 root         INFO     FRAME ID NON TRAITE : 15  :  00  .
-11-08 12:34 root         INFO     FRAME ID NON TRAITE : 15  :  01  ?
-11-08 12:34 root         INFO     FRAME ID NON TRAITE : 15  :  02  ?
-11-08 12:34 root         INFO     FRAME ID NON TRAITE : 15  :  00  .
-11-08 12:34 root         INFO     FRAME ID NON TRAITE : 15  :  01  ?
-11-08 12:34 root         INFO     Distance after reset : 167
-11-08 12:34 root         INFO     Conso moyenne : 62
-11-08 12:34 root         INFO     FRAME ID NON TRAITE : 15  :  02  ?
-11-08 12:34 root         INFO     FRAME ID NON TRAITE : 15  :  00  .
-11-08 12:34 root         INFO     FRAME ID NON TRAITE : 15  :  01  ?
-11-08 12:34 root         INFO     FRAME ID NON TRAITE : 15  :  02  ?
-11-08 12:35 root         INFO     Distance after reset : 167
-11-08 12:35 root         INFO     Conso moyenne : 62
-11-08 12:35 root         INFO     FRAME ID NON TRAITE : 15  :  00  .
-11-08 12:35 root         INFO     FRAME ID NON TRAITE : 15  :  01  ?
-11-08 12:35 root         INFO     FRAME ID NON TRAITE : 15  :  02  ?
-11-08 12:35 root         INFO     FRAME ID NON TRAITE : 15  :  00  .
-11-08 12:35 root         INFO     FRAME ID NON TRAITE : 15  :  01  ?
-11-08 12:35 root         INFO     FRAME ID NON TRAITE : 15  :  02  ?
-11-08 12:35 root         INFO     Distance after reset : 167
-11-08 12:35 root         INFO     Conso moyenne : 62
-11-08 12:36 root         INFO     Distance after reset : 167
-11-08 12:36 root         INFO     Conso moyenne : 62
-11-08 12:36 root         INFO     Door Front Left
-11-08 12:36 root         INFO     Door Front Left
+11-08 16:32 root         INFO     Init communication with arduino OK
+11-08 16:33 root         INFO     Door Front Left
+11-08 16:33 root         INFO     Next track
+11-08 16:33 root         INFO     Next track
+11-08 16:33 root         INFO     Next track
+11-08 16:33 root         INFO     Play pause track
+11-08 16:33 root         INFO     Play pause track
+11-08 16:33 root         INFO     Next track
+11-08 16:33 root         INFO     Play pause track
+11-08 16:33 root         INFO     Play pause track
+11-08 16:33 root         INFO     Next track
+11-08 16:33 root         INFO     Play pause track
+11-08 16:34 root         INFO     Play pause track
+11-08 16:34 root         INFO     Play pause track
+11-08 16:34 root         INFO     Play pause track
+11-08 16:34 root         INFO     Play pause track
+11-08 16:34 root         INFO     Play pause track
+11-08 16:34 root         INFO     Next track
+11-08 16:34 root         INFO     Next track
+11-08 16:34 root         INFO     Next track
+11-08 16:34 root         INFO     Next track
+11-08 16:34 root         INFO     Play pause track
+11-08 17:00 root         INFO     Init communication with arduino OK
+11-08 17:22 root         INFO     Init communication with arduino OK
+11-08 17:23 root         INFO     Init communication with arduino OK
+11-08 17:25 root         INFO     Init communication with arduino OK
+11-08 18:04 root         INFO     Init communication with arduino OK
+11-08 18:05 root         INFO     Door Front Left
+11-08 18:19 root         INFO     Init communication with arduino OK
+11-08 18:20 root         INFO     Init communication with arduino OK
+11-08 18:20 root         INFO     Init communication with arduino OK
+11-08 18:24 root         INFO     Init communication with arduino OK
+11-08 18:25 root         INFO     Door Front Left
+11-08 18:40 root         INFO     Init communication with arduino OK
+11-08 18:41 root         INFO     Door Front Left
+11-08 18:43 root         INFO     Init communication with arduino OK
+11-08 18:44 root         INFO     Door Front Left
+11-08 19:25 root         INFO     Fermeture de l'application
+11-08 19:25 root         INFO     Init communication with arduino OK
+11-08 19:29 root         INFO     Init communication with arduino OK
+11-08 22:54 root         INFO     Init communication with arduino OK
+11-08 22:55 root         INFO     Init communication with arduino OK
+11-08 22:58 root         INFO     Init communication with arduino OK
+11-08 23:13 root         INFO     Init communication with arduino OK
+11-08 23:14 root         INFO     Init communication with arduino OK
+11-08 23:15 root         INFO     Init communication with arduino OK
+11-08 23:16 root         INFO     Init communication with arduino OK
+11-08 23:18 root         INFO     Init communication with arduino OK
+11-08 23:42 root         INFO     Init communication with arduino OK
+11-08 23:46 root         INFO     Init communication with arduino OK
+11-08 23:47 root         INFO     Init communication with arduino OK
+11-08 23:47 root         INFO     Init communication with arduino OK
+11-08 23:53 root         INFO     Init communication with arduino OK
+11-08 23:56 root         INFO     Init communication with arduino OK
+11-09 00:00 root         INFO     Init communication with arduino OK
+11-09 00:05 root         INFO     Init communication with arduino OK
+11-09 00:05 root         INFO     Init communication with arduino OK
+11-09 00:09 root         INFO     Init communication with arduino OK
+11-09 00:13 root         INFO     Init communication with arduino OK
+11-09 00:13 root         INFO     Init communication with arduino OK
+11-09 00:15 root         INFO     Init communication with arduino OK
+11-09 00:19 root         INFO     Fermeture de l'application
