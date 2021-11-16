@@ -193,47 +193,48 @@ def reading_loop(source_handler, root):
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
             #Active selected mode in audio settings
+            switchToAudiosettingsTab = True
             if (data[0] & 0b10000000) == 0b10000000 :
-                activeMode = 1  # .leftRightBalance
+                # .leftRightBalance
                 root.resetaudiosettingselector()
                 root.leftRightBalanceselector.setHidden(False)
                 root.leftRightBalanceselector_2.setHidden(False)
             elif (data[1] & 0b10000000) == 0b10000000 :
-                activeMode = 2  # .frontRearBalance
+                # .frontRearBalance
                 root.resetaudiosettingselector()
                 root.frontRearBalanceselector.setHidden(False)
                 root.frontRearBalanceselector_2.setHidden(False)
             elif (data[2] & 0b10000000) == 0b10000000 :
-                activeMode = 3  # .bass
+                # .bass
                 root.resetaudiosettingselector()
                 root.SliderBassesselector.setHidden(False)
                 root.SliderBassesselector_2.setHidden(False)
             elif (data[4] & 0b10000000) == 0b10000000 :
-                activeMode = 4  # .treble
+                # .treble
                 root.resetaudiosettingselector()
                 root.SliderAigusselector.setHidden(False)
                 root.SliderAigusselector_2.setHidden(False)
             elif (data[5] & 0b10000000) == 0b10000000 :
-                activeMode = 5  # .loudness
+                # .loudness
                 root.resetaudiosettingselector()
                 root.Loudnessselector.setHidden(False)
                 root.Loudnessselector_2.setHidden(False)
             elif (data[5] & 0b00010000) == 0b00010000 :
-                activeMode = 6  # .automaticVolume
+                # .automaticVolume
                 root.resetaudiosettingselector()
                 root.automaticVolumeselector.setHidden(False)
                 root.automaticVolumeselector_2.setHidden(False)
             elif (data[6] & 0b01000000) == 0b01000000 :
-                activeMode = 7  # .equalizer
+                # .equalizer
                 root.resetaudiosettingselector()
                 root.equalizerselector.setHidden(False)
                 root.equalizerselector_2.setHidden(False)
             else :
-                activeMode = 0
+                switchToAudiosettingsTab = False
                 root.resetaudiosettingselector()
-            # f there is an activeMode of audio settings, switch to the audiosettings tab
-
-            if activeMode != 0 :
+                
+            # If amode is active, switch to the audiosettings tab
+            if switchToAudiosettingsTab :
                 root.tabWidget.setCurrentIndex(2)
             else :
                 if audiosettings['source'] == "OpenAuto":
@@ -268,7 +269,6 @@ def reading_loop(source_handler, root):
                 root.equalizertechno.setStyleSheet("color: white;")  
                   
             #Enregistrement de toutes ces variables dans le dictionnaire audiosettings
-            audiosettings['activeMode']         = activeMode
             audiosettings['frontRearBalance']   = int(data[1] & 0b01111111) - 63
             audiosettings['leftRightBalance']   = int(data[0] & 0b01111111) - 63
             audiosettings['automaticVolume']    = (data[5] & 0b00000111) == 0b00000111
@@ -283,7 +283,7 @@ def reading_loop(source_handler, root):
             root.leftRightBalance.setValue(audiosettings['leftRightBalance'])                      
             root.Loudness.setChecked(audiosettings['loudness'])
             root.automaticVolume.setChecked(audiosettings['automaticVolume'])
-            # root.equalizer.setText(str(audiosettings['equalizer']))
+
 
         else:
             logging.info ("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
