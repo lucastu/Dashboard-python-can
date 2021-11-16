@@ -10,7 +10,6 @@ const int CS_PIN = 10;
 MCP_CAN CAN(CS_PIN);
 
 //Pin of rapsberry state
-const int RPI_State_PIN = 2;
 const int Radio_POWER_PIN = 3;
 const int Relay_PIN = 4;
 
@@ -112,7 +111,6 @@ void setup() {
   byte canSpeed = CAN_SPEED;
   
   //Input for monitoring 
-  pinMode(RPI_State_PIN , INPUT_PULLUP);  
   pinMode(Radio_POWER_PIN , INPUT_PULLUP);  
   // Output for the relay
   pinMode(Relay_PIN, OUTPUT);
@@ -146,10 +144,6 @@ void loop() {
   // And then shut the relay off
   if (digitalRead(Radio_POWER_PIN ) == LOW)  {
     sendByteWithType(SHUTDOWN_FRAME, 0x01);
-  //  while (digitalRead(RPI_State_PIN ) == HIGH ){
-  //    delay(100);
-  //  } 
-    digitalWrite(Relay_PIN, LOW);
   }
   
   // If a msg is available from canbus
