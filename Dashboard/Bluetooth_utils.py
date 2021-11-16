@@ -17,24 +17,24 @@ class bluetooth_utils :
          objects = self.manager.GetManagedObjects()
          for path, ifaces in objects.items():
              adapter = ifaces.get(self.ADAPTER_INTERFACE)
-             if adapter is None:
-                 continue
-             player = self.bus.get_object('org.bluez', path)
-             BT_Media_iface = dbus.Interface(player, dbus_interface=self.ADAPTER_INTERFACE)
-             break
+             if adapter is not None:
+                 # continue
+                 player = self.bus.get_object('org.bluez', path)
+                 BT_Media_iface = dbus.Interface(player, dbus_interface=self.ADAPTER_INTERFACE)
+             # break
 
-         if action == 'playpause':
-             if adapter.get('Status') == "playing":
-                 BT_Media_iface.Pause()
-             else :
-                 BT_Media_iface.Play()
-         elif action == 'stop':
-             BT_Media_iface.Stop()
-         elif action == 'pre':
-             BT_Media_iface.Previous()
-         # elif action == 'next':
-         else:
-             BT_Media_iface.Next()
+                 if action == 'playpause':
+                     if adapter.get('Status') == "playing":
+                         BT_Media_iface.Pause()
+                     else :
+                         BT_Media_iface.Play()
+                 elif action == 'stop':
+                     BT_Media_iface.Stop()
+                 elif action == 'pre':
+                     BT_Media_iface.Previous()
+                 # elif action == 'next':
+                 else:
+                     BT_Media_iface.Next()
 
 
      def run(self):

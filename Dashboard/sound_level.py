@@ -12,11 +12,11 @@ class volumewindow(QtWidgets.QDialog):
     def __init__(self):
         Volume =0
         #Definition de la taille de lecran
-        self.ScreenHeight = 720
-        self.ScreenWidth = 1280
+        self.ScreenHeight = 600
+        self.ScreenWidth = 1024
         # Definition de la taille de la fenetre
-        self.WindowHeight = 60
-        self.WindowWidth =1000
+        self.WindowHeight = 30
+        self.WindowWidth =600
         
         super().__init__()
         self.initUI()
@@ -67,5 +67,7 @@ class volumewindow(QtWidgets.QDialog):
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = volumeWindow()
-
+    window = volumewindow()
+    window.show()
+    window.move(0,0)
+    sys.exit(app.exec_())

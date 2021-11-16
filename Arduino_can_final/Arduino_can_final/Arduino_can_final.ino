@@ -173,7 +173,7 @@ void loop() {
     } else if (id == 997) {
       // Radio face button
       // Replicate dark button press to the screen button
-       if ((buf[2] & 0b00000100) == 0b00000100) {digitalWrite(screenBrightnessPin, HIGH);}
+       if ((buffer[2] & 0b00000100) == 0b00000100) {digitalWrite(screenBrightnessPin, HIGH);}
        else {digitalWrite(screenBrightnessPin, LOW);} 
       
     } else if (id == 544) {
@@ -185,7 +185,7 @@ void loop() {
       }
     } else if (id == 357) {
       //Radio display on or off
-       if ((buf[0] & 0b10000000) == 0b10000000) {digitalWrite(screenPowerPin, HIGH);}
+       if ((buffer[0] & 0b10000000) == 0b10000000) {digitalWrite(screenPowerPin, HIGH);}
        else {digitalWrite(screenPowerPin, LOW);}      
       
       // Radio source

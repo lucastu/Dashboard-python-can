@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1323</width>
-    <height>692</height>
+    <width>1024</width>
+    <height>572</height>
    </rect>
   </property>
   <property name="font">
@@ -24,9 +24,6 @@
   <property name="styleSheet">
    <string notr="true">color :white;</string>
   </property>
-  <property name="tabShape">
-   <enum>QTabWidget::Triangular</enum>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="autoFillBackground">
     <bool>false</bool>
@@ -34,10 +31,10 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>-10</x>
+      <x>0</x>
       <y>-30</y>
-      <width>1366</width>
-      <height>768</height>
+      <width>1024</width>
+      <height>630</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -50,12 +47,9 @@
      <bool>false</bool>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="documentMode">
-     <bool>false</bool>
-    </property>
-    <property name="tabBarAutoHide">
      <bool>true</bool>
     </property>
     <widget class="QWidget" name="Radio">
@@ -65,8 +59,8 @@
      <widget class="QLabel" name="Temperature">
       <property name="geometry">
        <rect>
-        <x>1030</x>
-        <y>30</y>
+        <x>730</x>
+        <y>20</y>
         <width>250</width>
         <height>50</height>
        </rect>
@@ -86,8 +80,8 @@
      <widget class="QLabel" name="RadioFreq">
       <property name="geometry">
        <rect>
-        <x>440</x>
-        <y>220</y>
+        <x>320</x>
+        <y>210</y>
         <width>321</width>
         <height>131</height>
        </rect>
@@ -165,7 +159,7 @@
       <property name="geometry">
        <rect>
         <x>250</x>
-        <y>600</y>
+        <y>500</y>
         <width>411</width>
         <height>81</height>
        </rect>
@@ -181,7 +175,7 @@
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>360</y>
+        <y>330</y>
         <width>351</width>
         <height>30</height>
        </rect>
@@ -202,7 +196,7 @@
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>400</y>
+        <y>370</y>
         <width>381</width>
         <height>30</height>
        </rect>
@@ -223,7 +217,7 @@
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>440</y>
+        <y>410</y>
         <width>391</width>
         <height>30</height>
        </rect>
@@ -244,7 +238,7 @@
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>480</y>
+        <y>450</y>
         <width>421</width>
         <height>30</height>
        </rect>
@@ -265,7 +259,7 @@
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>520</y>
+        <y>490</y>
         <width>451</width>
         <height>30</height>
        </rect>
@@ -286,7 +280,7 @@
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>560</y>
+        <y>530</y>
         <width>481</width>
         <height>30</height>
        </rect>
@@ -306,8 +300,8 @@
      <widget class="QLabel" name="tripinfo1">
       <property name="geometry">
        <rect>
-        <x>1090</x>
-        <y>220</y>
+        <x>750</x>
+        <y>200</y>
         <width>161</width>
         <height>41</height>
        </rect>
@@ -324,8 +318,8 @@
      <widget class="QLabel" name="tripinfo2">
       <property name="geometry">
        <rect>
-        <x>1070</x>
-        <y>310</y>
+        <x>750</x>
+        <y>350</y>
         <width>131</width>
         <height>31</height>
        </rect>
@@ -342,8 +336,8 @@
      <widget class="QLabel" name="tripinfo3">
       <property name="geometry">
        <rect>
-        <x>1070</x>
-        <y>350</y>
+        <x>750</x>
+        <y>390</y>
         <width>211</width>
         <height>21</height>
        </rect>
@@ -360,7 +354,7 @@
      <widget class="QLabel" name="tripinfo4">
       <property name="geometry">
        <rect>
-        <x>1080</x>
+        <x>780</x>
         <y>440</y>
         <width>171</width>
         <height>21</height>
@@ -380,8 +374,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1400</width>
-        <height>700</height>
+        <width>1024</width>
+        <height>600</height>
        </rect>
       </property>
       <property name="text">
@@ -394,11 +388,11 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="IMGessence">
       <property name="geometry">
        <rect>
-        <x>910</x>
-        <y>310</y>
+        <x>736</x>
+        <y>281</y>
         <width>131</width>
         <height>42</height>
        </rect>
@@ -413,11 +407,11 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="IMGtrip">
       <property name="geometry">
        <rect>
-        <x>920</x>
-        <y>210</y>
+        <x>740</x>
+        <y>134</y>
         <width>111</width>
         <height>51</height>
        </rect>
@@ -435,10 +429,10 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>720</x>
-        <y>-10</y>
+        <x>570</x>
+        <y>10</y>
         <width>261</width>
-        <height>761</height>
+        <height>572</height>
        </rect>
       </property>
       <property name="text">
@@ -468,8 +462,8 @@
      <zorder>tripinfo3</zorder>
      <zorder>tripinfo4</zorder>
      <zorder>line_2</zorder>
-     <zorder>label</zorder>
-     <zorder>label_2</zorder>
+     <zorder>IMGessence</zorder>
+     <zorder>IMGtrip</zorder>
      <zorder>label_3</zorder>
     </widget>
     <widget class="QWidget" name="Bluetooth">
@@ -479,8 +473,8 @@
      <widget class="QLabel" name="Bluetooth_timing">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>490</y>
+        <x>32</x>
+        <y>430</y>
         <width>131</width>
         <height>31</height>
        </rect>
@@ -497,7 +491,7 @@
      <widget class="QLabel" name="tripinfo4b">
       <property name="geometry">
        <rect>
-        <x>1020</x>
+        <x>790</x>
         <y>210</y>
         <width>341</width>
         <height>21</height>
@@ -516,7 +510,7 @@
       <property name="geometry">
        <rect>
         <x>50</x>
-        <y>220</y>
+        <y>190</y>
         <width>611</width>
         <height>61</height>
        </rect>
@@ -533,8 +527,8 @@
      <widget class="QLabel" name="Temperatureb">
       <property name="geometry">
        <rect>
-        <x>1030</x>
-        <y>30</y>
+        <x>730</x>
+        <y>20</y>
         <width>250</width>
         <height>50</height>
        </rect>
@@ -554,8 +548,8 @@
      <widget class="QLabel" name="Bluetooth_duration">
       <property name="geometry">
        <rect>
-        <x>530</x>
-        <y>490</y>
+        <x>498</x>
+        <y>428</y>
         <width>131</width>
         <height>31</height>
        </rect>
@@ -575,7 +569,7 @@
      <widget class="QLabel" name="tripinfo1b">
       <property name="geometry">
        <rect>
-        <x>1020</x>
+        <x>790</x>
         <y>110</y>
         <width>341</width>
         <height>21</height>
@@ -596,8 +590,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>490</x>
-        <y>520</y>
+        <x>340</x>
+        <y>440</y>
         <width>14</width>
         <height>30</height>
        </rect>
@@ -615,7 +609,7 @@
       <property name="geometry">
        <rect>
         <x>50</x>
-        <y>140</y>
+        <y>110</y>
         <width>641</width>
         <height>61</height>
        </rect>
@@ -635,7 +629,7 @@
       <property name="geometry">
        <rect>
         <x>50</x>
-        <y>330</y>
+        <y>280</y>
         <width>631</width>
         <height>131</height>
        </rect>
@@ -661,7 +655,7 @@
      <widget class="QLabel" name="tripinfo3b">
       <property name="geometry">
        <rect>
-        <x>1020</x>
+        <x>790</x>
         <y>170</y>
         <width>351</width>
         <height>21</height>
@@ -680,7 +674,7 @@
       <property name="geometry">
        <rect>
         <x>250</x>
-        <y>600</y>
+        <y>500</y>
         <width>411</width>
         <height>81</height>
        </rect>
@@ -697,8 +691,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1400</width>
-        <height>700</height>
+        <width>1024</width>
+        <height>600</height>
        </rect>
       </property>
       <property name="text">
@@ -714,7 +708,7 @@
      <widget class="QLabel" name="tripinfo2b">
       <property name="geometry">
        <rect>
-        <x>1020</x>
+        <x>790</x>
         <y>140</y>
         <width>351</width>
         <height>21</height>
@@ -732,8 +726,8 @@
      <widget class="QProgressBar" name="Bluetooth_progressBar">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>530</y>
+        <x>30</x>
+        <y>460</y>
         <width>600</width>
         <height>3</height>
        </rect>
@@ -789,10 +783,10 @@
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>720</x>
-        <y>0</y>
-        <width>261</width>
-        <height>761</height>
+        <x>572</x>
+        <y>10</y>
+        <width>201</width>
+        <height>572</height>
        </rect>
       </property>
       <property name="text">
@@ -1520,8 +1514,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1400</width>
-        <height>700</height>
+        <width>1024</width>
+        <height>600</height>
        </rect>
       </property>
       <property name="text">
@@ -1573,7 +1567,7 @@
      <widget class="QLabel" name="Volume">
       <property name="geometry">
        <rect>
-        <x>1150</x>
+        <x>920</x>
         <y>30</y>
         <width>111</width>
         <height>51</height>
@@ -1594,7 +1588,7 @@
      <widget class="QLabel" name="Volume_2">
       <property name="geometry">
        <rect>
-        <x>1040</x>
+        <x>810</x>
         <y>30</y>
         <width>111</width>
         <height>51</height>

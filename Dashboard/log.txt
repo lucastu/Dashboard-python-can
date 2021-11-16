@@ -1,1 +1,39 @@
 
+11-16 17:11 root         INFO     Fermeture de l'application
+11-16 17:11 root         INFO     Fermeture de l'application
+11-16 17:13 root         INFO     Fermeture de l'application
+11-16 17:15 root         INFO     Init communication with arduino OK
+11-16 17:15 root         INFO     Fermeture de l'application
+11-16 17:21 root         INFO     Fermeture de l'application
+11-16 17:21 root         INFO     Fermeture de l'application
+11-16 17:22 root         INFO     Fermeture de l'application
+11-16 17:24 root         INFO     Fermeture de l'application
+11-16 17:30 root         INFO     Init communication with arduino OK
+11-16 17:37 root         INFO     Fermeture de l'application
+11-16 17:48 root         INFO     Init communication with arduino OK
+11-16 17:49 root         INFO     Fermeture de l'application
+11-16 18:13 root         INFO     Init communication with arduino OK
+11-16 18:19 root         INFO     Init communication with arduino OK
+11-16 18:33 root         INFO     Fermeture de l'application
+11-16 18:38 root         INFO     Fermeture de l'application
+11-16 18:39 root         INFO     Fermeture de l'application
+11-16 18:40 root         INFO     Init communication with arduino OK
+11-16 18:41 root         INFO     Fermeture de l'application
+11-16 18:42 root         INFO     Fermeture de l'application
+11-16 18:43 root         INFO     Init communication with arduino OK
+11-16 18:53 root         INFO     Fermeture de l'application
+11-16 18:55 root         INFO     Init communication with arduino OK
+11-16 19:03 root         INFO     Fermeture de l'application
+11-16 19:04 root         INFO     Init communication with arduino OK
+11-16 19:05 root         INFO     Fermeture de l'application
+11-16 19:09 root         INFO     Init communication with arduino OK
+11-16 19:10 root         INFO     Door Front Left
+11-16 19:19 root         INFO     Init communication with arduino OK
+11-16 19:21 root         INFO     Fermeture de l'application
+11-16 19:22 root         INFO     Init communication with arduino OK
+11-16 19:23 root         INFO     Door Front Left
+11-16 19:25 root         INFO     station liste : ??
+11-16 19:25 root         INFO     station liste :  CULTURE|  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
+11-16 19:25 root         INFO     station liste : ??
+11-16 19:25 root         INFO     station liste :  CULTURE|  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
+11-16 19:25 root         INFO     station liste : ??YROCK |  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
