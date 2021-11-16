@@ -21,7 +21,7 @@ from InfoMSG_parser import parseInfoMessage
 from Bluetooth_utils import bluetooth_utils
 from reading_loop import reading_loop
 
-#Display on the device display in case of SSH launch of the script
+# Event for closing everything
 stop_reading = threading.Event()
 
 #Configure the log file and format
@@ -54,7 +54,6 @@ def format_data_hex(data):
     # Bytes are separated by spaces. => not anymore
     return ''.join('%02X' % byte for byte in data)
 
-
 def format_data_ascii(data):
     """Try to make an ASCII representation of the bytes.
 
@@ -72,7 +71,6 @@ def format_data_ascii(data):
         else:
             msg_str = msg_str + char
     return msg_str
-
 
 def run():
     source_handler = SerialHandler(serial_device, baudrate)
@@ -97,9 +95,7 @@ def run():
     #Old way to loop the bluetooth reading
     #B_read =threading.Thread(target=root.update_bluetooth_track)
     #B_read.start()
-
     app.exec_()
-
 
 class Ui(QtWidgets.QMainWindow):
    def update_progress_bluetooth_track(self):
@@ -119,9 +115,6 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
 
-        # QFontDatabase.addApplicationFont("Roboto-Thin.ttf")
-        # self.setStyleSheet("font-family:'Arial';")
-        # self.fontFamily = 'Roboto-Th'
         #Initialisation of the alert window
         self.init_alert_window()
         #Initialisation of the volume window
@@ -218,7 +211,7 @@ class Ui(QtWidgets.QMainWindow):
          #time.sleep(.5)
 
    def close_all(self):
-        # set flag of
+        # set flag off
         try :
             if reading_thread:
                 stop_reading.set()
