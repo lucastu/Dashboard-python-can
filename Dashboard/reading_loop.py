@@ -64,6 +64,7 @@ def reading_loop(source_handler, root):
                 B.control('prev')
                
         elif frame_id == OPEN_DOOR_FRAME:
+            # Maybe Useless
             if (data[0] & 0b10000000) == 0b10000000 :
                 #Door Front Left     
                 logging.info("Door Front Left")
@@ -78,7 +79,7 @@ def reading_loop(source_handler, root):
                 logging.info("Door Back Right")
             if (data[0] & 0b00001000) == 0b00001000 :
                 #Door Trunk    
-                logging.info("Door Trunk ")
+                logging.info("Trunk Door")
       
         elif frame_id == TEMPERATURE_FRAME:
             temp = str(data[0])
