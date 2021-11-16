@@ -15,7 +15,8 @@ int Radio_POWER_PIN = 3;
 int Relay_PIN = 4;
 
 // LCD power switch pin
-int screenPin = 6;
+int screenBrightnessPin = 6;
+int screenPowerPin = 7;
 
 // Serial port data rate
 const long SERIAL_SPEED = 115200;
@@ -178,8 +179,8 @@ void loop() {
     } else if (id == 997) {
       // Radio face button
       // Replicate dark button press to the screen button
-       if ((buf[2] & 0b00000100) == 0b00000100) {digitalWrite(screenPin, HIGH);}
-       else {digitalWrite(screenPin, LOW);} 
+       if ((buf[2] & 0b00000100) == 0b00000100) {digitalWrite(screenBrightnessPin, HIGH);}
+       else {digitalWrite(screenBrightnessPin, LOW);} 
       
     } else if (id == 544) {
       // Openned doors
@@ -189,6 +190,10 @@ void loop() {
         sendByteWithType(OPEN_DOOR_FRAME, opendoors); 
       }
     } else if (id == 357) {
+      //Radio display on or off
+       if ((buf[0] & 0b10000000) == 0b10000000) {digitalWrite(screenPowerPin, HIGH);}
+       else {digitalWrite(screenPowerPin, LOW);}      
+      
       // Radio source
       tempValue = buffer[2] >> 4;
       if (radioSource != tempValue) { 
