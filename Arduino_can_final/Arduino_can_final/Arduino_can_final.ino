@@ -10,13 +10,13 @@ const int CS_PIN = 10;
 MCP_CAN CAN(CS_PIN);
 
 //Pin of rapsberry state
-int RPI_State_PIN = 2;
-int Radio_POWER_PIN = 3;
-int Relay_PIN = 4;
+const int RPI_State_PIN = 2;
+const int Radio_POWER_PIN = 3;
+const int Relay_PIN = 4;
 
 // LCD power switch pin
-int screenBrightnessPin = 6;
-int screenPowerPin = 7;
+const int screenBrightnessPin = 6;
+const int screenPowerPin = 7;
 
 // Serial port data rate
 const long SERIAL_SPEED = 115200;
