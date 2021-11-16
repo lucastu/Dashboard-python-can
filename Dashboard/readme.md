@@ -15,14 +15,22 @@
 **source_handler** => contain the needed functions to handle the data from the arduino
 
 # TO DO
+## Software
 ### UI
 Add graph of consumption
 ### Info message notification
 Change Icon
 ### Volume notification
 Make it beautifuler ! I dont't like it...
+Add volume level in text
+## Hardware
+### Screen
+Handle the brightness control
+Handle the power control
+### Generale
+lower the voltage of the 12V input of ignition
 
-Add volume level
+
 ### Parsing State
 ```
 VOLUME_FRAME         => OK
