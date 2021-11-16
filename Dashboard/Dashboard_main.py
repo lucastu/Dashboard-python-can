@@ -40,11 +40,9 @@ baudrate = 115200
 serial_device = "/dev/ttyUSB0"
 
 audiosettings = {
-   'activeMode' : '0',
    'frontRearBalance' : '0',
    'leftRightBalance' : '0',
    'automaticVolume' : '0',
-   'equalizer' : '0',
    'bass' : '0',
    'treble' : '0',
    'loudness' : '0',
