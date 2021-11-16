@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtCore import Qt, pyqtSignal, QObject
+from PyQt5.QtCore import Qt, pyqtSignal, QObject, Qtimer
 from PyQt5.QtGui import QPixmap,QFontDatabase
 from PyQt5.QtWidgets import QLabel
 import sys
@@ -89,8 +89,16 @@ def run():
     # Start the reading in background thread              
     reading_thread.start()
 
-    B_read =threading.Thread(target=root.update_bluetooth_track)
-    B_read.start()
+    # Create a timer that execute Bluetooth_reading_loop function every 500ms
+    # Better than a while True : Loop 
+    # To be tested
+    Bluetooth_timer = QtCore.QTimer()
+    Bluetooth_timer.timeout.connect(root.update_bluetooth_track)
+    Bluetooth_timer.start(500)
+    
+    #Old way to loop the bluetooth reading
+    #B_read =threading.Thread(target=root.update_bluetooth_track)
+    #B_read.start()
 
     app.exec_()
 
@@ -195,7 +203,7 @@ class Ui(QtWidgets.QMainWindow):
          self.equalizervocal.setStyleSheet("color: grey;")
 
    def update_bluetooth_track(self):
-       while True :
+       #while not stop_reading.is_set():
          try:
              B = bluetooth_utils()
              track_info = B.run()
@@ -209,7 +217,7 @@ class Ui(QtWidgets.QMainWindow):
 
          except:
              pass
-         time.sleep(.5)
+         #time.sleep(.5)
 
    def close_all(self):
         # set flag of
