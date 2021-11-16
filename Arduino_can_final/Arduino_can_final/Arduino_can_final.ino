@@ -14,6 +14,9 @@ int RPI_State_PIN = 2;
 int Radio_POWER_PIN = 3;
 int Relay_PIN = 4;
 
+// LCD power switch pin
+int screenPin = 6;
+
 // Serial port data rate
 const long SERIAL_SPEED = 115200;
 
@@ -172,6 +175,12 @@ void loop() {
         remotecommand = tempValue;
         sendByteWithType(REMOTE_COMMAND_FRAME, remotecommand); 
       }
+    } else if (id == 997) {
+      // Radio face button
+      // Replicate dark button press to the screen button
+       if ((buf[2] & 0b00000100) == 0b00000100) {digitalWrite(screenPin, HIGH);}
+       else {digitalWrite(screenPin, LOW);} 
+      
     } else if (id == 544) {
       // Openned doors
       tempValue = buffer[0];
