@@ -16,38 +16,37 @@
 
 # TO DO
 ### UI
--Change separator
--Add Background
+Add graph of consumption
 ### Info message notification
 Change Icon
 ### Volume notification
-Slim it
+Make it beautifuler ! I dont't like it...
 
 Add volume level
 ### Parsing State
 ```
 VOLUME_FRAME         => OK
 TEMPERATURE_FRAME    => OK
-RADIO_SOURCE_FRAME   => Working, to check
+RADIO_SOURCE_FRAME   => OK
 RADIO_NAME_FRAME     => OK
 RADIO_FREQ_FRAME     => OK
 RADIO_FMTYPE_FRAME   => OK
 RADIO_DESC_FRAME     => Not working at all
 INFO_MSG_FRAME       => OK
-RADIO_STATIONS_FRAME => Not working something with the hex to ASCII
-INFO_TRIP1_FRAME     => Data ok to test
-INFO_TRIP2_FRAME     => USELESS, to remove
-INFO_INSTANT_FRAME   => Data ok to test
-TRIP_MODE_FRAME      => USELESS, to remove
-AUDIO_SETTINGS_FRAME => OK to test
-REMOTE_COMMAND_FRAME => NEXT/PREVIOUS OK, but PLAY/PAUSE not working
-OPEN_DOOR_FRAME      => working, but maybe useless (redundant info w/ INFO_MSG_FRAME
+RADIO_STATIONS_FRAME => OK
+INFO_TRIP_FRAME      => OK
+INFO_INSTANT_FRAME   => OK
+AUDIO_SETTINGS_FRAME => OK
+REMOTE_COMMAND_FRAME => OK
+OPEN_DOOR_FRAME      => working, but maybe useless (redundant info w/ INFO_MSG_FRAME)
 
 ```
 # Dependancies
 ### To launch Picom window manager on startup
 ```
-sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+nano /etc/xdg/lxsession/LXDE-pi/autostart
+or
+nano/etc/xdg/LXDE-pi/autostart
 ```
 Edit the file to add  :
 
