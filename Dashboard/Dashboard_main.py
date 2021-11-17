@@ -8,8 +8,7 @@ import threading
 import traceback
 import time
 import os
-import logging
-#import RPi.GPIO as GPIO   
+import logging  
 from functools import partial
 
 #Imports classes and function from my files
@@ -86,18 +85,15 @@ def reading_loop(source_handler, root):
     INFO_MSG_FRAME = 0x08
     RADIO_STATIONS_FRAME = 0x09
     INFO_TRIP_FRAME = 0x0C
-    # INFO_TRIP2_FRAME =     0x0D
     INFO_INSTANT_FRAME = 0x0E
-    # TRIP_MODE_FRAME =      0x0F
     AUDIO_SETTINGS_FRAME = 0x10
     REMOTE_COMMAND_FRAME = 0x11
     OPEN_DOOR_FRAME = 0x12
-    # RADIO_FACE_BUTTON =    0x13
     SHUTDOWN_FRAME = 0x14
 
     # Init for the bluetooth command
     B = bluetooth_utils()
-    # B.control('playpause')
+    
     while not stop_reading.is_set():
         time.sleep(.05)
         try:
@@ -108,8 +104,8 @@ def reading_loop(source_handler, root):
             break
 
         if frame_id == VOLUME_FRAME:
-            temp = str(data[0] & 0b00011111)
-            root.Volume.setText(temp)
+            text = str(data[0] & 0b00011111)
+            root.Volume.setText(text)
             root.custom_signals.update_progress_volume_signal.emit()
 
             if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible):
@@ -126,7 +122,6 @@ def reading_loop(source_handler, root):
             # os.system("sudo shutdown -h now")
 
         elif frame_id == REMOTE_COMMAND_FRAME:
-            # logging.info("REMOTE_COMMAND_FRAME data : " + str(data[0]))
             if (data[0] & 0b00001100) == 0b00001100:
                 # Both button pressed : Pause/play
                 B.control('playpause')
@@ -156,8 +151,7 @@ def reading_loop(source_handler, root):
                 logging.info("Trunk Door")
 
         elif frame_id == TEMPERATURE_FRAME:
-            temp = str(data[0])
-            text = temp + "°C"
+            text = str(data[0]) + "°C"
             root.Temperature.setText(text)
             root.Temperatureb.setText(text)
 
@@ -204,14 +198,12 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)
-
             # This one never worked....
             logging.info("Radio desc frame data : %s  " % temp)
 
         elif frame_id == INFO_MSG_FRAME:
             infomessage = parseInfoMessage(data, root)
             root.AlertMSG.texte.setText(infomessage)
-
             if not (data[0] & 0b01110000):
                 root.show_alert()
             else:
@@ -238,7 +230,7 @@ def reading_loop(source_handler, root):
 
             averageFuelUsagebyte = bytes([data[3], data[4]])
             averageFuelUsage = int((''.join('%02X' % byte for byte in averageFuelUsagebyte)), 16) / 10
-            text = "moyenne : %sL/100km" % averageFuelUsage
+            text = "Moyenne : %sL/100km" % averageFuelUsage
             root.tripinfo3.setText(text)
             root.tripinfo3b.setText(text)
 
@@ -252,14 +244,12 @@ def reading_loop(source_handler, root):
 
             if (data[1] & 0b10000000) == 0b10000000:
                 text = "conso instantanée : -- "
-                root.tripinfo4.setText(text)
-                root.tripinfo4b.setText(text)
             else:
                 consoinstantbyte = bytes([data[1], data[2]])
                 consoinstantbyte2 = ''.join('%02X' % byte for byte in consoinstantbyte)
                 text = "conso instantanée : %s " + str(float(int(consoinstantbyte2, 16)) / 10)
-                root.tripinfo4.setText(text)
-                root.tripinfo4b.setText(text)
+            root.tripinfo4.setText(text)
+            root.tripinfo4b.setText(text)
 
             if (data[0] & 0b00001000) == 0b00001000:
                 # if Tripbutton pressed : switch window
@@ -358,8 +348,7 @@ def reading_loop(source_handler, root):
             root.leftRightBalance.setValue(audiosettings['leftRightBalance'])
             root.Loudness.setChecked(audiosettings['loudness'])
             root.automaticVolume.setChecked(audiosettings['automaticVolume'])
-
-
+            
         else:
             logging.info(
                 "FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
@@ -377,16 +366,11 @@ def run():
     # Start the reading in background thread              
     reading_thread.start()
 
-    # Create a timer that execute Bluetooth_reading_loop function every 500ms
-    # Better than a while True : Loop 
-    # To be tested
+    # Timer that execute Bluetooth_reading_loop function every 500ms
     Bluetooth_timer = QtCore.QTimer()
     Bluetooth_timer.timeout.connect(root.update_bluetooth_track)
     Bluetooth_timer.start(500)
-    
-    #Old way to loop the bluetooth reading
-    #B_read =threading.Thread(target=root.update_bluetooth_track)
-    #B_read.start()
+   
     app.exec_()
 
 class Ui(QtWidgets.QMainWindow):
@@ -418,8 +402,10 @@ class Ui(QtWidgets.QMainWindow):
 
         self.closebutton.clicked.connect(self.close_all)
         self.closebutton_3.clicked.connect(self.close_all)
+        
         self.showMaximized()  # Show the GUI
 
+        # Init of the custom signals that connects to the progress bars
         self.custom_signals = Communicate()
         self.custom_signals.update_progress_bluetooth_track_signal.connect(self.update_progress_bluetooth_track)
         self.custom_signals.update_progress_volume_signal.connect(self.update_progress_volume)
@@ -428,9 +414,9 @@ class Ui(QtWidgets.QMainWindow):
         self.radioList0.setText('')
         self.radioList1.setText('')
         self.radioList2.setText('')
-        self.radioList3.setText('Appuyer sur le bouton ')
-        self.radioList4.setText('"Liste" Pour charger ')
-        self.radioList5.setText('les radios mémorisées')
+        self.radioList3.setText('')
+        self.radioList4.setText('')
+        self.radioList5.setText('')
 
    def init_alert_window(self):
         self.Ombre = ombre()
@@ -486,7 +472,6 @@ class Ui(QtWidgets.QMainWindow):
          self.equalizervocal.setStyleSheet("color: grey;")
 
    def update_bluetooth_track(self):
-       #while not stop_reading.is_set():
          try:
              B = bluetooth_utils()
              track_info = B.run()
@@ -497,10 +482,8 @@ class Ui(QtWidgets.QMainWindow):
              self.Bluetooth_duration.setText(track_info[4])
              self.percent.setText(str(track_info[5]))
              self.custom_signals.update_progress_bluetooth_track_signal.emit()
-
          except:
              pass
-         #time.sleep(.5)
 
    def close_all(self):
         # set flag off
