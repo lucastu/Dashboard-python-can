@@ -98,10 +98,6 @@ byte tripMode = 0;
 // Trip mode button state
 boolean tripModeButtonPressed = false;
 boolean tripDidReset = false;
-unsigned long timeSinceTripInfoButtonPressed = 0;
-
-// State of the buttons on the radio
-byte buttonfaceradio[6];
 
 // Keeping time since la frame was sent to radio
 unsigned long lastCDCactivation =0;
@@ -112,9 +108,11 @@ void setup() {
   
   //Input for monitoring 
   pinMode(Radio_POWER_PIN , INPUT_PULLUP);  
-  // Output for the relay
+  // Output for the relay to HIGH forever, and it will go down with the arduino beein shut
   pinMode(Relay_PIN, OUTPUT);
   digitalWrite(Relay_PIN, HIGH);
+  //Put the pin in INPUT mode correspond to HI-Z mode
+  pinMode(screenBrightnessPin, INPUT);
   
   if (CAN.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK) {
     CAN.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
@@ -140,8 +138,7 @@ void loop() {
   }
   
   // If power of radio off, shutdown raspberry 
-  // Wait for it to be shutted down
-  // And then shut the relay off
+  // The arduino power will be cutted when the raspberry will be powered off
   if (digitalRead(Radio_POWER_PIN ) == LOW)  {
     sendByteWithType(SHUTDOWN_FRAME, 0x01);
   }
@@ -173,8 +170,15 @@ void loop() {
     } else if (id == 997) {
       // Radio face button
       // Replicate dark button press to the screen button
-       if ((buffer[2] & 0b00000100) == 0b00000100) {digitalWrite(screenBrightnessPin, HIGH);}
-       else {digitalWrite(screenBrightnessPin, LOW);} 
+       if ((buffer[2] & 0b00000100) == 0b00000100) {
+         //Put the pin in OUTPUT mode and LOW to simulate the press
+         pinMode(screenBrightnessPin, OUTPUT);
+         digitalWrite(screenBrightnessPin, LOW);
+       }
+       else {
+         //Put the pin in INPUT mode correspond to HI-Z mode
+         pinMode(screenBrightnessPin, INPUT);
+       } 
       
     } else if (id == 544) {
       // Openned doors
@@ -334,6 +338,7 @@ void loop() {
         value = infoTrip1;
         frameType = INFO_TRIP_FRAME;
         break;
+          
         case 545:
         value = infoInstant;
         frameType = INFO_INSTANT_FRAME;
@@ -345,45 +350,35 @@ void loop() {
         
         sendFrameWithType(frameType, value, 7);
       }
-      
-      if (id == 545) {
+      // COMPLETELY REMOVE THE IF BELOW AND ASSOCIATED VARIABLES
+      //if (id == 545) {
         // MAYBE TO REMOVE IF I CAN SEND TRIP BUTTON PRESSED MY OWN WAY
         // Special treatment for the instant data frame
         // which contains the trip data button state
-        if ((buffer[0] & 0x0F) == 0x08 && !tripModeButtonPressed) {
-          tripModeButtonPressed = true;
-          timeSinceTripInfoButtonPressed = millis();
-        } else if ((buffer[0] & 0x0F) == 0x00) {
-          if (tripModeButtonPressed) {
-            if (!tripDidReset) {
-              tripMode++;
-              tripMode %= 3;
-              sendByteWithType(TRIP_MODE_FRAME, tripMode);
-            } else {
-              for (int i = 0; i < 50; i++) {
+        //if ((buffer[0] & 0x0F) == 0x08 && !tripModeButtonPressed) {
+        //  tripModeButtonPressed = true;
+        //} else if ((buffer[0] & 0x0F) == 0x00) {
+         // if (tripModeButtonPressed) {
+           // if (!tripDidReset) {
+           //   tripMode++;
+           //   tripMode %= 3;
+           //   sendByteWithType(TRIP_MODE_FRAME, tripMode);
+           // } else {
+              //for (int i = 0; i < 50; i++) {
                 // We need to send this to actually stop the reset
                 // (else the distance/fuel counters never goes up again)
                 // FIXME: we should test explicitely the tripModes because it
                 // will currently reset the second memory if tripMode is equal
                 // to any value besides 1
-                byte data[] = { tripMode == 1 ? 0x02 : 0x04,
-                  0x00,
-                  0xFF,
-                  0xFF,
-                  0x00,
-                  0x00,
-                  0x00,
-                  0x00 };
-                  CAN.sendMsgBuf(359, 0, 8, data);
-                }
-              }
-              
-              tripDidReset = false;
-              tripModeButtonPressed = false;
-              timeSinceTripInfoButtonPressed = 0;
-            }
-          }
-        }
+                //byte data[] = { tripMode == 1 ? 0x02 : 0x04, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00 };
+                //CAN.sendMsgBuf(359, 0, 8, data);
+               // }
+             // }
+            //  tripDidReset = false;
+            //  tripModeButtonPressed = false;
+            //}
+         // }
+       // }
       } else if (id == 485) {
         // Audio settings frame
         // Same as information message frame: we send the raw frame and parse it in the raspberry
@@ -392,9 +387,8 @@ void loop() {
         }
         
         if (memcmp(tempBuffer, audioSettings, 7)) {
-          memcpy(audioSettings, tempBuffer, 7);
-          
-          sendFrameWithType(AUDIO_SETTINGS_FRAME, audioSettings, 7);
+           memcpy(audioSettings, tempBuffer, 7);
+           sendFrameWithType(AUDIO_SETTINGS_FRAME, audioSettings, 7);
         }
       }
     }
