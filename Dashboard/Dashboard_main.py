@@ -47,6 +47,8 @@ audiosettings = {
    'source' : '0'
 }
 
+consoInstant=[]
+
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
     # Bytes are separated by spaces. => not anymore
@@ -250,6 +252,10 @@ def reading_loop(source_handler, root):
                 text = "conso instantanée : %s " + str(float(int(consoinstantbyte2, 16)) / 10)
             root.tripinfo4.setText(text)
             root.tripinfo4b.setText(text)
+            
+            #Insert value in a tab limited to 50 values
+            consoInstant.insert(0,(float(int(consoinstantbyte2, 16)) / 10))
+            consoInstant = list[0 : 50]
 
             if (data[0] & 0b00001000) == 0b00001000:
                 # if Tripbutton pressed : switch window
