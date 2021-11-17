@@ -28,7 +28,7 @@ Add volume level in text
 Handle the brightness control
 Handle the power control
 ### Generale
-lower the voltage of the 12V input of ignition
+lower the voltage of the 12V input of ignition signal
 
 
 ### Parsing State
@@ -58,14 +58,14 @@ nano/etc/xdg/LXDE-pi/autostart
 ```
 Edit the file to add  :
 
-> picom -b --config /home/pi/.../config-picom.conf
+> picom -b --config /home/pi/.../picom.conf
 
 Ex :
 ```
     @lxpanel --profile LXDE-pi
     @pcmanfm --desktop --profile LXDE-pi
     @xscreensaver -no-splash
-    @picom -b --config /home/pi/lucas/config-picom.conf
+    @picom -b --config /home/pi/lucas/picom.conf
     point-rpi
     xset s off
     xset s noblank
