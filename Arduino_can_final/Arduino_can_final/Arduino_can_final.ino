@@ -38,7 +38,7 @@ typedef enum {
   RADIO_STATIONS_FRAME = 0x09,
   INFO_TRIP_FRAME      = 0x0C,
   INFO_INSTANT_FRAME   = 0x0E,
-  TRIP_MODE_FRAME      = 0x0F,
+  //TRIP_MODE_FRAME      = 0x0F,
   AUDIO_SETTINGS_FRAME = 0x10,
   REMOTE_COMMAND_FRAME = 0x11,
   OPEN_DOOR_FRAME      = 0x12,
@@ -89,15 +89,15 @@ byte audioSettings[7];
 
 // Trip computer data (memory 1, memory 2, instant data)
 byte infoTrip1[7];
-byte infoTrip2[7];
+//byte infoTrip2[7];
 byte infoInstant[7];
 
 // Current displayed trip computer data
-byte tripMode = 0;
+//byte tripMode = 0;
 
 // Trip mode button state
-boolean tripModeButtonPressed = false;
-boolean tripDidReset = false;
+//boolean tripModeButtonPressed = false;
+//boolean tripDidReset = false;
 
 // Keeping time since la frame was sent to radio
 unsigned long lastCDCactivation =0;
