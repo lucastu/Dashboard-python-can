@@ -9,7 +9,7 @@
 const int CS_PIN = 10;
 MCP_CAN CAN(CS_PIN);
 
-//Pin of rapsberry state
+//Pin of car radio power state
 const int Radio_POWER_PIN = 3;
 
 // LCD power switch pin
