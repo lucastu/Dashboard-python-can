@@ -37,3 +37,7 @@
 11-16 19:25 root         INFO     station liste : ??
 11-16 19:25 root         INFO     station liste :  CULTURE|  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
 11-16 19:25 root         INFO     station liste : ??YROCK |  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
+11-17 19:21 root         INFO     Init communication with arduino OK
+11-18 17:01 root         INFO     Init communication with arduino OK
+11-19 17:23 root         INFO     Init communication with arduino OK
+11-19 17:44 root         INFO     Fermeture de l'application

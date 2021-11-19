@@ -3,8 +3,7 @@ from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
 from PyQt5.QtGui import QPixmap,QFontDatabase
 from PyQt5.QtWidgets import QLabel
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg
+
 import sys
 import threading
 import traceback
@@ -258,10 +257,7 @@ def reading_loop(source_handler, root):
             #Insert value in a tab limited to 50 values
             consoInstant.insert(0,(float(int(consoinstantbyte2, 16)) / 10))
             consoInstant = list[0 : 50]
-            #https://www.pythonguis.com/tutorials/embed-pyqtgraph-custom-widgets-qt-app/
-            #need to create the widget graphWidget in interface.ui
-            root.graphWidget.plot(consoInstant)
-            
+
             
             if (data[0] & 0b00001000) == 0b00001000:
                 # if Tripbutton pressed : switch window
@@ -429,9 +425,6 @@ class Ui(QtWidgets.QMainWindow):
         self.radioList3.setText('')
         self.radioList4.setText('')
         self.radioList5.setText('')
-
-        #https://www.pythonguis.com/tutorials/plotting-pyqtgraph/
-        self.graphWidget.setBackground((255,255,255,25)) 
         
    def init_alert_window(self):
         self.Ombre = ombre()

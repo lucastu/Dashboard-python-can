@@ -15,7 +15,7 @@ class ombre(QtWidgets.QDialog):
         # Creation de la fenetre
         self.setWindowTitle('Ombre')
         #self.setFixedSize(ScreenWidth, ScreenHeight)
-        self.setStyleSheet("background-color: black;")
+        self.setStyleSheet("background-color: rgb(59,59,59);")
         #self.setWindowOpacity(0.5)
         # WindowOpacity handeled by picom (see picom conf file)
         # Mode Frameless
