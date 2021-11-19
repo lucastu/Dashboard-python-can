@@ -9,9 +9,8 @@
 const int CS_PIN = 10;
 MCP_CAN CAN(CS_PIN);
 
-//Pin of rapsberry state
+//Pin of car radio power state
 const int Radio_POWER_PIN = 3;
-const int Relay_PIN = 4;
 
 // LCD power switch pin
 const int screenBrightnessPin = 6;
@@ -108,9 +107,6 @@ void setup() {
   
   //Input for monitoring 
   pinMode(Radio_POWER_PIN , INPUT_PULLUP);  
-  // Output for the relay to HIGH forever, and it will go down with the arduino beein shut
-  pinMode(Relay_PIN, OUTPUT);
-  digitalWrite(Relay_PIN, HIGH);
   //Put the pin in INPUT mode correspond to HI-Z mode
   pinMode(screenBrightnessPin, INPUT);
   
