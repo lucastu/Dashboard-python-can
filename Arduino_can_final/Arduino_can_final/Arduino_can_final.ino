@@ -12,6 +12,9 @@ MCP_CAN CAN(CS_PIN);
 //Pin of car radio power state
 const int Radio_POWER_PIN = 3;
 
+//Pin to control power relay
+const int Relay_PIN = 4;
+
 // LCD power switch pin
 const int screenBrightnessPin = 6;
 const int screenPowerPin = 7;
@@ -110,6 +113,9 @@ void setup() {
   //Put the pin in INPUT mode correspond to HI-Z mode
   pinMode(screenBrightnessPin, INPUT);
   
+  pinMode(Relay_PIN, OUTPUT);
+  digitalWrite(Relay_PIN, HIGH);
+  
   if (CAN.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK) {
     CAN.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
     pinMode(CAN0_INT, INPUT);
@@ -134,9 +140,16 @@ void loop() {
   }
   
   // If power of radio off, shutdown raspberry 
-  // The arduino power will be cutted when the raspberry will be powered off
+  // Wait and resend shutdown frame for security
+  // If I find a way : check state of raspberry to be sure that it's down before shutoff
   if (digitalRead(Radio_POWER_PIN ) == LOW)  {
     sendByteWithType(SHUTDOWN_FRAME, 0x01);
+    delay(10000);
+    sendByteWithType(SHUTDOWN_FRAME, 0x01);  
+    delay(10000);
+    sendByteWithType(SHUTDOWN_FRAME, 0x01);  
+    delay(2000);
+    digitalWrite(Relay_PIN, LOW);
   }
   
   // If a msg is available from canbus
