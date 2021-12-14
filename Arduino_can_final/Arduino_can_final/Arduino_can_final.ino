@@ -12,6 +12,9 @@ MCP_CAN CAN(CS_PIN);
 //Pin of car radio power state
 const int Radio_POWER_PIN = 3;
 
+//Pin to control power relay
+const int Relay_PIN = 4;
+
 // LCD power switch pin
 const int screenBrightnessPin = 6;
 const int screenPowerPin = 7;
@@ -88,15 +91,8 @@ byte audioSettings[7];
 
 // Trip computer data (memory 1, memory 2, instant data)
 byte infoTrip1[7];
-//byte infoTrip2[7];
 byte infoInstant[7];
 
-// Current displayed trip computer data
-//byte tripMode = 0;
-
-// Trip mode button state
-//boolean tripModeButtonPressed = false;
-//boolean tripDidReset = false;
 
 // Keeping time since la frame was sent to radio
 unsigned long lastCDCactivation =0;
@@ -109,6 +105,9 @@ void setup() {
   pinMode(Radio_POWER_PIN , INPUT_PULLUP);  
   //Put the pin in INPUT mode correspond to HI-Z mode
   pinMode(screenBrightnessPin, INPUT);
+  
+  pinMode(Relay_PIN, OUTPUT);
+  digitalWrite(Relay_PIN, HIGH);
   
   if (CAN.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK) {
     CAN.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
@@ -134,9 +133,16 @@ void loop() {
   }
   
   // If power of radio off, shutdown raspberry 
-  // The arduino power will be cutted when the raspberry will be powered off
+  // Wait and resend shutdown frame for security
+  // If I find a way : check state of raspberry to be sure that it's down before shutoff
   if (digitalRead(Radio_POWER_PIN ) == LOW)  {
     sendByteWithType(SHUTDOWN_FRAME, 0x01);
+    delay(10000);
+    sendByteWithType(SHUTDOWN_FRAME, 0x01);  
+    delay(10000);
+    sendByteWithType(SHUTDOWN_FRAME, 0x01);  
+    delay(2000);
+    digitalWrite(Relay_PIN, LOW);
   }
   
   // If a msg is available from canbus
@@ -200,14 +206,7 @@ void loop() {
         strncpy(radioName, (char*)buffer, len);
         sendFrameWithType(RADIO_NAME_FRAME, buffer, len); 
       }    
-    }  else if (id == 677) {
-      // Radio station name
-      if (strncmp((char*)buffer, radioName, len)) {
-        strncpy(radioName, (char*)buffer, len);
-        
-        sendFrameWithType(RADIO_NAME_FRAME, buffer, len);
-      }
-    } else if (id == 549) {
+    }else if (id == 549) {
       // Radio frequency
       tempValue = ((((buffer[3] & 0xFF) << 8) + (buffer[4] & 0xFF)) / 2 + 500);
       if (fmFreq != tempValue) {
@@ -312,7 +311,7 @@ void loop() {
     } else if (id == 417) {
       // Information message frame
       // We send the raw frame over serial as there is many different data
-      // to parse in it, so we do it on the iOS app side
+      // to parse in it, so we do it on the raspberry side
       for (int i = 0; i < len; ++i) {
         tempBuffer[i] = buffer[i];
       }
@@ -346,36 +345,7 @@ void loop() {
         
         sendFrameWithType(frameType, value, 7);
       }
-      // COMPLETELY REMOVE THE IF BELOW AND ASSOCIATED VARIABLES
-      //if (id == 545) {
-        // MAYBE TO REMOVE IF I CAN SEND TRIP BUTTON PRESSED MY OWN WAY
-        // Special treatment for the instant data frame
-        // which contains the trip data button state
-        //if ((buffer[0] & 0x0F) == 0x08 && !tripModeButtonPressed) {
-        //  tripModeButtonPressed = true;
-        //} else if ((buffer[0] & 0x0F) == 0x00) {
-         // if (tripModeButtonPressed) {
-           // if (!tripDidReset) {
-           //   tripMode++;
-           //   tripMode %= 3;
-           //   sendByteWithType(TRIP_MODE_FRAME, tripMode);
-           // } else {
-              //for (int i = 0; i < 50; i++) {
-                // We need to send this to actually stop the reset
-                // (else the distance/fuel counters never goes up again)
-                // FIXME: we should test explicitely the tripModes because it
-                // will currently reset the second memory if tripMode is equal
-                // to any value besides 1
-                //byte data[] = { tripMode == 1 ? 0x02 : 0x04, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00 };
-                //CAN.sendMsgBuf(359, 0, 8, data);
-               // }
-             // }
-            //  tripDidReset = false;
-            //  tripModeButtonPressed = false;
-            //}
-         // }
-       // }
-      } else if (id == 485) {
+    } else if (id == 485) {
         // Audio settings frame
         // Same as information message frame: we send the raw frame and parse it in the raspberry
         for (int i = 0; i < 7; ++i) {
