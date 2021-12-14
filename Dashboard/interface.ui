@@ -10,11 +10,6 @@
     <height>572</height>
    </rect>
   </property>
-  <property name="font">
-   <font>
-    <family>Calibri</family>
-   </font>
-  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -47,7 +42,7 @@
      <bool>false</bool>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <property name="documentMode">
      <bool>true</bool>
@@ -88,7 +83,6 @@
       </property>
       <property name="font">
        <font>
-        <family>Calibri</family>
         <pointsize>44</pointsize>
        </font>
       </property>
@@ -382,7 +376,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>bg.jpg</pixmap>
+       <pixmap>images/bg.jpg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -699,7 +693,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>bg.jpg</pixmap>
+       <pixmap>images/bg.jpg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -1522,7 +1516,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>bg.jpg</pixmap>
+       <pixmap>images/bg.jpg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
