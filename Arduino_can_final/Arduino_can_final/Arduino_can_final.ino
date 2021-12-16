@@ -105,6 +105,11 @@ void setup() {
   pinMode(Radio_POWER_PIN , INPUT_PULLUP);  
   //Put the pin in INPUT mode correspond to HI-Z mode
   pinMode(screenBrightnessPin, INPUT);
+
+  pinMode(screenPowerPin, OUTPUT);
+  //ligne ci dessous doit être supprimée pour une fois installée
+  digitalWrite(screenPowerPin, LOW);
+
   
   pinMode(Relay_PIN, OUTPUT);
   digitalWrite(Relay_PIN, HIGH);
@@ -191,8 +196,8 @@ void loop() {
       }
     } else if (id == 357) {
       //Radio display on or off
-       if ((buffer[0] & 0b10000000) == 0b10000000) {digitalWrite(screenPowerPin, HIGH);}
-       else {digitalWrite(screenPowerPin, LOW);}      
+       if ((buffer[0] & 0b10000000) == 0b10000000) {digitalWrite(screenPowerPin, LOW);}
+       else {digitalWrite(screenPowerPin, HIGH);}      
       
       // Radio source
       tempValue = buffer[2] >> 4;
