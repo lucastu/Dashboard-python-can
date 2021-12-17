@@ -93,9 +93,12 @@ byte audioSettings[7];
 byte infoTrip1[7];
 byte infoInstant[7];
 
-
 // Keeping time since la frame was sent to radio
 unsigned long lastCDCactivation =0;
+
+// To handel the shuting down of the system
+unsigned long shutdownStartDate  =0;
+bool shutdownflag = False;
 
 void setup() {
   Serial.begin(SERIAL_SPEED);
@@ -105,7 +108,7 @@ void setup() {
   pinMode(Radio_POWER_PIN , INPUT_PULLUP);  
   //Put the pin in INPUT mode correspond to HI-Z mode
   pinMode(screenBrightnessPin, INPUT);
-
+  //Pin that control power of the screen, LOW to turn on
   pinMode(screenPowerPin, OUTPUT);
   //ligne ci dessous doit être supprimée pour une fois installée
   digitalWrite(screenPowerPin, LOW);
@@ -138,17 +141,23 @@ void loop() {
   }
   
   // If power of radio off, shutdown raspberry 
-  // Wait and resend shutdown frame for security
-  // If I find a way : check state of raspberry to be sure that it's down before shutoff
   if (digitalRead(Radio_POWER_PIN ) == LOW)  {
-    sendByteWithType(SHUTDOWN_FRAME, 0x01);
-    delay(10000);
-    sendByteWithType(SHUTDOWN_FRAME, 0x01);  
-    delay(10000);
-    sendByteWithType(SHUTDOWN_FRAME, 0x01);  
-    delay(2000);
-    digitalWrite(Relay_PIN, LOW);
+      if (shutdownflag == False) {
+        shutdownflag = True ;
+        shutdownStartDate = millis();
+      }
+      if (millis()-shutdownStartDate >=60000){
+        //If time spent since ignition went down is more than 1min
+        //Send shutdown frame to raspberry, wait for it to be shuted down, then cut the power
+        sendByteWithType(SHUTDOWN_FRAME, 0x01);
+        delay(20000);
+        digitalWrite(Relay_PIN, LOW);
+      }  
   }
+  else {
+   //if  digitalRead(Radio_POWER_PIN ) == HIGH
+    shutdownflag = False ;
+  }  
   
   // If a msg is available from canbus
   if (CAN.checkReceive() == CAN_MSGAVAIL) {
