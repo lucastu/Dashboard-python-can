@@ -31,7 +31,7 @@ class alertmsg(QDialog):
         # Creation de la fenetre
         self.setFixedSize(WindowWidth, WindowHeight)
         self.move(ScreenWidth / 2 - WindowWidth / 2, ScreenHeight/2- WindowHeight/2)
-        self.setStyleSheet("background-color: grey;")
+        self.setStyleSheet("background-color: white;")
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
         self.texte = QLabel(self)
