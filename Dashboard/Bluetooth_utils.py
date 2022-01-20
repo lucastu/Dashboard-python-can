@@ -34,12 +34,16 @@ class bluetooth_utils :
 
 
      def run(self):
-        title, artist, album, timing_format, duration_format, in_track_postition = "No title", "No artist", "No album", "00:00", "00:00", "0"
+        playerName, title, artist, album, timing_format, duration_format, in_track_postition = "No player", "No title", "No artist", "No album", "00:00", "00:00", "0"
         objects = self.manager.GetManagedObjects()
         for path, ifaces in objects.items():
             if 'player0' in path :
                 adapter = ifaces.get(self.ADAPTER_INTERFACE)
                 if adapter is not None:
+                    # Getting the player name (name of the phone)
+                    playerName = adapter.get('Name')
+                    
+                    # Getting informations about the track
                     track =  adapter.get('Track')
 
                     title = track.get('Title')
@@ -66,7 +70,7 @@ class bluetooth_utils :
                         # print(type(track.get('Duration')))
                         in_track_postition=int((adapter.get('Position')/track.get('Duration'))*100)
 
-        return title, artist, album, timing_format, duration_format, in_track_postition
+        return title, artist, album, timing_format, duration_format, in_track_postition, playerName
 
 if __name__ == '__main__':
     B = bluetooth_utils()
@@ -78,4 +82,5 @@ if __name__ == '__main__':
         print("timing: " +  str(track_info[3]))
         print("duration: " +  str(track_info[4]))
         print("position: " + str(track_info[5]))
+        print("player name: " + str(track_info[6]))
         time.sleep(1)
