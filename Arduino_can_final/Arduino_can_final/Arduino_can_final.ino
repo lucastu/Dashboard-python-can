@@ -98,24 +98,23 @@ unsigned long lastCDCactivation =0;
 
 // To handel the shuting down of the system
 unsigned long shutdownStartDate  =0;
-bool shutdownflag = False;
+bool shutdownflag = false;
 
 void setup() {
   Serial.begin(SERIAL_SPEED);
   byte canSpeed = CAN_SPEED;
   
   //Input for monitoring 
-  pinMode(Radio_POWER_PIN , INPUT_PULLUP);  
+  pinMode(Radio_POWER_PIN , INPUT);  
   //Put the pin in INPUT mode correspond to HI-Z mode
   pinMode(screenBrightnessPin, INPUT);
   //Pin that control power of the screen, LOW to turn on
   pinMode(screenPowerPin, OUTPUT);
-  //ligne ci dessous doit être supprimée pour une fois installée
-  digitalWrite(screenPowerPin, LOW);
+  digitalWrite(screenPowerPin, HIGH);
 
   
   pinMode(Relay_PIN, OUTPUT);
-  digitalWrite(Relay_PIN, HIGH);
+  digitalWrite(Relay_PIN, LOW);
   
   if (CAN.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK) {
     CAN.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
@@ -139,24 +138,24 @@ void loop() {
       CAN.sendMsgBuf(482, 0, 7, dataInitCDC2);
       lastCDCactivation = millis();
   }
-  
+
   // If power of radio off, shutdown raspberry 
   if (digitalRead(Radio_POWER_PIN ) == LOW)  {
-      if (shutdownflag == False) {
-        shutdownflag = True ;
+      if (shutdownflag == false) {
+        shutdownflag = true ;
         shutdownStartDate = millis();
       }
-      if (millis()-shutdownStartDate >=60000){
+      if (millis()-shutdownStartDate >=40000){
         //If time spent since ignition went down is more than 1min
         //Send shutdown frame to raspberry, wait for it to be shuted down, then cut the power
         sendByteWithType(SHUTDOWN_FRAME, 0x01);
         delay(20000);
-        digitalWrite(Relay_PIN, LOW);
+        digitalWrite(Relay_PIN, HIGH);
       }  
   }
   else {
    //if  digitalRead(Radio_POWER_PIN ) == HIGH
-    shutdownflag = False ;
+    shutdownflag = false ;
   }  
   
   // If a msg is available from canbus

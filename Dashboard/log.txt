@@ -1,43 +1,166 @@
-
-11-16 17:11 root         INFO     Fermeture de l'application
-11-16 17:11 root         INFO     Fermeture de l'application
-11-16 17:13 root         INFO     Fermeture de l'application
-11-16 17:15 root         INFO     Init communication with arduino OK
-11-16 17:15 root         INFO     Fermeture de l'application
-11-16 17:21 root         INFO     Fermeture de l'application
-11-16 17:21 root         INFO     Fermeture de l'application
-11-16 17:22 root         INFO     Fermeture de l'application
-11-16 17:24 root         INFO     Fermeture de l'application
-11-16 17:30 root         INFO     Init communication with arduino OK
-11-16 17:37 root         INFO     Fermeture de l'application
-11-16 17:48 root         INFO     Init communication with arduino OK
-11-16 17:49 root         INFO     Fermeture de l'application
-11-16 18:13 root         INFO     Init communication with arduino OK
-11-16 18:19 root         INFO     Init communication with arduino OK
-11-16 18:33 root         INFO     Fermeture de l'application
-11-16 18:38 root         INFO     Fermeture de l'application
-11-16 18:39 root         INFO     Fermeture de l'application
-11-16 18:40 root         INFO     Init communication with arduino OK
-11-16 18:41 root         INFO     Fermeture de l'application
-11-16 18:42 root         INFO     Fermeture de l'application
-11-16 18:43 root         INFO     Init communication with arduino OK
-11-16 18:53 root         INFO     Fermeture de l'application
-11-16 18:55 root         INFO     Init communication with arduino OK
-11-16 19:03 root         INFO     Fermeture de l'application
-11-16 19:04 root         INFO     Init communication with arduino OK
-11-16 19:05 root         INFO     Fermeture de l'application
-11-16 19:09 root         INFO     Init communication with arduino OK
-11-16 19:10 root         INFO     Door Front Left
-11-16 19:19 root         INFO     Init communication with arduino OK
-11-16 19:21 root         INFO     Fermeture de l'application
-11-16 19:22 root         INFO     Init communication with arduino OK
-11-16 19:23 root         INFO     Door Front Left
-11-16 19:25 root         INFO     station liste : ??
-11-16 19:25 root         INFO     station liste :  CULTURE|  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
-11-16 19:25 root         INFO     station liste : ??
-11-16 19:25 root         INFO     station liste :  CULTURE|  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
-11-16 19:25 root         INFO     station liste : ??YROCK |  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
-11-17 19:21 root         INFO     Init communication with arduino OK
-11-18 17:01 root         INFO     Init communication with arduino OK
-11-19 17:23 root         INFO     Init communication with arduino OK
-11-19 17:44 root         INFO     Fermeture de l'application
+01-03 12:41 root         INFO     Init communication with arduino OK
+01-03 12:46 root         INFO     Fermeture de l'application
+01-03 12:49 root         INFO     Init communication with arduino OK
+01-03 12:49 root         INFO     Door Front Left
+01-03 13:59 root         INFO     Init communication with arduino OK
+01-03 14:01 root         INFO     Door Front Left
+01-03 14:01 root         INFO     Door Front Right
+01-03 14:01 root         INFO     Door Front Right
+01-03 14:02 root         INFO     Door Front Right
+01-03 14:02 root         INFO     station liste : ??YROCK |  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
+01-03 14:02 root         INFO     station liste : ??
+01-03 14:02 root         INFO     station liste : SKYROCK |  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
+01-03 14:02 root         INFO     Fermeture de l'application
+01-03 14:02 root         INFO     Init communication with arduino OK
+01-03 14:04 root         INFO     Door Front Left
+01-03 14:33 root         INFO     Fermeture de l'application
+01-03 14:47 root         INFO     Init communication with arduino OK
+01-03 14:47 root         INFO     Door Front Left
+01-03 14:51 root         INFO     Init communication with arduino OK
+01-03 16:12 root         INFO     Init communication with arduino OK
+01-04 10:43 root         INFO     Init communication with arduino OK
+01-04 10:57 root         INFO     Init communication with arduino OK
+01-04 11:15 root         INFO     Init communication with arduino OK
+01-04 11:16 root         INFO     Shut down data : 1
+01-04 11:16 root         INFO     Shut down data : 1
+01-04 11:17 root         INFO     Shut down data : 1
+01-04 11:17 root         INFO     Shut down data : 1
+01-04 11:17 root         INFO     Shut down data : 1
+01-04 11:18 root         INFO     Shut down data : 1
+01-04 11:18 root         INFO     Shut down data : 1
+01-04 11:18 root         INFO     Shut down data : 1
+01-04 11:19 root         INFO     Shut down data : 1
+01-04 11:19 root         INFO     Shut down data : 1
+01-04 11:19 root         INFO     Shut down data : 1
+01-04 11:20 root         INFO     Init communication with arduino OK
+01-04 11:20 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:21 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:21 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:21 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:22 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:22 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:24 root         INFO     Init communication with arduino OK
+01-04 11:26 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:26 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:26 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:27 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:34 root         INFO     Init communication with arduino OK
+01-04 11:50 root         INFO     Init communication with arduino OK
+01-04 11:51 root         INFO     Init communication with arduino OK
+01-04 11:54 root         INFO     Init communication with arduino OK
+01-04 11:56 root         INFO     Init communication with arduino OK
+01-04 11:56 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:57 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:57 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:57 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:58 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:58 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:58 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:59 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 11:59 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 12:00 root         INFO     Init communication with arduino OK
+01-04 14:30 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 14:30 root         INFO     Init communication with arduino OK
+01-04 14:30 root         INFO     Door Front Left
+01-04 14:40 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 14:40 root         INFO     Init communication with arduino OK
+01-04 14:46 root         INFO     Door Front Left
+01-04 14:46 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 14:47 root         INFO     Init communication with arduino OK
+01-04 14:51 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 14:52 root         INFO     Init communication with arduino OK
+01-04 14:53 root         INFO     Door Front Left
+01-04 14:54 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 14:54 root         INFO     Init communication with arduino OK
+01-04 14:54 root         INFO     Door Front Left
+01-04 14:55 root         INFO     Door Front Left
+01-04 15:15 root         INFO     Door Front Left
+01-04 15:16 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 15:16 root         INFO     Init communication with arduino OK
+01-04 15:47 root         INFO     Door Front Left
+01-04 15:48 root         INFO     Door Front Left
+01-04 15:49 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 15:49 root         INFO     Init communication with arduino OK
+01-04 15:50 root         INFO     Door Front Left
+01-04 15:51 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 15:51 root         INFO     Init communication with arduino OK
+01-04 15:52 root         INFO     Door Front Left
+01-04 16:13 root         INFO     Door Front Left
+01-04 16:13 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 16:13 root         INFO     Init communication with arduino OK
+01-04 16:32 root         INFO     Door Front Left
+01-04 16:33 root         INFO     Door Front Left
+01-04 16:33 root         INFO     Door Front Left
+01-04 16:34 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 16:34 root         INFO     Init communication with arduino OK
+01-04 16:34 root         INFO     Door Front Left
+01-04 16:34 root         INFO     Door Front Right
+01-04 16:40 root         INFO     Door Front Left
+01-04 16:40 root         INFO     Door Front Left
+01-04 16:40 root         INFO     Door Front Right
+01-04 16:40 root         INFO     Door Front Left
+01-04 16:40 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 16:41 root         INFO     Init communication with arduino OK
+01-04 16:41 root         INFO     Door Front Left
+01-04 16:55 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 16:56 root         INFO     Init communication with arduino OK
+01-04 17:02 root         INFO     Door Front Left
+01-04 17:02 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 17:02 root         INFO     Init communication with arduino OK
+01-04 17:08 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 17:08 root         INFO     Init communication with arduino OK
+01-04 17:20 root         INFO     station liste : ??
+01-04 17:23 root         INFO     Door Front Left
+01-04 17:24 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 17:24 root         INFO     Init communication with arduino OK
+01-04 17:33 root         INFO     Door Front Left
+01-04 17:33 root         INFO     Door Front Left
+01-04 17:33 root         INFO     Door Front Right
+01-04 17:33 root         INFO     Door Front Left
+01-04 17:33 root         INFO     Door Back Left
+01-04 17:33 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 17:34 root         INFO     Init communication with arduino OK
+01-04 17:34 root         INFO     Door Front Right
+01-04 17:34 root         INFO     Door Front Left
+01-04 17:42 root         INFO     Door Front Right
+01-04 17:42 root         INFO     Door Front Right
+01-04 17:44 root         INFO     Door Front Left
+01-04 17:44 root         INFO     Trunk Door
+01-04 17:44 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 17:45 root         INFO     Init communication with arduino OK
+01-04 17:45 root         INFO     Door Front Left
+01-04 17:46 root         INFO     Door Front Left
+01-04 17:58 root         INFO     Init communication with arduino OK
+01-04 18:05 root         INFO     Door Front Left
+01-04 18:05 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 18:06 root         INFO     Init communication with arduino OK
+01-04 18:21 root         INFO     station liste : SKYROCK |  INTER |  RFM   |CHERIEFM|EUROPE 2|ALOUETTE|
+01-04 18:26 root         INFO     Door Front Left
+01-04 18:26 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 18:27 root         INFO     Init communication with arduino OK
+01-04 18:27 root         INFO     Door Front Left
+01-04 18:37 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 18:38 root         INFO     Init communication with arduino OK
+01-04 18:54 root         INFO     Door Front Left
+01-04 18:54 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 18:54 root         INFO     Init communication with arduino OK
+01-04 19:17 root         INFO     Door Front Left
+01-04 19:18 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 19:18 root         INFO     Init communication with arduino OK
+01-04 19:18 root         INFO     Door Front Left
+01-04 19:19 root         INFO     Door Front Left
+01-04 19:39 root         INFO     Door Front Left
+01-04 19:39 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 19:40 root         INFO     Init communication with arduino OK
+01-04 20:03 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 20:03 root         INFO     Init communication with arduino OK
+01-04 20:11 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 20:11 root         INFO     Init communication with arduino OK
+01-04 20:35 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 20:35 root         INFO     Init communication with arduino OK
+01-04 20:56 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 20:56 root         INFO     Init communication with arduino OK
+01-04 20:58 root         INFO     Shuting DOWNNNNNNNNNNNNNNNNNNNN
+01-04 20:59 root         INFO     Init communication with arduino OK
+01-05 06:17 root         INFO     Init communication with arduino OK
+02-08 18:21 root         INFO     Init communication with arduino OK

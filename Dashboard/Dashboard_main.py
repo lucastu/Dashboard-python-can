@@ -99,12 +99,21 @@ def reading_loop(source_handler, root):
     
     while not stop_reading.is_set():
         time.sleep(.05)
+
+        t = time.localtime()
+        text = time.strftime("%H:%M", t)
+        root.heure.setText(text)
+        root.heureb.setText(text)
+
+
         try:
             frame_id, data = source_handler.get_message()
-        except InvalidFrame:
+        # except InvalidFrame:
+        #     continue
+        # except EOFError:
+        #     break
+        except :
             continue
-        except EOFError:
-            break
 
         if frame_id == VOLUME_FRAME:
             text = str(data[0] & 0b00011111)
@@ -121,8 +130,8 @@ def reading_loop(source_handler, root):
             logging.info("Init communication with arduino OK")
 
         elif frame_id == SHUTDOWN_FRAME:
-            logging.info("Shut down data : " + data[0])
-            # os.system("sudo shutdown -h now")
+            logging.info("Shuting DOWNNNNNNNNNNNNNNNNNNNN")
+            os.system("sudo shutdown now")
 
         elif frame_id == REMOTE_COMMAND_FRAME:
             if (data[0] & 0b00001100) == 0b00001100:
@@ -227,36 +236,35 @@ def reading_loop(source_handler, root):
         elif frame_id == INFO_TRIP_FRAME:
             distanceafterresetbyte = bytes([data[1], data[2]])
             distanceafterreset = int((''.join('%02X' % byte for byte in distanceafterresetbyte)), 16)
-            text = "Reste %skm" % distanceafterreset
+            text = "%skm" % distanceafterreset
             root.tripinfo1.setText(text)
             root.tripinfo1b.setText(text)
 
             averageFuelUsagebyte = bytes([data[3], data[4]])
             averageFuelUsage = int((''.join('%02X' % byte for byte in averageFuelUsagebyte)), 16) / 10
-            text = "Moyenne : %sL/100km" % averageFuelUsage
+            text = "Moy : %sL/100km" % averageFuelUsage
             root.tripinfo3.setText(text)
             root.tripinfo3b.setText(text)
-
 
         elif frame_id == INFO_INSTANT_FRAME:
             fuelleftbyte = bytes([data[3], data[4]])
             fuelleftbyte2 = ''.join('%02X' % byte for byte in fuelleftbyte)
-            text = "%skm" % (int(fuelleftbyte2, 16))
+            text = "Reste %skm" % (int(fuelleftbyte2, 16))
             root.tripinfo2.setText(text)
             root.tripinfo2b.setText(text)
 
             if (data[1] & 0b10000000) == 0b10000000:
-                text = "conso instantanée : -- "
+                text = "Intant : -- "
             else:
                 consoinstantbyte = bytes([data[1], data[2]])
                 consoinstantbyte2 = ''.join('%02X' % byte for byte in consoinstantbyte)
-                text = "conso instantanée : %s " + str(float(int(consoinstantbyte2, 16)) / 10)
+                text = "Intant : %s " + str(float(int(consoinstantbyte2, 16)) / 10)
             root.tripinfo4.setText(text)
             root.tripinfo4b.setText(text)
             
             #Insert value in a tab limited to 50 values
-            consoInstant.insert(0,(float(int(consoinstantbyte2, 16)) / 10))
-            consoInstant = list[0 : 50]
+            # consoInstant.insert(0,(float(int(consoinstantbyte2, 16)) / 10))
+            # consoInstant = list[0 : 50]
 
             
             if (data[0] & 0b00001000) == 0b00001000:
@@ -358,8 +366,7 @@ def reading_loop(source_handler, root):
             root.automaticVolume.setChecked(audiosettings['automaticVolume'])
             
         else:
-            logging.info(
-                "FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
+            logging.info("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
 def run():
     source_handler = SerialHandler(serial_device, baudrate)
@@ -405,11 +412,11 @@ class Ui(QtWidgets.QMainWindow):
         self.Volumewindow=volumewindow()
 
         # Init both tabs
-        self.tabWidget.setCurrentIndex(1)
         self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
-        self.closebutton.clicked.connect(self.close_all)
-        self.closebutton_3.clicked.connect(self.close_all)
+        # self.closebutton.clicked.connect(self.close_all)
+        # self.closebutton_3.clicked.connect(self.close_all)
         
         self.showMaximized()  # Show the GUI
 
@@ -485,7 +492,7 @@ class Ui(QtWidgets.QMainWindow):
              track_info = B.run()
              self.Bluetooth_track.setText(track_info[0])
              self.Bluetooth_artist.setText(track_info[1])
-             self.Bluetooth_album.setText(track_info[2])
+             # self.Bluetooth_album.setText(track_info[2])
              self.Bluetooth_timing.setText(track_info[3])
              self.Bluetooth_duration.setText(track_info[4])
              self.percent.setText(str(track_info[5]))
