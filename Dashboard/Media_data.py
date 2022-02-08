@@ -6,6 +6,11 @@
 import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
 
+Output something like that
+# received hello response, result: 1, oap version: 15.0, api version: 1.0
+# media metadata, artist: Amadou & Mariam feat. Santigold, title: Dougou Badia (feat. Santigold), album: Folila, duration label: 03:54
+# media status, is playing: True, position label: 03:20, source: 3
+
 
 class EventHandler(ClientEventHandler):
 
