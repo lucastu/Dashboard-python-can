@@ -99,18 +99,12 @@ def reading_loop(source_handler, root):
     AUDIO_SETTINGS_FRAME = 0x10
     REMOTE_COMMAND_FRAME = 0x11
     OPEN_DOOR_FRAME = 0x12
+    TIME_FRAME = 0x13
     SHUTDOWN_FRAME = 0x14
     
 
     while not stop_reading.is_set():
         time.sleep(.05)
-  
-#         local time not working well          
-#         t = time.localtime()
-#         text = time.strftime("%H:%M", t)
-#         root.heure.setText(text)
-#         root.heureb.setText(text)
-
 
         try:
             frame_id, data = source_handler.get_message()
@@ -138,7 +132,12 @@ def reading_loop(source_handler, root):
         elif frame_id == SHUTDOWN_FRAME:
             logging.info("Shuting DOWNNNNNNNNNNNNNNNNNNNN")
             os.system("sudo shutdown now")
-
+            
+        elif frame_id == TIME_FRAME:
+            text = "%02d:%d " % (data[3], data[4])
+            root.heure.setText(text)
+            root.heureb.setText(text)
+            
         elif frame_id == REMOTE_COMMAND_FRAME:
             if (data[0] & 0b00001100) == 0b00001100:
                 # Both button pressed : Pause/play
