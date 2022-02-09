@@ -6,7 +6,7 @@
 import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
 
-Output something like that
+# Output something like that
 # received hello response, result: 1, oap version: 15.0, api version: 1.0
 # media metadata, artist: Amadou & Mariam feat. Santigold, title: Dougou Badia (feat. Santigold), album: Folila, duration label: 03:54
 # media status, is playing: True, position label: 03:20, source: 3
@@ -17,30 +17,31 @@ class EventHandler(ClientEventHandler):
     def on_hello_response(self, client, message):
         print(
             "received hello response, result: {}, oap version: {}.{}, api version: {}.{}"
-            .format(message.result, message.oap_version.major,
-                    message.oap_version.minor, message.api_version.major,
-                    message.api_version.minor))
+            .format(message.result, message.oap_version.major, message.oap_version.minor, message.api_version.major, message.api_version.minor))
 
         set_status_subscriptions = oap_api.SetStatusSubscriptions()
-        set_status_subscriptions.subscriptions.append(
-            oap_api.SetStatusSubscriptions.Subscription.MEDIA)
-        client.send(oap_api.MESSAGE_SET_STATUS_SUBSCRIPTIONS, 0,
-                    set_status_subscriptions.SerializeToString())
+        set_status_subscriptions.subscriptions.append(oap_api.SetStatusSubscriptions.Subscription.MEDIA)
+        client.send(oap_api.MESSAGE_SET_STATUS_SUBSCRIPTIONS, 0, set_status_subscriptions.SerializeToString())
 
     def on_media_status(self, client, message):
         print("media status, is playing: {}, position label: {}, source: {}".
-              format(message.is_playing, message.position_label,
-                     message.source))
-
+              format(message.is_playing, message.position_label, message.source))
+        message.is_playing
+        message.position_label
+        message.source
+        
+        
     def on_media_metadata(self, client, message):
         print(
             "media metadata, artist: {}, title: {}, album: {}, duration label: {}"
-            .format(message.artist, message.title, message.album,
-                    message.duration_label))
-
+            .format(message.artist, message.title, message.album, message.duration_label))
+        message.artist
+        message.title 
+        message.album 
+        message.duration_label
 
 def main():
-    client = Client("media data example")
+    client = Client("media data")
     event_handler = EventHandler()
     client.set_event_handler(event_handler)
     client.connect('127.0.0.1', 44405)
