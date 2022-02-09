@@ -7,7 +7,7 @@ import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
 
 
-def run(action=""):
+def mediacontrol(action=""):
     client = Client("media control")
     client.connect('127.0.0.1', 44405)
 
@@ -40,4 +40,4 @@ if __name__ == "__main__":
     # action="playpause"
     # action="previous"
     # action="next"
-    run(action)
+    mediacontrol(action)
