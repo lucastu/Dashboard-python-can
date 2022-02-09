@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
+
+# UI components
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
 from PyQt5.QtGui import QPixmap,QFontDatabase
 from PyQt5.QtWidgets import QLabel
+
+# OpenAutoPro API
+import common.Api_pb2 as oap_api
+from common.Client import Client, ClientEventHandler
 
 import sys
 import threading
@@ -10,7 +16,7 @@ import traceback
 import time
 import os
 import logging  
-from functools import partial
+from functools import partial  #Useless ?
 
 #Imports classes and function from my files
 from source_handler import InvalidFrame, SerialHandler
@@ -18,7 +24,9 @@ from sound_level import volumewindow
 from ombre import ombre
 from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
-from Bluetooth_utils import bluetooth_utils
+# from Bluetooth_utils import bluetooth_utils 
+from Media_control import mediacontrol
+
 
 # Event for closing everything
 stop_reading = threading.Event()
@@ -47,8 +55,6 @@ audiosettings = {
    'loudness' : '0',
    'source' : '0'
 }
-
-consoInstant=[]
 
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
@@ -94,16 +100,17 @@ def reading_loop(source_handler, root):
     OPEN_DOOR_FRAME = 0x12
     SHUTDOWN_FRAME = 0x14
 
-    # Init for the bluetooth command
-    B = bluetooth_utils()
+    # Init for the bluetooth command, useless with API
+    # B = bluetooth_utils()
     
     while not stop_reading.is_set():
         time.sleep(.05)
 
-        t = time.localtime()
-        text = time.strftime("%H:%M", t)
-        root.heure.setText(text)
-        root.heureb.setText(text)
+#         local time not working well          
+#         t = time.localtime()
+#         text = time.strftime("%H:%M", t)
+#         root.heure.setText(text)
+#         root.heureb.setText(text)
 
 
         try:
@@ -136,13 +143,16 @@ def reading_loop(source_handler, root):
         elif frame_id == REMOTE_COMMAND_FRAME:
             if (data[0] & 0b00001100) == 0b00001100:
                 # Both button pressed : Pause/play
-                B.control('playpause')
+                # B.control('playpause')
+                mediacontrol("playpause")
             elif (data[0] & 0b10000000) == 0b10000000:
                 # Next button pressed
-                B.control('next')
+                # B.control('next')
+                mediacontrol("next")
             elif (data[0] & 0b01000000) == 0b01000000:
                 # Previous button pressed
-                B.control('pre')
+                # B.control('pre')
+                mediacontrol("previous")
 
         elif frame_id == OPEN_DOOR_FRAME:
             # Maybe Useless
@@ -262,15 +272,11 @@ def reading_loop(source_handler, root):
             root.tripinfo4.setText(text)
             root.tripinfo4b.setText(text)
             
-            #Insert value in a tab limited to 50 values
-            # consoInstant.insert(0,(float(int(consoinstantbyte2, 16)) / 10))
-            # consoInstant = list[0 : 50]
-
-            
             if (data[0] & 0b00001000) == 0b00001000:
                 # if Tripbutton pressed : switch window
-                cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
-                os.system(cmd)
+#                 cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
+#                 os.system(cmd)
+                mediacontrol("mode") #This should work....
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
             # Active selected mode in audio settings
@@ -349,7 +355,7 @@ def reading_loop(source_handler, root):
                 root.resetequalizerselector()
                 root.equalizertechno.setStyleSheet("color: white;")
 
-                # Enregistrement de toutes ces variables dans le dictionnaire audiosettings
+            # Enregistrement de toutes ces variables dans le dictionnaire audiosettings
             audiosettings['frontRearBalance'] = int(data[1] & 0b01111111) - 63
             audiosettings['leftRightBalance'] = int(data[0] & 0b01111111) - 63
             audiosettings['automaticVolume'] = (data[5] & 0b00000111) == 0b00000111
@@ -414,9 +420,6 @@ class Ui(QtWidgets.QMainWindow):
         # Init both tabs
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(1)
-
-        # self.closebutton.clicked.connect(self.close_all)
-        # self.closebutton_3.clicked.connect(self.close_all)
         
         self.showMaximized()  # Show the GUI
 
@@ -486,19 +489,19 @@ class Ui(QtWidgets.QMainWindow):
          self.equalizertechno.setStyleSheet("color: grey;")
          self.equalizervocal.setStyleSheet("color: grey;")
 
-   def update_bluetooth_track(self):
-         try:
-             B = bluetooth_utils()
-             track_info = B.run()
-             self.Bluetooth_track.setText(track_info[0])
-             self.Bluetooth_artist.setText(track_info[1])
-             # self.Bluetooth_album.setText(track_info[2])
-             self.Bluetooth_timing.setText(track_info[3])
-             self.Bluetooth_duration.setText(track_info[4])
-             self.percent.setText(str(track_info[5]))
-             self.custom_signals.update_progress_bluetooth_track_signal.emit()
-         except:
-             pass
+#    def update_bluetooth_track(self):
+#          try:
+#              B = bluetooth_utils()
+#              track_info = B.run()
+#              self.Bluetooth_track.setText(track_info[0])
+#              self.Bluetooth_artist.setText(track_info[1])
+#              # self.Bluetooth_album.setText(track_info[2])
+#              self.Bluetooth_timing.setText(track_info[3])
+#              self.Bluetooth_duration.setText(track_info[4])
+#              self.percent.setText(str(track_info[5]))
+#              self.custom_signals.update_progress_bluetooth_track_signal.emit()
+#          except:
+#              pass
 
    def close_all(self):
         # set flag off
