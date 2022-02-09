@@ -16,19 +16,14 @@
 
 # TO DO
 ## Software
-### UI
-Add graph of consumption
 ### Info message notification
 Change Icon
+Change color
 ### Volume notification
 Make it beautifuler ! I dont't like it...
 Add volume level in text
 ## Hardware
-### Screen
-Handle the brightness control
-Handle the power control
-### Generale
-lower the voltage of the 12V input of ignition signal
+Find a better way to get state of ignition, or earlier
 
 
 ### Parsing State
@@ -88,13 +83,13 @@ meson --buildtype=release . build
 ninja -C build
 sudo ninja -C build install
 ```
-### Install tksvg is useless ?
+### Install tksvg is useless now?
 ```
 sudo apt install cmake build-essential tcl-dev tk-dev python3-tk
 python -m pip install scikit-build
 python setup.py install
 ```
-### install python 3 ? ...I don't think I need to...
+### install python 3 ? ...I don't think I need to...may be already installed
 ```
 sudo apt-get update
 sudo apt-get install python3-pip
@@ -104,4 +99,8 @@ sudo apt-get install python3
 ```
 sudo apt-get install -y python-pil.imagetk
 sudo pip3 install tksvg
+```
+### Install protobuf (for Openauto pro API)
+```
+pip3 install protobuf
 ```
