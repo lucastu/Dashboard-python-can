@@ -19,6 +19,8 @@ def mediacontrol(action=""):
         key_type = oap_api.KeyEvent.KEY_TYPE_PREVIOUS_TRACK
     elif action == "next":
         key_type = oap_api.KeyEvent.KEY_TYPE_NEXT_TRACK
+    elif action == "mode":
+        key_type = oap_api.KeyEvent.KEY_TYPE_MODE        
 
     print(action)
 
@@ -40,4 +42,5 @@ if __name__ == "__main__":
     # action="playpause"
     # action="previous"
     # action="next"
+    # action="mode"
     mediacontrol(action)
