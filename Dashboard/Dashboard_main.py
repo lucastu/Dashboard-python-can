@@ -26,6 +26,7 @@ from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
 # from Bluetooth_utils import bluetooth_utils 
 from Media_control import mediacontrol
+from Media_data import *
 
 
 # Event for closing everything
@@ -99,13 +100,11 @@ def reading_loop(source_handler, root):
     REMOTE_COMMAND_FRAME = 0x11
     OPEN_DOOR_FRAME = 0x12
     SHUTDOWN_FRAME = 0x14
-
-    # Init for the bluetooth command, useless with API
-    # B = bluetooth_utils()
     
+
     while not stop_reading.is_set():
         time.sleep(.05)
-
+  
 #         local time not working well          
 #         t = time.localtime()
 #         text = time.strftime("%H:%M", t)
@@ -388,9 +387,14 @@ def run():
     reading_thread.start()
 
     # Timer that execute Bluetooth_reading_loop function every 500ms
-    Bluetooth_timer = QtCore.QTimer()
-    Bluetooth_timer.timeout.connect(root.update_bluetooth_track)
-    Bluetooth_timer.start(500)
+#     Bluetooth_timer = QtCore.QTimer()
+#     Bluetooth_timer.timeout.connect(root.update_bluetooth_track)
+#     Bluetooth_timer.start(500)
+
+    # Create Thread for the media data loop , args :  root for UI
+    mediadata_thread = threading.Thread(target=mediadata, args=(root,))
+    # Start the reading in background thread              
+    mediadata_thread.start()
    
     app.exec_()
 
