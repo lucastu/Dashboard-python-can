@@ -44,6 +44,7 @@ typedef enum {
   AUDIO_SETTINGS_FRAME = 0x10,
   REMOTE_COMMAND_FRAME = 0x11,
   OPEN_DOOR_FRAME      = 0x12,
+  TIME_FRAME           = 0x13,
   SHUTDOWN_FRAME       = 0x14,
 } FrameType;
 
@@ -202,7 +203,7 @@ void loop() {
         opendoors = tempValue;
         sendByteWithType(OPEN_DOOR_FRAME, opendoors); 
       }
-    } else if (id == 357) {
+    }else if (id == 357) {
       //Radio display on or off
        if ((buffer[0] & 0b10000000) == 0b10000000) {digitalWrite(screenPowerPin, LOW);}
        else {digitalWrite(screenPowerPin, HIGH);}      
@@ -213,12 +214,24 @@ void loop() {
         radioSource = tempValue;
         sendByteWithType(RADIO_SOURCE_FRAME, radioSource); 
       }
-    } else if (id == 677) {
+    }else if (id == 677) {
       // Radio station name
       if (strncmp((char*)buffer, radioName, len)) {
         strncpy(radioName, (char*)buffer, len);
         sendFrameWithType(RADIO_NAME_FRAME, buffer, len); 
       }    
+    }else if (id == 630) { // or 923
+      // Radio time data
+      if (strncmp((char*)buffer, timedata, len)) {
+        strncpy(timedata, (char*)buffer, len);
+        sendFrameWithType(TIME_FRAME, buffer, len); 
+      
+      // Alternative way  
+      //tempValue = (buffer[3], buffer[4]);
+      //if (tempValue! = timedata) {
+      //  tempValue = timedata;
+      //  sendFrameWithType(TIME_FRAME, timedata, 2); 
+      }          
     }else if (id == 549) {
       // Radio frequency
       tempValue = ((((buffer[3] & 0xFF) << 8) + (buffer[4] & 0xFF)) / 2 + 500);
