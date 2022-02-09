@@ -6,13 +6,13 @@
 import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
 
-# Output something like that
+# Output something like that :
 # received hello response, result: 1, oap version: 15.0, api version: 1.0
 # media metadata, artist: Amadou & Mariam feat. Santigold, title: Dougou Badia (feat. Santigold), album: Folila, duration label: 03:54
 # media status, is playing: True, position label: 03:20, source: 3
 
 
-class EventHandler(ClientEventHandler):
+class EventHandler(ClientEventHandler, root):
 
     def on_hello_response(self, client, message):
         print(
@@ -26,24 +26,30 @@ class EventHandler(ClientEventHandler):
     def on_media_status(self, client, message):
         print("media status, is playing: {}, position label: {}, source: {}".
               format(message.is_playing, message.position_label, message.source))
-        message.is_playing
-        message.position_label
-        message.source
         
+        self.Bluetooth_timing.setText(message.position_label)
+        # Retrieve Bluetooth_duration value to calculate a percentage
+        position_label_in_sec=int(message.position_label[:-3])*60+int(message.position_label[-2:])
+        duration_label = self.Bluetooth_duration.text()
+        duration_label_in_sec =int(message.duration_label[:-3])*60+int(message.duration_label[-2:])
+        percent=(position_label_in_sec/duration_label_in_sec)*100
+        self.percent.setText(str(percent_label))
+        # Send signal to update progress bar according to percent value                      
+        self.custom_signals.update_progress_bluetooth_track_signal.emit()
         
     def on_media_metadata(self, client, message):
         print(
             "media metadata, artist: {}, title: {}, album: {}, duration label: {}"
             .format(message.artist, message.title, message.album, message.duration_label))
-        message.artist
-        message.title 
-        message.album 
-        message.duration_label
+        
+        self.Bluetooth_track.setText(message.title)
+        self.Bluetooth_artist.setText(message.artist)
+        self.Bluetooth_duration.setText(message.duration_label)
 
-def main():
+def mediadata(root):
     client = Client("media data")
     event_handler = EventHandler()
-    client.set_event_handler(event_handler)
+    client.set_event_handler(event_handler, root)
     client.connect('127.0.0.1', 44405)
 
     active = True
@@ -57,4 +63,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    mediadata()
