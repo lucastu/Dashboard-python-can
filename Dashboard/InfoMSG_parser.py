@@ -1,4 +1,4 @@
-def parseInfoMessage(data, root) :
+def parseInfoMessage(data) :
     infomessage = "none"
     # print("Data : %s" % data)
     if data[1] == 0x2F:
