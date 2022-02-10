@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
-# UI components
+################# UI components ####################
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
 from PyQt5.QtGui import QPixmap,QFontDatabase
 from PyQt5.QtWidgets import QLabel
 
-# OpenAutoPro API
+
+################ OpenAutoPro API ##################
 import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
 
+################# Libraries import  ####################
 import sys
 import threading
 import traceback
@@ -18,7 +20,7 @@ import os
 import logging  
 from functools import partial  #Useless ?
 
-#Imports classes and function from my files
+############ Libraries import from my files ###############
 from source_handler import InvalidFrame, SerialHandler
 from sound_level import volumewindow
 from ombre import ombre
@@ -29,24 +31,26 @@ from Media_control import mediacontrol
 from Media_data import *
 
 
-# Event for closing everything
+############## Event for closing everything ##############
 stop_reading = threading.Event()
 
-#Configure the log file and format
+################# Log file formatting #################
+'''
+write log in console (sys.stderr) and log file
+'''
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
                     filename='/home/pi/lucas/log.txt')
-# define a Handler which writes INFO messages or higher to the sys.stderr
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
-# add the handler to the root logger
 logging.getLogger('').addHandler(console)
 
-# USB Arduino parameters
+################## USB Arduino parameters  #################
 baudrate = 115200
 serial_device = "/dev/ttyUSB0"
 
+################## define global variable  #################
 audiosettings = {
    'frontRearBalance' : '0',
    'leftRightBalance' : '0',
@@ -57,6 +61,7 @@ audiosettings = {
    'source' : '0'
 }
 
+################# string formating function ################
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
     # Bytes are separated by spaces. => not anymore
@@ -80,9 +85,12 @@ def format_data_ascii(data):
             msg_str = msg_str + char
     return msg_str
 
-
+################## LOOP reading from Arduino  #################
+"""
+Background thread for reading data from Arduino (and by extension the car)
+and doing the corresponding action
+"""
 def reading_loop(source_handler, root):
-    """Background thread for reading data from Arduino."""
     # FRAMETYPES and their IDs
     INIT_STATUS_FRAME = 0x00
     VOLUME_FRAME = 0x01
@@ -102,10 +110,8 @@ def reading_loop(source_handler, root):
     TIME_FRAME = 0x13
     SHUTDOWN_FRAME = 0x14
     
-
     while not stop_reading.is_set():
         time.sleep(.05)
-
         try:
             frame_id, data = source_handler.get_message()
         # except InvalidFrame:
@@ -114,8 +120,11 @@ def reading_loop(source_handler, root):
         #     break
         except :
             continue
-
-        if frame_id == VOLUME_FRAME:
+            
+        if frame_id == INIT_STATUS_FRAME:
+            logging.info("Init communication with arduino OK")
+            
+        elif frame_id == VOLUME_FRAME:
             text = str(data[0] & 0b00011111)
             root.Volume.setText(text)
             root.custom_signals.update_progress_volume_signal.emit()
@@ -126,11 +135,8 @@ def reading_loop(source_handler, root):
             elif ((data[0] & 0b11100000 == 0b11100000) and root.Volumewindow.visible):
                 root.Volumewindow.movedown()
 
-        elif frame_id == INIT_STATUS_FRAME:
-            logging.info("Init communication with arduino OK")
-
         elif frame_id == SHUTDOWN_FRAME:
-            logging.info("Shuting DOWNNNNNNNNNNNNNNNNNNNN")
+            logging.info("Shuting DOWN")
             os.system("sudo shutdown now")
             
         elif frame_id == TIME_FRAME:
@@ -141,33 +147,25 @@ def reading_loop(source_handler, root):
         elif frame_id == REMOTE_COMMAND_FRAME:
             if (data[0] & 0b00001100) == 0b00001100:
                 # Both button pressed : Pause/play
-                # B.control('playpause')
                 mediacontrol("playpause")
             elif (data[0] & 0b10000000) == 0b10000000:
                 # Next button pressed
-                # B.control('next')
                 mediacontrol("next")
             elif (data[0] & 0b01000000) == 0b01000000:
                 # Previous button pressed
-                # B.control('pre')
                 mediacontrol("previous")
 
         elif frame_id == OPEN_DOOR_FRAME:
             # Maybe Useless
             if (data[0] & 0b10000000) == 0b10000000:
-                # Door Front Left
                 logging.info("Door Front Left")
             if (data[0] & 0b01000000) == 0b01000000:
-                # Door Front Right
                 logging.info("Door Front Right")
             if (data[0] & 0b00100000) == 0b00100000:
-                # Door Back Left
                 logging.info("Door Back Left")
             if (data[0] & 0b00010000) == 0b00010000:
-                # Door Back Right
                 logging.info("Door Back Right")
             if (data[0] & 0b00001000) == 0b00001000:
-                # Door Trunk
                 logging.info("Trunk Door")
 
         elif frame_id == TEMPERATURE_FRAME:
@@ -222,7 +220,7 @@ def reading_loop(source_handler, root):
             logging.info("Radio desc frame data : %s  " % temp)
 
         elif frame_id == INFO_MSG_FRAME:
-            infomessage = parseInfoMessage(data, root)
+            infomessage = parseInfoMessage(data)
             root.AlertMSG.texte.setText(infomessage)
             if not (data[0] & 0b01110000):
                 root.show_alert()
@@ -266,51 +264,44 @@ def reading_loop(source_handler, root):
             else:
                 consoinstantbyte = bytes([data[1], data[2]])
                 consoinstantbyte2 = ''.join('%02X' % byte for byte in consoinstantbyte)
-                text = "Intant : %s " + str(float(int(consoinstantbyte2, 16)) / 10)
+                text = "Instant. : %.1f l/100km" % (float(int(consoinstantbyte2, 16)) / 10)
             root.tripinfo4.setText(text)
             root.tripinfo4b.setText(text)
             
             if (data[0] & 0b00001000) == 0b00001000:
                 # if Tripbutton pressed : switch window
-#                 cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
-#                 os.system(cmd)
+                #cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
+                #os.system(cmd)
                 mediacontrol("mode") #This should work....
 
         elif frame_id == AUDIO_SETTINGS_FRAME:
             # Active selected mode in audio settings
             switchToAudiosettingsTab = True
             if (data[0] & 0b10000000) == 0b10000000:
-                # .leftRightBalance
                 root.resetaudiosettingselector()
                 root.leftRightBalanceselector.setHidden(False)
                 root.leftRightBalanceselector_2.setHidden(False)
             elif (data[1] & 0b10000000) == 0b10000000:
-                # .frontRearBalance
                 root.resetaudiosettingselector()
                 root.frontRearBalanceselector.setHidden(False)
                 root.frontRearBalanceselector_2.setHidden(False)
             elif (data[2] & 0b10000000) == 0b10000000:
-                # .bass
                 root.resetaudiosettingselector()
                 root.SliderBassesselector.setHidden(False)
                 root.SliderBassesselector_2.setHidden(False)
             elif (data[4] & 0b10000000) == 0b10000000:
-                # .treble
                 root.resetaudiosettingselector()
                 root.SliderAigusselector.setHidden(False)
                 root.SliderAigusselector_2.setHidden(False)
             elif (data[5] & 0b10000000) == 0b10000000:
-                # .loudness
                 root.resetaudiosettingselector()
                 root.Loudnessselector.setHidden(False)
                 root.Loudnessselector_2.setHidden(False)
             elif (data[5] & 0b00010000) == 0b00010000:
-                # .automaticVolume
                 root.resetaudiosettingselector()
                 root.automaticVolumeselector.setHidden(False)
                 root.automaticVolumeselector_2.setHidden(False)
             elif (data[6] & 0b01000000) == 0b01000000:
-                # .equalizer
                 root.resetaudiosettingselector()
                 root.equalizerselector.setHidden(False)
                 root.equalizerselector_2.setHidden(False)
@@ -318,7 +309,7 @@ def reading_loop(source_handler, root):
                 switchToAudiosettingsTab = False
                 root.resetaudiosettingselector()
 
-            # If amode is active, switch to the audiosettings tab
+            # if a mode is active, switch to the audiosettings tab
             if switchToAudiosettingsTab:
                 root.tabWidget.setCurrentIndex(2)
             else:
@@ -327,33 +318,27 @@ def reading_loop(source_handler, root):
                 else:
                     root.tabWidget.setCurrentIndex(0)
 
-            # Valeur de l'equalizer Setting
+            # Value of the equalizer Setting
             if (data[6] & 0b10111111) == 0b00000011:
-                # .none
                 root.resetequalizerselector()
                 root.equalizernone.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00000111:
-                # .classical
                 root.resetequalizerselector()
                 root.equalizerclassical.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00001011:
-                # .jazzBlues
                 root.resetequalizerselector()
                 root.equalizerjazzBlues.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00001111:
-                # .popRock
                 root.resetequalizerselector()
                 root.equalizerpopRock.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00010011:
-                # .vocals
                 root.resetequalizerselector()
                 root.equalizervocal.setStyleSheet("color: white;")
             elif (data[6] & 0b10111111) == 0b00010111:
-                # .techno
                 root.resetequalizerselector()
                 root.equalizertechno.setStyleSheet("color: white;")
-
-            # Enregistrement de toutes ces variables dans le dictionnaire audiosettings
+                
+            # saving every setting in the audiosettings[] dict
             audiosettings['frontRearBalance'] = int(data[1] & 0b01111111) - 63
             audiosettings['leftRightBalance'] = int(data[0] & 0b01111111) - 63
             audiosettings['automaticVolume'] = (data[5] & 0b00000111) == 0b00000111
@@ -372,6 +357,7 @@ def reading_loop(source_handler, root):
         else:
             logging.info("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
+###################### Main start of the program ###################            
 def run():
     source_handler = SerialHandler(serial_device, baudrate)
     # Reading from a serial device, opened with timeout=0 (non-blocking read())
@@ -397,6 +383,8 @@ def run():
    
     app.exec_()
 
+    
+############################ MainWindow Class #########################################
 class Ui(QtWidgets.QMainWindow):
    def update_progress_bluetooth_track(self):
        try:
@@ -524,6 +512,7 @@ class Ui(QtWidgets.QMainWindow):
         #After closing threads, closing the window            
         self.close()
 
+############### create  signals for the progress bars############
 class Communicate(QObject):
     update_progress_bluetooth_track_signal = pyqtSignal()
     update_progress_volume_signal = pyqtSignal()
