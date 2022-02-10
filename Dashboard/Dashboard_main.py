@@ -221,11 +221,14 @@ def reading_loop(source_handler, root):
 
         elif frame_id == INFO_MSG_FRAME:
             infomessage = parseInfoMessage(data)
-            root.AlertMSG.texte.setText(infomessage)
-            if not (data[0] & 0b01110000):
-                root.show_alert()
+            if infomessage != "Aucun message" :
+              root.AlertMSG.texte.setText(infomessage)
+              if not (data[0] & 0b01110000):
+                  root.show_alert()
+              else:
+                  root.hide_alert()
             else:
-                root.hide_alert()
+                root.hide_alert()                  
 
         elif frame_id == RADIO_STATIONS_FRAME:
             temp = format_data_ascii(data)
