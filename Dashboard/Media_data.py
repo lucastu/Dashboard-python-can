@@ -31,7 +31,7 @@ class EventHandler(ClientEventHandler, root):
         # Retrieve Bluetooth_duration value to calculate a percentage
         position_label_in_sec=int(message.position_label[:-3])*60+int(message.position_label[-2:])
         duration_label = self.Bluetooth_duration.text()
-        duration_label_in_sec =int(message.duration_label[:-3])*60+int(message.duration_label[-2:])
+        duration_label_in_sec =int(duration_label[:-3])*60+int(duration_label[-2:])
         percent=(position_label_in_sec/duration_label_in_sec)*100
         self.percent.setText(str(percent_label))
         # Send signal to update progress bar according to percent value                      
