@@ -82,13 +82,6 @@ def parseInfoMessage(data):
         0xF6: "Manoeuvre toit impossible: tÂº ext. trop faible",
         0xF7: "Ceinture passager AR gauche dÃ©bouclÃ©e",
         0xF9: "Ceinture passager AR droit dÃ©bouclÃ©e",
-        0xF8: "Manoeuvre toit impossible: coffre ouvert",
-        0xFA: "Manoeuvre toit impossible: rideau coffre non dÃ©ployÃ©",
-        0xFB: "Manoeuvre toit terminÃ©e",
-        0xFC: "Terminer immÃ©diatement la manoeuvre de toit",
-        0xFD: "Manoeuvre impossible: toit verrouillÃ©",
-        0xFE: "MÃ©canisme toit escamotable dÃ©faillant",
-        0xFF: "",
     }
 
     try:
