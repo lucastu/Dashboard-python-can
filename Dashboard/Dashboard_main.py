@@ -78,11 +78,11 @@ def format_data_ascii(data):
     for byte in data:
         char = chr(byte)
         if char == '\0':
-            msg_str = msg_str + '.'
+            msg_str += '.'
         elif ord(char) < 32 or ord(char) > 126:
-            msg_str = msg_str + '?'
+            msg_str += '?'
         else:
-            msg_str = msg_str + char
+            msg_str += char
     return msg_str
 
 ################## LOOP reading from Arduino  #################

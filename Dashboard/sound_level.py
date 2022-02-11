@@ -54,11 +54,11 @@ class volumewindow(QtWidgets.QDialog):
         self.move(emplacement_x, emplacement_y)
 
         add = 3
+        velocity = 5
         while emplacement_y < emplacement_y_cible:
-            velocity = 5
             if add - velocity > 0:
-                add = add - velocity
-            emplacement_y = (emplacement_y + add)
+                add -= velocity
+            emplacement_y += add
             self.move(emplacement_x, emplacement_y)
             time.sleep(.01)
         # Hide when out of screen
