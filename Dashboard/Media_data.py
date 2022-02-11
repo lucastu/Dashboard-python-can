@@ -13,7 +13,7 @@ from common.Client import Client, ClientEventHandler
 
 
 class EventHandler(ClientEventHandler, root):
-
+    ''' Handle the define events e.g. data coming from OAP API '''
     def on_hello_response(self, client, message):
         print(
             "received hello response, result: {}, oap version: {}.{}, api version: {}.{}"
@@ -24,24 +24,21 @@ class EventHandler(ClientEventHandler, root):
         client.send(oap_api.MESSAGE_SET_STATUS_SUBSCRIPTIONS, 0, set_status_subscriptions.SerializeToString())
 
     def on_media_status(self, client, message):
-        print("media status, is playing: {}, position label: {}, source: {}".
-              format(message.is_playing, message.position_label, message.source))
-        
+        print(f"media status, is playing: {message.is_playing}, position label: {message.position_label}, source: { message.source}"
+
         self.Bluetooth_timing.setText(message.position_label)
         # Retrieve Bluetooth_duration value to calculate a percentage
         position_label_in_sec=int(message.position_label[:-3])*60+int(message.position_label[-2:])
         duration_label = self.Bluetooth_duration.text()
         duration_label_in_sec =int(duration_label[:-3])*60+int(duration_label[-2:])
         percent=(position_label_in_sec/duration_label_in_sec)*100
-        self.percent.setText(str(percent_label))
-        # Send signal to update progress bar according to percent value                      
+        self.percent.setText(str(percent))
+        # Send signal to update progress bar according to percent value
         self.custom_signals.update_progress_bluetooth_track_signal.emit()
-        
+
     def on_media_metadata(self, client, message):
-        print(
-            "media metadata, artist: {}, title: {}, album: {}, duration label: {}"
-            .format(message.artist, message.title, message.album, message.duration_label))
-        
+        print(f"media metadata, artist: {message.artist}, title: {message.title}, album: {message.album}, duration label: {message.duration_label}"
+
         self.Bluetooth_track.setText(message.title)
         self.Bluetooth_artist.setText(message.artist)
         self.Bluetooth_duration.setText(message.duration_label)
