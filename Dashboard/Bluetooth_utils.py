@@ -2,12 +2,13 @@
 
 # https://qiita.com/eggman/items/339a9c9b338634ac27a5
 # https://kernel.googlesource.com/pub/scm/bluetooth/bluez/+/5.43/doc/media-api.txt
-# https://linuxtut.com/fr/30cb07454670450e3adf/  
-  
-import dbus
+# https://linuxtut.com/fr/30cb07454670450e3adf/
+
 import time
+import dbus
 
 class bluetooth_utils :
+  ''' Retrieve data and send command via dbus to bluetooth device '''
      SERVICE_NAME = "org.bluez"
      ADAPTER_INTERFACE = SERVICE_NAME + ".MediaPlayer1"
      bus = dbus.SystemBus()
@@ -42,7 +43,7 @@ class bluetooth_utils :
                 if adapter is not None:
                     # Getting the player name (name of the phone)
                     playerName = adapter.get('Name')
-                    
+
                     # Getting informations about the track
                     track =  adapter.get('Track')
 
@@ -53,20 +54,16 @@ class bluetooth_utils :
                     # Formatting the timing
                     millis = adapter.get('Position')
                     seconds = int((millis / 1000) % 60)
-                    seconds = f"{seconds:02d}"
                     minutes = int((millis / (1000 * 60)) % 60)
-                    minutes = f"{minutes:02d}"
-                    timing_format = "%s:%s" % (minutes, seconds)
+                    timing_format = f"{minutes:02d}:{seconds:02d}"
                     # Formatting the duration
                     millis2 = track.get('Duration')
                     seconds2 = int((millis2 / 1000) % 60)
-                    seconds2 = f"{seconds2:02d}"
                     minutes2 = int((millis2 / (1000 * 60)) % 60)
-                    minutes2 = f"{minutes2:02d}"
-                    duration_format= "%s:%s" % (minutes2, seconds2)
+                    duration_format= f"{minutes2:02d}:{seconds2:02d}"
 
                     # Postion of the reading from 0 to 1 (start to end
-                    if int(track.get('Duration')) is not 0 :
+                    if int(track.get('Duration')) != 0 :
                         # print(type(track.get('Duration')))
                         in_track_postition=int((adapter.get('Position')/track.get('Duration'))*100)
 
