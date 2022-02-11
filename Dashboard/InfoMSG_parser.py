@@ -1,4 +1,4 @@
-def parseInfoMessage(data) :
+def parseInfoMessage(data):
     infomessage = "none"
     infomessagedict = {
         0x00: "Diagnostic OK",
@@ -81,7 +81,6 @@ def parseInfoMessage(data) :
         0xF1: "Diagnostic terminÃ©",
         0xF6: "Manoeuvre toit impossible: tÂº ext. trop faible",
         0xF7: "Ceinture passager AR gauche dÃ©bouclÃ©e",
-        0xF8: "Ceinture passager AR central dÃ©bouclÃ©e",
         0xF9: "Ceinture passager AR droit dÃ©bouclÃ©e",
         0xF8: "Manoeuvre toit impossible: coffre ouvert",
         0xFA: "Manoeuvre toit impossible: rideau coffre non dÃ©ployÃ©",
@@ -89,17 +88,17 @@ def parseInfoMessage(data) :
         0xFC: "Terminer immÃ©diatement la manoeuvre de toit",
         0xFD: "Manoeuvre impossible: toit verrouillÃ©",
         0xFE: "MÃ©canisme toit escamotable dÃ©faillant",
-        0xFF: ""
-
+        0xFF: "",
     }
-    try :
+
+    try:
         infomessage = infomessagedict[data[1]]
     except:
-        if data[1] == 0x0B or data[1] == 0xDE:
+        if data[1] in [0x0B, 0xDE]:
         # Car doors frame
             doorByte1 = data[3]
             doorByte2 = data[4]
-        
+
             if doorByte1 & 0b00000100 == 0b00000100:
                 infomessage ="Capot ouvert"
             if doorByte1 & 0b00001000 == 0b00001000:
@@ -114,7 +113,7 @@ def parseInfoMessage(data) :
                 infomessage ="porte passager ouverte"
             if doorByte2 & 0b01000000 == 0b01000000:
                 infomessage ="trappe essence ouverte"
-    
+
     return infomessage.encode('latin1').decode()
 
 if __name__ == '__main__':
