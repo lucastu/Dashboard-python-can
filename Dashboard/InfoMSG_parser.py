@@ -85,34 +85,33 @@ def parseInfoMessage(data):
         0xF9: "Ceinture passager AR droit dÃ©bouclÃ©e",
     }
 
-    try:
+    if data[1] in [0x0B, 0xDE]:
+    # Car doors frame
+        doorByte1 = data[3]
+        doorByte2 = data[4]
+
+        if doorByte1 & 0b00000100 == 0b00000100:
+            infomessage ="Capot ouvert"
+        if doorByte1 & 0b00001000 == 0b00001000:
+            infomessage ="Coffre ouvert"
+        if doorByte1 & 0b00010000 == 0b00010000:
+            infomessage ="porte arriÃ¨re gauche ouverte"
+        if doorByte1 & 0b00100000 == 0b00100000:
+            infomessage ="porte arriÃ¨re droite ouverte"
+        if doorByte1 & 0b01000000 == 0b01000000:
+            infomessage ="porte conducteur ouverte"
+        if doorByte1 & 0b10000000 == 0b10000000:
+            infomessage ="porte passager ouverte"
+        if doorByte2 & 0b01000000 == 0b01000000:
+            infomessage ="trappe essence ouverte"
+    elif data[1] in infomessagedict :
         infomessage = infomessagedict[data[1]]
-    except:
-        if data[1] in [0x0B, 0xDE]:
-        # Car doors frame
-            doorByte1 = data[3]
-            doorByte2 = data[4]
-
-            if doorByte1 & 0b00000100 == 0b00000100:
-                infomessage ="Capot ouvert"
-            if doorByte1 & 0b00001000 == 0b00001000:
-                infomessage ="Coffre ouvert"
-            if doorByte1 & 0b00010000 == 0b00010000:
-                infomessage ="porte arriÃ¨re gauche ouverte"
-            if doorByte1 & 0b00100000 == 0b00100000:
-                infomessage ="porte arriÃ¨re droite ouverte"
-            if doorByte1 & 0b01000000 == 0b01000000:
-                infomessage ="porte conducteur ouverte"
-            if doorByte1 & 0b10000000 == 0b10000000:
-                infomessage ="porte passager ouverte"
-            if doorByte2 & 0b01000000 == 0b01000000:
-                infomessage ="trappe essence ouverte"
-
+        
     return infomessage.encode('latin1').decode()
 
 if __name__ == '__main__':
     #go through every message
-    for i in range(255) :   
-        infomessage=parseInfoMessage(data=[0x00,i,0x00,0x10,0x00])
-        if infomessage != "none":
-          print(hex(i), infomessage)   
+    for i in range(255) :
+        result = parseInfoMessage(data=[0x00,i,0x00,0x10,0x00])
+        if result != "none":
+          print(hex(i), result)
