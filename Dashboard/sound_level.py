@@ -6,18 +6,17 @@ from PyQt5.QtWidgets import (QApplication, QDialog,
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets, uic
 
-# os.environ.__setitem__('DISPLAY', ':0.0')
 
 class volumewindow(QtWidgets.QDialog):
+  ''' define the Volume popup showing on volume change '''
     def __init__(self):
-        Volume =0
         #Definition de la taille de lecran
         self.ScreenHeight = 600
         self.ScreenWidth = 1024
         # Definition de la taille de la fenetre
         self.WindowHeight = 30
         self.WindowWidth =600
-        
+
         super().__init__()
         self.initUI()
 
@@ -36,7 +35,7 @@ class volumewindow(QtWidgets.QDialog):
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
         self.visible=False
-        
+
     def moveup(self):
         self.visible=True
         self.show()
@@ -64,10 +63,9 @@ class volumewindow(QtWidgets.QDialog):
         # Hide when out of screen
         self.hide()
         self.visible=False
-        
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = volumewindow()
-    window.show()
-    window.move(0,0)
+    window.moveup()
     sys.exit(app.exec_())
