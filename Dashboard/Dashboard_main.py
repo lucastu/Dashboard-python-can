@@ -6,19 +6,9 @@ from PyQt5.QtCore import Qt, pyqtSignal, QObject
 from PyQt5.QtGui import QPixmap,QFontDatabase
 from PyQt5.QtWidgets import QLabel
 
-
 ################ OpenAutoPro API ##################
 import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
-
-################# Libraries import  ####################
-import sys
-import threading
-import traceback
-import time
-import os
-import logging  
-from functools import partial  #Useless ?
 
 ############ Libraries import from my files ###############
 from source_handler import InvalidFrame, SerialHandler
@@ -26,18 +16,25 @@ from sound_level import volumewindow
 from ombre import ombre
 from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
-# from Bluetooth_utils import bluetooth_utils 
+# from Bluetooth_utils import bluetooth_utils
 from Media_control import mediacontrol
-from Media_data import *
+from Media_data import EventHandler, mediadata
 
+################# Libraries import  ####################
+import sys
+import threading
+import traceback
+import time
+import os
+import logging
+from functools import partial  #Useless ?
 
 ############## Event for closing everything ##############
 stop_reading = threading.Event()
 
 ################# Log file formatting #################
-'''
-write log in console (sys.stderr) and log file
-'''
+# write log in console (sys.stderr) and log file
+
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
@@ -109,7 +106,7 @@ def reading_loop(source_handler, root):
     OPEN_DOOR_FRAME = 0x12
     TIME_FRAME = 0x13
     SHUTDOWN_FRAME = 0x14
-    
+
     while not stop_reading.is_set():
         time.sleep(.05)
         try:
@@ -120,16 +117,16 @@ def reading_loop(source_handler, root):
         #     break
         except :
             continue
-            
+
         if frame_id == INIT_STATUS_FRAME:
             logging.info("Init communication with arduino OK")
-            
+
         elif frame_id == VOLUME_FRAME:
             text = str(data[0] & 0b00011111)
             root.Volume.setText(text)
             root.custom_signals.update_progress_volume_signal.emit()
 
-            if (not (data[0] & 0b11100000 == 0b11100000)) and (not root.Volumewindow.visible):
+            if (not (data[0] & 0b11100000 == 0b11100000)) and not root.Volumewindow.visible:
                 root.Volumewindow.moveup()
 
             elif ((data[0] & 0b11100000 == 0b11100000) and root.Volumewindow.visible):
@@ -138,12 +135,12 @@ def reading_loop(source_handler, root):
         elif frame_id == SHUTDOWN_FRAME:
             logging.info("Shuting DOWN")
             os.system("sudo shutdown now")
-            
+
         elif frame_id == TIME_FRAME:
-            text = "%02d:%d " % (data[3], data[4])
+            text = f"{data[3]:02d}:{data[4]:02d}"
             root.heure.setText(text)
             root.heureb.setText(text)
-            
+
         elif frame_id == REMOTE_COMMAND_FRAME:
             if (data[0] & 0b00001100) == 0b00001100:
                 # Both button pressed : Pause/play
@@ -182,7 +179,7 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_FMTYPE_FRAME:
             temp = data[0]
-            radioFMType = "No Type"
+
             if temp == 1:
                 RadioFMType = "FM1"
             elif temp == 2:
@@ -191,6 +188,9 @@ def reading_loop(source_handler, root):
                 RadioFMType = "FMAST"
             elif temp == 5:
                 RadioFMType = "AM"
+            else :
+                RadioFMType = "No Type"
+            
             root.RadioType.setText("Radio " + RadioFMType)
 
         elif frame_id == RADIO_SOURCE_FRAME:
@@ -217,7 +217,7 @@ def reading_loop(source_handler, root):
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)
             # This one never worked....
-            logging.info("Radio desc frame data : %s  " % temp)
+            logging.info(f"Radio desc frame data : {temp}")
 
         elif frame_id == INFO_MSG_FRAME:
             infomessage = parseInfoMessage(data)
@@ -228,11 +228,11 @@ def reading_loop(source_handler, root):
               else:
                   root.hide_alert()
             else:
-                root.hide_alert()                  
+                root.hide_alert()
 
         elif frame_id == RADIO_STATIONS_FRAME:
             temp = format_data_ascii(data)
-            logging.info("station liste : " + temp)
+            logging.info(f"station liste : {temp}")
             if '|' in temp:
                 radio_list = temp.split("|")
                 root.radioList0.setText("1 : " + radio_list[0])
@@ -245,20 +245,20 @@ def reading_loop(source_handler, root):
         elif frame_id == INFO_TRIP_FRAME:
             distanceafterresetbyte = bytes([data[1], data[2]])
             distanceafterreset = int((''.join('%02X' % byte for byte in distanceafterresetbyte)), 16)
-            text = "%skm" % distanceafterreset
+            text = f"{distanceafterreset}km"
             root.tripinfo1.setText(text)
             root.tripinfo1b.setText(text)
 
             averageFuelUsagebyte = bytes([data[3], data[4]])
             averageFuelUsage = int((''.join('%02X' % byte for byte in averageFuelUsagebyte)), 16) / 10
-            text = "Moy : %sL/100km" % averageFuelUsage
+            text = f"Moy : {averageFuelUsage}L/100km"
             root.tripinfo3.setText(text)
             root.tripinfo3b.setText(text)
 
         elif frame_id == INFO_INSTANT_FRAME:
             fuelleftbyte = bytes([data[3], data[4]])
             fuelleftbyte2 = ''.join('%02X' % byte for byte in fuelleftbyte)
-            text = "Reste %skm" % (int(fuelleftbyte2, 16))
+            text = f"Reste {int(fuelleftbyte2, 16)}km"
             root.tripinfo2.setText(text)
             root.tripinfo2b.setText(text)
 
@@ -270,7 +270,7 @@ def reading_loop(source_handler, root):
                 text = "Instant. : %.1f l/100km" % (float(int(consoinstantbyte2, 16)) / 10)
             root.tripinfo4.setText(text)
             root.tripinfo4b.setText(text)
-            
+
             if (data[0] & 0b00001000) == 0b00001000:
                 # if Tripbutton pressed : switch window
                 #cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
@@ -340,7 +340,7 @@ def reading_loop(source_handler, root):
             elif (data[6] & 0b10111111) == 0b00010111:
                 root.resetequalizerselector()
                 root.equalizertechno.setStyleSheet("color: white;")
-                
+
             # saving every setting in the audiosettings[] dict
             audiosettings['frontRearBalance'] = int(data[1] & 0b01111111) - 63
             audiosettings['leftRightBalance'] = int(data[0] & 0b01111111) - 63
@@ -356,11 +356,11 @@ def reading_loop(source_handler, root):
             root.leftRightBalance.setValue(audiosettings['leftRightBalance'])
             root.Loudness.setChecked(audiosettings['loudness'])
             root.automaticVolume.setChecked(audiosettings['automaticVolume'])
-            
-        else:
-            logging.info("FRAME ID NON TRAITE : %s  :  %s  %s" % (frame_id, format_data_hex(data), format_data_ascii(data)))
 
-###################### Main start of the program ###################            
+        else:
+            logging.info(f"FRAME ID NON TRAITE : {frame_id} : {format_data_hex(data)}  {format_data_ascii(data)}"
+
+###################### Main start of the program ###################
 def run():
     source_handler = SerialHandler(serial_device, baudrate)
     # Reading from a serial device, opened with timeout=0 (non-blocking read())
@@ -371,7 +371,7 @@ def run():
 
     # Create Thread for the reading loop , args : source_handler for USB & root for UI
     reading_thread = threading.Thread(target=reading_loop, args=(source_handler, root,))
-    # Start the reading in background thread              
+    # Start the reading in background thread
     reading_thread.start()
 
     # Timer that execute Bluetooth_reading_loop function every 500ms
@@ -381,12 +381,12 @@ def run():
 
     # Create Thread for the media data loop , args :  root for UI
     mediadata_thread = threading.Thread(target=mediadata, args=(root,))
-    # Start the reading in background thread              
+    # Start the reading in background thread
     mediadata_thread.start()
-   
+
     app.exec_()
 
-    
+
 ############################ MainWindow Class #########################################
 class Ui(QtWidgets.QMainWindow):
    def update_progress_bluetooth_track(self):
@@ -414,7 +414,7 @@ class Ui(QtWidgets.QMainWindow):
         # Init both tabs
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(1)
-        
+
         self.showMaximized()  # Show the GUI
 
         # Init of the custom signals that connects to the progress bars
@@ -429,18 +429,18 @@ class Ui(QtWidgets.QMainWindow):
         self.radioList3.setText('')
         self.radioList4.setText('')
         self.radioList5.setText('')
-        
+
    def init_alert_window(self):
         self.Ombre = ombre()
-        self.AlertMSG = alertmsg() 
-         
+        self.AlertMSG = alertmsg()
+
    def show_alert(self):
          self.Ombre.showMaximized()
          self.AlertMSG.show()
-         
+
    def hide_alert(self):
          self.Ombre.hide()
-         self.AlertMSG.hide()   
+         self.AlertMSG.hide()
 
    def resetaudiosettingselector(self) :
          #Each selelctor display go hidden
@@ -499,24 +499,17 @@ class Ui(QtWidgets.QMainWindow):
 
    def close_all(self):
         # set flag off
-        try :
-            if reading_thread:
-                stop_reading.set()
-                reading_thread.join()
-        except:
-            pass
-        try :
-            if source_handler:
-                source_handler.close()
-        except:
-            pass
-                      
-        logging.info("Fermeture de l'application")              
-        #After closing threads, closing the window            
+        if reading_thread.is_alive():
+            stop_reading.set()
+            reading_thread.join()
+        if source_handleris_alive():
+            source_handler.close()
+        logging.info("Fermeture de l'application")
+        #After closing threads, closing the window
         self.close()
 
-############### create  signals for the progress bars############
 class Communicate(QObject):
+    ''' create  signals for the progress bars '''
     update_progress_bluetooth_track_signal = pyqtSignal()
     update_progress_volume_signal = pyqtSignal()
 
