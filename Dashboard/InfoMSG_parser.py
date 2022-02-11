@@ -81,6 +81,7 @@ def parseInfoMessage(data):
         0xF1: "Diagnostic terminÃ©",
         0xF6: "Manoeuvre toit impossible: tÂº ext. trop faible",
         0xF7: "Ceinture passager AR gauche dÃ©bouclÃ©e",
+        0xF8: "Ceinture passager AR milieu dÃ©bouclÃ©e",
         0xF9: "Ceinture passager AR droit dÃ©bouclÃ©e",
     }
 
