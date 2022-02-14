@@ -358,7 +358,7 @@ def reading_loop(source_handler, root):
             root.automaticVolume.setChecked(audiosettings['automaticVolume'])
 
         else:
-            logging.info(f"FRAME ID NON TRAITE : {frame_id} : {format_data_hex(data)}  {format_data_ascii(data)}"
+            logging.info(f"FRAME ID NON TRAITE : {frame_id} : {format_data_hex(data)}  {format_data_ascii(data)}")
 
 ###################### Main start of the program ###################
 def run():
