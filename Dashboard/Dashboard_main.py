@@ -58,6 +58,8 @@ audiosettings = {
    'source' : '0'
 }
 
+testWithFakeData =True
+
 ################# string formating function ################
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
@@ -117,7 +119,21 @@ def reading_loop(source_handler, root):
         #     break
         except :
             continue
+        
+        if testWithFakeData :
+          path_of_file = '/home/pi/lucas/other/fakedata.txt'
+          if os.path.getsize(path_of_file) != 0:
+              with open('readme.txt') as f:
+                  lines = f.read()
+                  #inside a file : "XX XX.XX.XX.XX.XX"
+                  Firstparse = lines.split(" ")
+                  frame_id=Firstparse[0]
+                  data = Firstparse[1].split(".")
+              f = open("sample.txt", "r+") 
+              f.seek(0) 
+              f.truncate() 
 
+            
         if frame_id == INIT_STATUS_FRAME:
             logging.info("Init communication with arduino OK")
 
