@@ -20,7 +20,7 @@ framenamedict = {
 0x14:    ["SHUTDOWN_FRAME",         "fixed",  "00"]
 }
 
-testing = True
+testing = False
 path_of_file = '/home/pi/lucas/other/fakedata.txt'
 
 def write_to_file(data_to_write):

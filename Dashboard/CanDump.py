@@ -2,12 +2,14 @@
 
 
 ############ Libraries import from my files ###############
-from source_handler import InvalidFrame, SerialHandler
 import sys
 import traceback
 import time
 import os
 import logging
+import threading
+
+from source_handler import InvalidFrame, SerialHandler
 
 ############## Event for closing everything ##############
 stop_reading = threading.Event()

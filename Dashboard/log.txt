@@ -1,1 +1,17 @@
+pi@raspberrypi:~ $ python3 /home/pi/lucas/Dashboard_main.py
+02 0C
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/usr/lib/python3.7/threading.py", line 917, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.7/threading.py", line 865, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/lucas/Dashboard_main.py", line 135, in reading_loop
+    data = bytes([int(item) for item in data])
+  File "/home/pi/lucas/Dashboard_main.py", line 135, in <listcomp>
+    data = bytes([int(item) for item in data])
+ValueError: invalid literal for int() with base 10: '0C'
 
+
+02-15 19:20 root         INFO     Init communication with arduino OK
+02-15 19:23 root         INFO     Init communication with arduino OK

@@ -18,7 +18,7 @@ from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
 # from Bluetooth_utils import bluetooth_utils
 from Media_control import mediacontrol
-from Media_data import EventHandler, mediadata
+from Media_data import mediadata
 
 ################# Libraries import  ####################
 import sys
@@ -111,27 +111,34 @@ def reading_loop(source_handler, root):
 
     while not stop_reading.is_set():
         time.sleep(.05)
-        try:
-            frame_id, data = source_handler.get_message()
-        except InvalidFrame:
-            continue
-        except EOFError:
-            break
-        frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
-        testWithFakeData = False
-        if testWithFakeData :
-              path_of_file = '/home/pi/lucas/other/fakedata.txt'
-              if os.path.getsize(path_of_file) != 0:
-                  with open('readme.txt') as f:
+        if not testWithFakeData :
+            try:
+                frame_id, data = source_handler.get_message()
+            except InvalidFrame:
+                continue
+            except EOFError:
+                break
+        else:
+            # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
+            # testWithFakeData = False
+            if testWithFakeData :
+                  path_of_file = '/home/pi/lucas/other/fakedata.txt'
+                  # if os.path.getsize(path_of_file) != 0:
+                  while os.path.getsize(path_of_file) == 0:
+                     True
+                  with open(path_of_file) as f:
                       lines = f.read()
-                      #inside a file : "XX XX.XX.XX.XX.XX"
+                      print(lines)
                       Firstparse = lines.split(" ")
                       frame_id=Firstparse[0]
                       data = Firstparse[1].split(".")
-                  f = open("sample.txt", "r+")
+                      data = bytes([int(item) for item in data])
+                  f = open(path_of_file, "r+")
                   f.seek(0)
                   f.truncate()
 
+                  print(data)
+                  print(type(data))
         if frame_id == INIT_STATUS_FRAME:
             logging.info("Init communication with arduino OK")
 
