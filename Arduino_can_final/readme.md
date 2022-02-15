@@ -1,3 +1,7 @@
+##### 10µF between RST & GND
+	To prevent reset of the arduino when serial is open with raspberry 
+	< https://forum.arduino.cc/t/uno-prevent-reset-when-open-serial-monitor/346618 >
+	
 ##### Radio_POWER_PIN = 3;
 	INPUT
 	Is the state of the RD4 power
