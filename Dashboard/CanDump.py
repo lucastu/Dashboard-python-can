@@ -6,24 +6,12 @@ import sys
 import traceback
 import time
 import os
-import logging
 import threading
 
 from source_handler import InvalidFrame, SerialHandler
 
 ############## Event for closing everything ##############
 stop_reading = threading.Event()
-
-################# Log file formatting #################
-# write log in console (sys.stderr) and log file
-
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-                    datefmt='%m-%d %H:%M',
-                    filename='/home/pi/lucas/other/candump.txt')
-console = logging.StreamHandler()
-console.setLevel(logging.INFO)
-logging.getLogger('').addHandler(console)
 
 ################## USB Arduino parameters  #################
 baudrate = 115200
@@ -84,9 +72,9 @@ def run():
         except EOFError:
             break
         if frame_id in framenamedict: 
-            logging.info(f"FRAME ID {hex(frame_id)}({framenamedict[frame_id]}) DATA : Hex:{format_data_hex(data)}, ASCII: {format_data_ascii(data)}")
+            print(f"FRAME ID {hex(frame_id)}({framenamedict[frame_id]}) DATA : Hex:{format_data_hex(data)}, ASCII: {format_data_ascii(data)}")
         else :
-            logging.info(f"FRAME ID {hex(frame_id)}(UNKNOWN) DATA : Hex:{format_data_hex(data)}, ASCII: {format_data_ascii(data)}")
+            print(f"FRAME ID {hex(frame_id)}(UNKNOWN) DATA : Hex:{format_data_hex(data)}, ASCII: {format_data_ascii(data)}")
             
 if __name__ == '__main__':
     run()
