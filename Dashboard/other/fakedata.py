@@ -1,5 +1,5 @@
 from random import randint
-
+import time
 framenamedict = {
 0x00:    ["INIT_STATUS_FRAME",      "fixed",  "01" ,"00"],
 0x01:    ["VOLUME_FRAME",           "random", 1, 0 , 30],
@@ -20,15 +20,52 @@ framenamedict = {
 0x14:    ["SHUTDOWN_FRAME",         "fixed",  "00"]
 }
 
+testing = True
+path_of_file = '/home/pi/lucas/other/fakedata.txt'
+
 def write_to_file(data_to_write):
     print("Writing file...")    
     print(data_to_write)
-    # f = open("/home/pi/lucas/fakedata.txt", "a")
-    # f.write(data_to_write)
-    # f.close()
+    if not testing :
+        f = open(path_of_file, "a")
+        f.write(data_to_write)
+        f.close()
     print("Writing OK !")
 
-def run():
+def send_full_data():
+    for item in framenamedict :
+        if framenamedict[item][1] == "fixed":
+            data_to_write = f'{"{:02x}".format(item).upper()} {framenamedict[item][2]}'            
+            write_to_file(data_to_write)
+            
+        elif framenamedict[item][1] == "random":    
+            data_to_write=0
+            print(f'Generating a {framenamedict[item][2]} byte data between {framenamedict[item][3]} and {framenamedict[item][4]} in hexadecimal')
+            generated_data=randint(framenamedict[item][3],framenamedict[item][4])
+        
+            if framenamedict[item][2] == 1:
+                data=str('{:02x}'.format(generated_data))
+            elif  framenamedict[item][2] == 2:   
+                data=str('{:04x}'.format(generated_data))
+            elif framenamedict[item][2] == 3:
+                data=str('{:06x}'.format(generated_data))
+            elif  framenamedict[item][2] == 4:
+                data=str('{:08x}'.format(generated_data))        
+            formated_data = '.'.join(data[i:i + 2] for i in range(0, len(data), 2)).upper()
+            data_to_write = f'{"{:02x}".format(item).upper()} {formated_data}'
+            write_to_file(data_to_write)
+        wait_for_empty_file()   
+    
+def wait_for_empty_file():
+    print("Wainting for emptyness of the file")
+    if not testing :
+        while os.path.getsize(path_of_file) == 0  :
+              continue
+    else :
+        time.sleep(1)
+    print("file empty")     
+def choose_data():
+    can_continue =True
     print("Choose frame to send :")
     choice_number =0
     for choice_number in framenamedict :
@@ -77,8 +114,19 @@ def run():
         data_to_write = f'{"{:02x}".format(id_choice)} {formated_data}'
     
     write_to_file(data_to_write)
-    input("press enter to continue")
+
+    if input("press enter to continue, q to stop : ") =='q':
+        can_continue =False
+        print("stoping...")
+    return can_continue    
     
 if __name__ == '__main__':
-    while True :
-        run()
+    print('1) send_full_data') 
+    print('2) choose_data_to_send') 
+    choice = input("Enter option :")
+    if choice == "1" :
+        send_full_data()
+    elif choice == "2" :
+        active = True
+        while active :
+            active = choose_data()
