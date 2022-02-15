@@ -8,7 +8,7 @@ from PyQt5 import QtWidgets, uic
 
 
 class volumewindow(QtWidgets.QDialog):
-  ''' define the Volume popup showing on volume change '''
+    ''' define the Volume popup showing on volume change '''
     def __init__(self):
         #Definition de la taille de lecran
         self.ScreenHeight = 600
