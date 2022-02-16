@@ -27,7 +27,7 @@ import traceback
 import time
 import os
 import logging
-from functools import partial  #Useless ?
+#from functools import partial  #Useless ?
 
 ############## Event for closing everything ##############
 stop_reading = threading.Event()
@@ -111,7 +111,8 @@ def reading_loop(source_handler, root):
 
     while not stop_reading.is_set():
         time.sleep(.05)
-        if not testWithFakeData :
+        path_of_file = '/home/pi/lucas/other/fakedata.txt'
+        if os.path.getsize(path_of_file) == 0:
             try:
                 frame_id, data = source_handler.get_message()
             except InvalidFrame:
@@ -120,25 +121,17 @@ def reading_loop(source_handler, root):
                 break
         else:
             # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
-            # testWithFakeData = False
-            if testWithFakeData :
-                  path_of_file = '/home/pi/lucas/other/fakedata.txt'
-                  # if os.path.getsize(path_of_file) != 0:
-                  while os.path.getsize(path_of_file) == 0:
-                     True
                   with open(path_of_file) as f:
                       lines = f.read()
-                      print(lines)
+                      logging.info(f"Injecting fake data from file : {lines}")
                       Firstparse = lines.split(" ")
-                      frame_id=Firstparse[0]
+                      frame_id=int(Firstparse[0],16)
                       data = Firstparse[1].split(".")
-                      data = bytes([int(item) for item in data])
+                      data = [hex(int(item,16)) for item in data]
                   f = open(path_of_file, "r+")
                   f.seek(0)
                   f.truncate()
 
-                  print(data)
-                  print(type(data))
         if frame_id == INIT_STATUS_FRAME:
             logging.info("Init communication with arduino OK")
 
