@@ -54,18 +54,14 @@ def wait_for_media_message(client, root):
 
 def mediadata(root):
     client = Client("media data")
-    # event_handler = EventHandler()
-    # client.set_event_handler(event_handler)
     client.connect('127.0.0.1', 44405)
 
     active = True
-    # while active:
-    #     try:
-    #         # active = wait_for_media_message(client, root)
-    #         # message = client.receive()
-    #         print()
-    #     except KeyboardInterrupt:
-    #         break
+    while active:
+        try:
+            active = wait_for_media_message(client, root)
+        except KeyboardInterrupt:
+            break
 
     client.disconnect()
 
