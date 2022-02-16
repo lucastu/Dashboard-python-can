@@ -6,9 +6,6 @@ from PyQt5.QtCore import Qt, pyqtSignal, QObject
 from PyQt5.QtGui import QPixmap,QFontDatabase
 from PyQt5.QtWidgets import QLabel
 
-################ OpenAutoPro API ##################
-# import common.Api_pb2 as oap_api
-# from common.Client import Client, ClientEventHandler
 
 ############ Libraries import from my files ###############
 from source_handler import InvalidFrame, SerialHandler
@@ -16,7 +13,6 @@ from ombre import ombre
 from sound_level import volumewindow
 from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
-# from Bluetooth_utils import bluetooth_utils
 from Media_control import mediacontrol
 from Media_data import mediadata
 
@@ -58,7 +54,7 @@ audiosettings = {
    'source' : '0'
 }
 
-testWithFakeData =True
+testWithFakeData = False
 
 ################# string formating function ################
 def format_data_hex(data):
@@ -109,28 +105,31 @@ def reading_loop(source_handler, root):
     TIME_FRAME = 0x13
     SHUTDOWN_FRAME = 0x14
 
+
     while not stop_reading.is_set():
+        frame_id, data = None, None
         time.sleep(.05)
         path_of_file = '/home/pi/lucas/other/fakedata.txt'
-        if os.path.getsize(path_of_file) == 0:
+        if testWithFakeData :
+            if os.path.getsize(path_of_file) != 0  :
+                  # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
+                  with open(path_of_file) as f:
+                      lines = f.read()
+                      logging.info(f"Injecting fake data from file : {lines}")
+                      Firstparse = lines.split(" ")
+                      frame_id = int(Firstparse[0],16)
+                      data = Firstparse[1].split(".")
+                      data = [(int(item,16)) for item in data]
+                  f = open(path_of_file, "r+")
+                  f.seek(0)
+                  f.truncate()
+        else :
             try:
                 frame_id, data = source_handler.get_message()
             except InvalidFrame:
                 continue
             except EOFError:
                 break
-        else:
-            # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
-                  with open(path_of_file) as f:
-                      lines = f.read()
-                      logging.info(f"Injecting fake data from file : {lines}")
-                      Firstparse = lines.split(" ")
-                      frame_id=int(Firstparse[0],16)
-                      data = Firstparse[1].split(".")
-                      data = [hex(int(item,16)) for item in data]
-                  f = open(path_of_file, "r+")
-                  f.seek(0)
-                  f.truncate()
 
         if frame_id == INIT_STATUS_FRAME:
             logging.info("Init communication with arduino OK")
@@ -371,7 +370,7 @@ def reading_loop(source_handler, root):
             root.Loudness.setChecked(audiosettings['loudness'])
             root.automaticVolume.setChecked(audiosettings['automaticVolume'])
 
-        else:
+        elif frame_id is not None:
             logging.info(f"FRAME ID NON TRAITE : {frame_id} : {format_data_hex(data)}  {format_data_ascii(data)}")
 
 
@@ -390,11 +389,6 @@ def run():
     reading_thread = threading.Thread(target=reading_loop, args=(source_handler, root,))
     # Start the reading in background thread
     reading_thread.start()
-
-    # Timer that execute Bluetooth_reading_loop function every 500ms
-#     Bluetooth_timer = QtCore.QTimer()
-#     Bluetooth_timer.timeout.connect(root.update_bluetooth_track)
-#     Bluetooth_timer.start(500)
 
     # Create Thread for the media data loop , args :  root for UI
     mediadata_thread = threading.Thread(target=mediadata, args=(root,))
@@ -459,7 +453,7 @@ class Ui(QtWidgets.QMainWindow):
          self.AlertMSG.hide()
 
    def resetaudiosettingselector(self) :
-         #Each selelctor display go hidden
+         #Each selector display go hidden
          #Ugly but the best way to avoid repainting every selector and crashing program
          if self.SliderBassesselector.isVisible():
             self.SliderBassesselector.setHidden(True)
@@ -499,26 +493,12 @@ class Ui(QtWidgets.QMainWindow):
          self.equalizertechno.setStyleSheet("color: grey;")
          self.equalizervocal.setStyleSheet("color: grey;")
 
-#    def update_bluetooth_track(self):
-#          try:
-#              B = bluetooth_utils()
-#              track_info = B.run()
-#              self.Bluetooth_track.setText(track_info[0])
-#              self.Bluetooth_artist.setText(track_info[1])
-#              # self.Bluetooth_album.setText(track_info[2])
-#              self.Bluetooth_timing.setText(track_info[3])
-#              self.Bluetooth_duration.setText(track_info[4])
-#              self.percent.setText(str(track_info[5]))
-#              self.custom_signals.update_progress_bluetooth_track_signal.emit()
-#          except:
-#              pass
-
    def close_all(self):
         # set flag off
         if reading_thread.is_alive():
             stop_reading.set()
             reading_thread.join()
-        if source_handleris_alive():
+        if source_handler.is_alive():
             source_handler.close()
         logging.info("Fermeture de l'application")
         #After closing threads, closing the window

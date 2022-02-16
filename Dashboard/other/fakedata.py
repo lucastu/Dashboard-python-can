@@ -16,7 +16,7 @@ framenamedict = {
 0x10:    ["AUDIO_SETTINGS_FRAME",   "fixed",  "3F.3F.3F.3F.3F.07.03","3F.3D.40.3F.41.07.03"],
 0x11:    ["REMOTE_COMMAND_FRAME",   "fixed",  "00","08","80","40","04","0C"],
 0x12:    ["OPEN_DOOR_FRAME",        "fixed",  "00","08","80","40","04"],
-0x13:    ["TIME_FRAME",             "random", 2 ,0 , 3],
+0x13:    ["TIME_FRAME",             "random", 5 ,0 , 2400],
 0x14:    ["SHUTDOWN_FRAME",         "fixed",  "00"]
 }
 
@@ -50,7 +50,10 @@ def send_full_data():
             elif framenamedict[item][2] == 3:
                 data=str('{:06x}'.format(generated_data))
             elif  framenamedict[item][2] == 4:
-                data=str('{:08x}'.format(generated_data))        
+                data=str('{:08x}'.format(generated_data))
+            elif  framenamedict[item][2] == 5:
+                data=str('{:10x}'.format(generated_data))
+
             formated_data = '.'.join(data[i:i + 2] for i in range(0, len(data), 2)).upper()
             data_to_write = f'{"{:02x}".format(item).upper()} {formated_data}'
             write_to_file(data_to_write)
@@ -109,7 +112,9 @@ def choose_data():
         elif framenamedict[id_choice][2] == 3:
             data=str('{:06x}'.format(generated_data))
         elif  framenamedict[id_choice][2] == 4:
-            data=str('{:08x}'.format(generated_data))        
+            data=str('{:08x}'.format(generated_data))
+        elif  framenamedict[id_choice][2] == 5:
+            data=str('{:10x}'.format(generated_data))
         formated_data = '.'.join(data[i:i + 2] for i in range(0, len(data), 2)).upper()
         data_to_write = f'{"{:02x}".format(id_choice)} {formated_data}'
     

@@ -1,1 +1,54 @@
 
+02-16 17:47 root         INFO     Injecting fake data from file : 02 0C
+02-16 17:47 root         INFO     Init communication with arduino OK
+02-16 18:09 root         INFO     Injecting fake data from file : 00 01
+02-16 18:09 root         INFO     Init communication with arduino OK
+02-16 18:09 root         INFO     Init communication with arduino OK
+02-16 18:11 root         INFO     Init communication with arduino OK
+02-16 18:12 root         INFO     Init communication with arduino OK
+02-16 18:14 root         INFO     Init communication with arduino OK
+02-16 18:14 root         INFO     Init communication with arduino OK
+02-16 18:18 root         INFO     Injecting fake data from file : 02 0B
+02-16 18:18 root         INFO     Injecting fake data from file : 
+02-16 18:20 root         INFO     Injecting fake data from file : 
+02-16 18:21 root         INFO     Init communication with arduino OK
+02-16 18:23 root         INFO     Injecting fake data from file : 01 07
+02-16 18:24 root         INFO     Init communication with arduino OK
+02-16 18:25 root         INFO     Injecting fake data from file : 01 17
+02-16 18:28 root         INFO     Injecting fake data from file : 02 12
+02-16 18:28 root         INFO     Injecting fake data from file : 02 29
+02-16 18:29 root         INFO     Injecting fake data from file : 01 1B
+02-16 18:29 root         INFO     Injecting fake data from file : 01 0E
+02-16 18:29 root         INFO     Injecting fake data from file : 01 08
+02-16 18:29 root         INFO     Injecting fake data from file : 02 0B
+02-16 18:29 root         INFO     Injecting fake data from file : 02 03
+02-16 18:29 root         INFO     Injecting fake data from file : 02 1D
+02-16 18:29 root         INFO     Injecting fake data from file : 02 06
+02-16 18:29 root         INFO     Injecting fake data from file : 02 1B
+02-16 18:29 root         INFO     Injecting fake data from file : 02 21
+02-16 18:30 root         INFO     Injecting fake data from file : 13 00.02
+02-16 18:33 root         INFO     Injecting fake data from file : 13 00.03
+02-16 18:36 root         INFO     Injecting fake data from file : 13   .  .  . 5.AE
+02-16 18:36 root         INFO     Injecting fake data from file : 13   .  .  . 5.AE
+02-16 18:37 root         INFO     Injecting fake data from file : 13   .  .  . 5.AE
+02-16 18:38 root         INFO     Init communication with arduino OK
+02-16 18:43 root         INFO     Init communication with arduino OK
+02-16 18:50 root         INFO     Init communication with arduino OK
+02-16 18:51 root         INFO     Init communication with arduino OK
+02-16 18:52 root         INFO     Init communication with arduino OK
+02-16 18:53 root         INFO     Init communication with arduino OK
+02-16 18:55 root         INFO     Init communication with arduino OK
+02-16 19:02 root         INFO     Init communication with arduino OK
+02-16 19:05 root         INFO     Init communication with arduino OK
+02-16 19:09 root         INFO     Init communication with arduino OK
+02-16 19:09 root         INFO     Init communication with arduino OK
+02-16 19:11 root         INFO     Init communication with arduino OK
+02-16 19:12 root         INFO     Init communication with arduino OK
+02-16 19:14 root         INFO     Init communication with arduino OK
+02-16 19:21 root         INFO     Init communication with arduino OK
+02-16 19:25 root         INFO     Init communication with arduino OK
+02-16 19:26 root         INFO     Init communication with arduino OK
+02-16 19:31 root         INFO     Init communication with arduino OK
+02-16 19:33 root         INFO     Init communication with arduino OK
+02-16 19:42 root         INFO     Init communication with arduino OK
+02-16 19:44 root         INFO     Init communication with arduino OK
