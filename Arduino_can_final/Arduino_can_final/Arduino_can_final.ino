@@ -68,7 +68,7 @@ int fmFreq = 0;
 
 // Radio station name
 char radioName[9];
-
+char timedata[5];
 // Radio text
 char radioMsg[100];
 char msgRecvCount = 0;
