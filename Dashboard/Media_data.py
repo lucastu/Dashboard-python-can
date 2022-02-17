@@ -6,10 +6,6 @@ import time
 import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
 
-# Output something like that :
-# received hello response, result: 1, oap version: 15.0, api version: 1.0
-# media metadata, artist: Amadou & Mariam feat. Santigold, title: Dougou Badia (feat. Santigold), album: Folila, duration label: 03:54
-# media status, is playing: True, position label: 03:20, source: 3
 class EventHandler(ClientEventHandler):
 
     def on_hello_response(self, client, message):
@@ -39,23 +35,23 @@ def wait_for_media_message(client, root):
             hello_response = oap_api.HelloResponse()
             hello_response.ParseFromString(message.payload)
             client._event_handler.on_hello_response(client, hello_response)
+            
         elif message.id == oap_api.MESSAGE_MEDIA_STATUS:
             media_status = oap_api.MediaStatus()
             media_status.ParseFromString(message.payload)
             if root == 0:
                 print(f"media status, is playing: {media_status.is_playing}, position label: {media_status.position_label}, source: {media_status.source}")
             else:
-                root.Bluetooth_timing.setText(media_status.position_label)
                 # Retrieve Bluetooth_duration value to calculate a percentage
-                if media_status.position_label != '' :
+                if media_status.position_label != '' and root.Bluetooth_duration.text() != '00:00':
                     position_label_in_sec = int(media_status.position_label[:-3]) * 60 + int(media_status.position_label[-2:])
                     duration_label = root.Bluetooth_duration.text()
                     duration_label_in_sec = int(duration_label[:-3]) * 60 + int(duration_label[-2:])
-                    if duration_label_in_sec == 0 :
-                        duration_label_in_sec = 1
                     percent = (position_label_in_sec / duration_label_in_sec) * 100
-                    root.percent.setText(str(percent))
+                    
                     # Send signal to update progress bar according to percent value
+                    root.percent.setText(str(percent))
+                    root.Bluetooth_timing.setText(media_status.position_label)
                     root.custom_signals.update_progress_bluetooth_track_signal.emit()
 
         elif message.id == oap_api.MESSAGE_MEDIA_METADATA:
@@ -64,8 +60,8 @@ def wait_for_media_message(client, root):
             if root == 0:
                 print(f"media metadata, artist: {media_metadata.artist}, title: {media_metadata.title}, album: {media_metadata.album}, duration label: {media_metadata.duration_label}")
             else:
-                root.Bluetooth_track.setText(media_metadata.title)
-                root.Bluetooth_artist.setText(media_metadata.artist)
+                root.Bluetooth_track.setText('No Title' if not media_metadata.title else media_metadata.title)
+                root.Bluetooth_artist.setText('No Artist' if not media_metadata.artist else media_metadata.artist)
                 root.Bluetooth_duration.setText(media_metadata.duration_label)
     return can_continue
 
