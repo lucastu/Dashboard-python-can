@@ -52,7 +52,12 @@ audiosettings = {
    'source' : '0'
 }
 
-testWithFakeData = False
+################# Testing mode if start with arg ################
+
+try :
+  testWithFakeData = True if sys.argv[1] == 'test' else False
+except IndexError :    
+  testWithFakeData = False
 
 ################# string formating function ################
 def format_data_hex(data):
@@ -186,8 +191,8 @@ def reading_loop(source_handler, root):
             root.RadioName.setText(format_data_ascii(data))
 
         elif frame_id == RADIO_FREQ_FRAME:
-            temp = format_data_hex(data)
-            root.RadioFreq.setText(str(float(int(temp, 16)) / 10) + "MHz")
+            temp = str(float(int(format_data_hex(data),16))/10)
+            root.RadioFreq.setText(temp + "MHz")
 
         elif frame_id == RADIO_FMTYPE_FRAME:
             temp = data[0]
@@ -256,30 +261,30 @@ def reading_loop(source_handler, root):
 
         elif frame_id == INFO_TRIP_FRAME:
             distanceafterresetbyte = bytes([data[1], data[2]])
-            distanceafterreset = int((''.join('%02X' % byte for byte in distanceafterresetbyte)), 16)
+            distanceafterreset = int(format_data_hex(distanceafterresetbyte)), 16)
             text = f"{distanceafterreset}km"
             root.tripinfo1.setText(text)
             root.tripinfo1b.setText(text)
 
             averageFuelUsagebyte = bytes([data[3], data[4]])
-            averageFuelUsage = int((''.join('%02X' % byte for byte in averageFuelUsagebyte)), 16) / 10
+            averageFuelUsage = int(format_data_hex(averageFuelUsagebyte)), 16) / 10
             text = f"Moy : {averageFuelUsage}L/100km"
             root.tripinfo3.setText(text)
             root.tripinfo3b.setText(text)
 
         elif frame_id == INFO_INSTANT_FRAME:
             fuelleftbyte = bytes([data[3], data[4]])
-            fuelleftbyte2 = ''.join('%02X' % byte for byte in fuelleftbyte)
-            text = f"Reste {int(fuelleftbyte2, 16)}km"
+            fuelleftbyte2 = int(format_data_hex(fuelleftbyte),16)
+            text = f"Reste {fuelleftbyte2}km"
             root.tripinfo2.setText(text)
             root.tripinfo2b.setText(text)
 
             if (data[1] & 0b10000000) == 0b10000000:
-                text = "Intant : -- "
+                text = "Instant. : -- l/100km"
             else:
                 consoinstantbyte = bytes([data[1], data[2]])
-                consoinstantbyte2 = ''.join('%02X' % byte for byte in consoinstantbyte)
-                text = "Instant. : %.1f l/100km" % (float(int(consoinstantbyte2, 16)) / 10)
+                consoinstantbyte2 = float(int(format_data_hex(consoinstantbyte), 16)) / 10
+                text = f"Instant. : {consoinstantbyte2:.1f} l/100km"
             root.tripinfo4.setText(text)
             root.tripinfo4b.setText(text)
 
