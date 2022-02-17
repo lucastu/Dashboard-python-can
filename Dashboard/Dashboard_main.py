@@ -59,6 +59,7 @@ try :
 except IndexError :    
   testWithFakeData = False
 
+print('Mode Test') if testWithFakeData else print('mode normal')
 ################# string formating function ################
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
@@ -261,13 +262,13 @@ def reading_loop(source_handler, root):
 
         elif frame_id == INFO_TRIP_FRAME:
             distanceafterresetbyte = bytes([data[1], data[2]])
-            distanceafterreset = int(format_data_hex(distanceafterresetbyte)), 16)
+            distanceafterreset = int(format_data_hex(distanceafterresetbyte), 16)
             text = f"{distanceafterreset}km"
             root.tripinfo1.setText(text)
             root.tripinfo1b.setText(text)
 
             averageFuelUsagebyte = bytes([data[3], data[4]])
-            averageFuelUsage = int(format_data_hex(averageFuelUsagebyte)), 16) / 10
+            averageFuelUsage = int(format_data_hex(averageFuelUsagebyte), 16) / 10
             text = f"Moy : {averageFuelUsage}L/100km"
             root.tripinfo3.setText(text)
             root.tripinfo3b.setText(text)

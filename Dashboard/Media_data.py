@@ -43,6 +43,7 @@ def wait_for_media_message(client, root):
                 print(f"media status, is playing: {media_status.is_playing}, position label: {media_status.position_label}, source: {media_status.source}")
             else:
                 # Retrieve Bluetooth_duration value to calculate a percentage
+                # probleme with when duration xx:xx:xx instead of xx:xx
                 if media_status.position_label != '' and root.Bluetooth_duration.text() != '00:00':
                     position_label_in_sec = int(media_status.position_label[:-3]) * 60 + int(media_status.position_label[-2:])
                     duration_label = root.Bluetooth_duration.text()

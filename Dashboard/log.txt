@@ -52,3 +52,29 @@
 02-16 19:33 root         INFO     Init communication with arduino OK
 02-16 19:42 root         INFO     Init communication with arduino OK
 02-16 19:44 root         INFO     Init communication with arduino OK
+02-16 19:50 root         INFO     Init communication with arduino OK
+02-17 16:45 root         INFO     Init communication with arduino OK
+02-17 16:51 root         INFO     Injecting fake data from file : 13   .  .  . 5.AE
+02-17 16:52 root         INFO     Injecting fake data from file : 13   .  .  . 5.AE
+02-17 16:54 root         INFO     Init communication with arduino OK
+02-17 17:00 root         INFO     Init communication with arduino OK
+02-17 17:09 root         INFO     Init communication with arduino OK
+02-17 17:12 root         INFO     Door Front Right
+02-17 17:17 root         INFO     Init communication with arduino OK
+02-17 17:25 root         INFO     Init communication with arduino OK
+02-17 17:25 root         INFO     Door Front Right
+02-17 17:30 root         INFO     Init communication with arduino OK
+02-17 17:33 root         INFO     Init communication with arduino OK
+02-17 17:48 root         INFO     Init communication with arduino OK
+02-17 17:50 root         INFO     Init communication with arduino OK
+02-17 17:52 root         INFO     Init communication with arduino OK
+02-17 17:53 root         INFO     Init communication with arduino OK
+02-17 17:54 root         INFO     Init communication with arduino OK
+02-17 17:56 root         INFO     Init communication with arduino OK
+02-17 17:57 root         INFO     Init communication with arduino OK
+02-17 17:57 root         INFO     Init communication with arduino OK
+02-17 17:58 root         INFO     Init communication with arduino OK
+02-17 17:59 root         INFO     Init communication with arduino OK
+02-17 17:59 root         INFO     Init communication with arduino OK
+02-17 18:00 root         INFO     Injecting fake data from file : 13   .  .  . 5.AE
+02-17 18:00 root         INFO     Init communication with arduino OK
