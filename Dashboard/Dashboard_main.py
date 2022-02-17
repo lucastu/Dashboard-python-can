@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 
+################# Libraries import  ####################
+import sys
+import threading
+import traceback
+import time
+import os
+import logging
+
 ################# UI components ####################
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
 from PyQt5.QtGui import QPixmap,QFontDatabase
 from PyQt5.QtWidgets import QLabel
-
 
 ############ Libraries import from my files ###############
 from source_handler import InvalidFrame, SerialHandler
@@ -15,15 +22,6 @@ from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
 from Media_control import mediacontrol
 from Media_data import mediadata
-
-################# Libraries import  ####################
-import sys
-import threading
-import traceback
-import time
-import os
-import logging
-#from functools import partial  #Useless ?
 
 ############## Event for closing everything ##############
 stop_reading = threading.Event()
@@ -81,8 +79,7 @@ def format_data_ascii(data):
     return msg_str
 
 ################## LOOP reading from Arduino  #################
-"""
-Background thread for reading data from Arduino (and by extension the car)
+"""Background thread for reading data from Arduino (and by extension the car)
 and doing the corresponding action
 """
 def reading_loop(source_handler, root):
@@ -121,9 +118,10 @@ def reading_loop(source_handler, root):
                       frame_id = int(Firstparse[0],16)
                       data = Firstparse[1].split(".")
                       data = [(int(item,16)) for item in data]
-                  f = open(path_of_file, "r+")
-                  f.seek(0)
-                  f.truncate()
+                      # then clear file
+                      f = open(path_of_file, "r+")
+                      f.seek(0)
+                      f.truncate()
         else :
             try:
                 frame_id, data = source_handler.get_message()
@@ -140,7 +138,7 @@ def reading_loop(source_handler, root):
             root.Volume.setText(text)
             root.custom_signals.update_progress_volume_signal.emit()
 
-            if (not (data[0] & 0b11100000 == 0b11100000)) and not root.Volumewindow.visible:
+            if not (data[0] & 0b11100000 == 0b11100000) and not root.Volumewindow.visible:
                 root.Volumewindow.moveup()
 
             elif (data[0] & 0b11100000 == 0b11100000) and root.Volumewindow.visible:
@@ -204,7 +202,7 @@ def reading_loop(source_handler, root):
                 RadioFMType = "AM"
             else :
                 RadioFMType = "No Type"
-            
+
             root.RadioType.setText("Radio " + RadioFMType)
 
         elif frame_id == RADIO_SOURCE_FRAME:
@@ -237,7 +235,7 @@ def reading_loop(source_handler, root):
             infomessage = parseInfoMessage(data)
             if infomessage != "Aucun message" :
               root.AlertMSG.texte.setText(infomessage)
-              if not (data[0] & 0b01110000):
+              if not data[0] & 0b01110000:
                   root.show_alert()
               else:
                   root.hide_alert()
@@ -403,28 +401,29 @@ class Ui(QtWidgets.QMainWindow):
    def update_progress_bluetooth_track(self):
        try:
            self.Bluetooth_progressBar.setValue(int(float(self.percent.text())))
-       except:
+       except TypeError:
            logging.info("Wrong type of value for track position")
 
    def update_progress_volume(self):
        try:
            self.Volumewindow.progress.setValue(int(self.Volume.text()))
-       except:
+       except TypeError:
            logging.info("Wrong type of value for Volume")
 
    def __init__(self):
-        super(Ui, self).__init__()  # Call the inherited classes __init__ method
+#         super(Ui, self).__init__()  # Call the inherited classes __init__ method
+        super().__init__()  # Call the inherited classes __init__ method      
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
 
-        #Initialisation of the alert window
-        self.init_alert_window()
-        #Initialisation of the volume window
-        self.Volumewindow=volumewindow()
+        #Initialisation of the window
+        self.Ombre = ombre()
+        self.AlertMSG = alertmsg()
+        self.Volumewindow = volumewindow()
 
         # Init both tabs
-        self.tabWidget.setCurrentIndex(0)
-        self.tabWidget.setCurrentIndex(1)
+#         self.tabWidget.setCurrentIndex(0)
+#         self.tabWidget.setCurrentIndex(1)
 
         self.showMaximized()  # Show the GUI
 
@@ -440,10 +439,6 @@ class Ui(QtWidgets.QMainWindow):
         self.radioList3.setText('')
         self.radioList4.setText('')
         self.radioList5.setText('')
-
-   def init_alert_window(self):
-        self.Ombre = ombre()
-        self.AlertMSG = alertmsg()
 
    def show_alert(self):
          self.Ombre.showMaximized()
