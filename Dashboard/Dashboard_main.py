@@ -107,8 +107,9 @@ def reading_loop(source_handler, root):
 
 
     while not stop_reading.is_set():
-        frame_id, data = None, None
         time.sleep(.05)
+        frame_id, data = None, None
+
         path_of_file = '/home/pi/lucas/other/fakedata.txt'
         if testWithFakeData :
             if os.path.getsize(path_of_file) != 0  :
