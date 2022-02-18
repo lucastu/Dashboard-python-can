@@ -46,22 +46,22 @@ def send_full_data():
             write_to_file(data_to_write)
         wait_for_empty_file()   
 
-def send_loop_data() :        
-    choice=[0x01,0x02,0x04,0x05,0x13]
+def send_loop_data() :
+    choice=[0x01,0x02,0x05,0x13]
     id_choice=None
     while id_choice not in choice :
         for i in choice:
             print(hex(i),') ',framenamedict[i][0])
-
         id_choice=int(input("Choose data to loop :"),16)
+	
+    print(f'Generating a {framenamedict[id_choice][2]} byte data from {framenamedict[id_choice][3]} to {framenamedict[id_choice][4]} in hexadecimal')
 
     for i in range (framenamedict[id_choice][3],framenamedict[id_choice][4] ):
-        print(f'Generating a {framenamedict[item][2]} byte data between {framenamedict[item][3]} and {framenamedict[item][4]} in hexadecimal')
-        generated_data=randint(framenamedict[item][3],framenamedict[item][4])
-        data_to_write = format_data(framenamedict[item][2],generated_data, item) 
+        generated_data=i
+        data_to_write = format_data(framenamedict[id_choice][2],generated_data, id_choice) 
         write_to_file(data_to_write)
         wait_for_empty_file()
-
+	
 def wait_for_empty_file():
     print("Wainting for emptyness of the file")
     if not testing :
@@ -81,7 +81,7 @@ def format_data(number_of_bytes, generated_data,id):
         elif number_of_bytes == 4:
             data=str('{:08x}'.format(generated_data))
         elif number_of_bytes == 5:
-            data=str('{:10x}'.format(generated_data))
+            data=str('{:010x}'.format(generated_data))
         formated_data = '.'.join(data[i:i + 2] for i in range(0, len(data), 2)).upper()
         data_to_write = f'{"{:02x}".format(id)} {formated_data}'
 	return data_to_write
