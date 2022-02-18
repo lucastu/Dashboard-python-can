@@ -13,15 +13,16 @@ os.environ.__setitem__('DISPLAY', ':0.0')
 
 
 class alertmsg(QDialog):
+''' Define the window centered that will show the Infomessage of the car'''
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-      
+
         ScreenHeight = 600
         ScreenWidth = 1024
-        
+
         # Definition de la taille de la fenetre
         WindowHeight = 200
         WindowWidth =800
@@ -50,10 +51,9 @@ class alertmsg(QDialog):
         self.grid.addWidget(self.texte,1,2)
         self.setLayout(self.grid)
 
-            
     def mousePressEvent(self, QMouseEvent):
         self.close()
-        
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = alertmsg()
