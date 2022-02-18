@@ -472,7 +472,7 @@
      <attribute name="title">
       <string>Page</string>
      </attribute>
-     <widget class="QLabel" name="Bluetooth_timing">
+     <widget class="QLabel" name="media_timing">
       <property name="geometry">
        <rect>
         <x>32</x>
@@ -511,7 +511,7 @@
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="Bluetooth_duration">
+     <widget class="QLabel" name="media_duration">
       <property name="geometry">
        <rect>
         <x>498</x>
@@ -571,7 +571,7 @@
        <string>0</string>
       </property>
      </widget>
-     <widget class="QLabel" name="Bluetooth_artist">
+     <widget class="QLabel" name="media_artist">
       <property name="geometry">
        <rect>
         <x>50</x>
@@ -594,7 +594,7 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="Bluetooth_track">
+     <widget class="QLabel" name="media_track">
       <property name="geometry">
        <rect>
         <x>50</x>
@@ -676,7 +676,7 @@
        <string>Trip info 2</string>
       </property>
      </widget>
-     <widget class="QProgressBar" name="Bluetooth_progressBar">
+     <widget class="QProgressBar" name="media_progressBar">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -697,7 +697,7 @@
        <number>0</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_bluetooh">
+     <widget class="QLabel" name="label_bluetooth">
       <property name="geometry">
        <rect>
         <x>50</x>
@@ -833,17 +833,17 @@
       </property>
      </widget>
      <zorder>background_5</zorder>
-     <zorder>Bluetooth_timing</zorder>
+     <zorder>media_timing</zorder>
      <zorder>Temperatureb</zorder>
-     <zorder>Bluetooth_duration</zorder>
+     <zorder>media_duration</zorder>
      <zorder>tripinfo1b</zorder>
      <zorder>percent</zorder>
-     <zorder>Bluetooth_artist</zorder>
-     <zorder>Bluetooth_track</zorder>
+     <zorder>media_artist</zorder>
+     <zorder>media_track</zorder>
      <zorder>tripinfo3b</zorder>
      <zorder>tripinfo2b</zorder>
-     <zorder>Bluetooth_progressBar</zorder>
-     <zorder>label_bluetooh</zorder>
+     <zorder>media_progressBar</zorder>
+     <zorder>label_bluetooth</zorder>
      <zorder>decor</zorder>
      <zorder>label_12</zorder>
      <zorder>IMGtrip_2</zorder>
