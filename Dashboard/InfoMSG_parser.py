@@ -106,7 +106,7 @@ def parseInfoMessage(data):
             infomessage ="trappe essence ouverte"
     elif data[1] in infomessagedict :
         infomessage = infomessagedict[data[1]]
-        
+
     return infomessage.encode('latin1').decode()
 
 if __name__ == '__main__':
