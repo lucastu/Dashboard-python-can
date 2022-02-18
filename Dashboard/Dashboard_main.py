@@ -55,11 +55,11 @@ audiosettings = {
 ################# Testing mode if start with arg ################
 
 try :
-  testWithFakeData = True if sys.argv[1] == 'test' else False
-except IndexError :    
+  testWithFakeData = bool(sys.argv[1] == 'test')
+except IndexError :
   testWithFakeData = False
+print('Mode Test' if testWithFakeData else 'Mode Normal')
 
-print('Mode Test') if testWithFakeData else print('mode normal')
 ################# string formating function ################
 def format_data_hex(data):
     """Convert the bytes array to an hex representation."""
@@ -85,7 +85,8 @@ def format_data_ascii(data):
     return msg_str
 
 ################## LOOP reading from Arduino  #################
-"""Background thread for reading data from Arduino (and by extension the car)
+""" 
+Background thread for reading data from Arduino (and by extension the car)
 and doing the corresponding action
 """
 def reading_loop(source_handler, root):
@@ -119,7 +120,7 @@ def reading_loop(source_handler, root):
                   # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
                   with open(path_of_file) as f:
                       lines = f.read()
-                      logging.info(f"Injecting fake data from file : {lines}")
+                      logging.info("Injecting fake data from file : %s ", lines)
                       Firstparse = lines.split(" ")
                       frame_id = int(Firstparse[0],16)
                       data = Firstparse[1].split(".")
@@ -235,7 +236,7 @@ def reading_loop(source_handler, root):
         elif frame_id == RADIO_DESC_FRAME:
             temp = format_data_ascii(data)
             # This one never worked....
-            logging.info(f"Radio desc frame data : {temp}")
+            logging.info("Radio desc frame data : %s",temp)
 
         elif frame_id == INFO_MSG_FRAME:
             infomessage = parseInfoMessage(data)
@@ -250,7 +251,7 @@ def reading_loop(source_handler, root):
 
         elif frame_id == RADIO_STATIONS_FRAME:
             temp = format_data_ascii(data)
-            logging.info(f"station liste : {temp}")
+            logging.info("station liste : %s",temp)
             if '|' in temp:
                 radio_list = temp.split("|")
                 root.radioList0.setText("1 : " + radio_list[0])
@@ -417,8 +418,7 @@ class Ui(QtWidgets.QMainWindow):
            logging.info("Wrong type of value for Volume")
 
    def __init__(self):
-#         super(Ui, self).__init__()  # Call the inherited classes __init__ method
-        super().__init__()  # Call the inherited classes __init__ method      
+        super().__init__()  # Call the inherited classes __init__ method
         uic.loadUi('/home/pi/lucas/interface.ui', self)  # Load the .ui Mainwindow file
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
 
