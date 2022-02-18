@@ -1,6 +1,6 @@
 #
 # Allow to send media control to OAP
-# Base on https://github.com/bluewave-studio/openauto-pro-api/blob/main/api_examples/python/KeyStrokes.py
+# Base on github.com/bluewave-studio/openauto-pro-api/blob/main/api_examples/python/KeyStrokes.py
 #
 
 import common.Api_pb2 as oap_api
@@ -20,7 +20,7 @@ def mediacontrol(action=""):
     elif action == "next":
         key_type = oap_api.KeyEvent.KEY_TYPE_NEXT_TRACK
     elif action == "mode":
-        key_type = oap_api.KeyEvent.KEY_TYPE_MODE        
+        key_type = oap_api.KeyEvent.KEY_TYPE_MODE
 
     print(action)
 
@@ -39,7 +39,7 @@ def mediacontrol(action=""):
 
 
 if __name__ == "__main__":
-    # action="playpause"
+    action="playpause"
     # action="previous"
     # action="next"
     # action="mode"
