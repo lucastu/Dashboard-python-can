@@ -1,12 +1,13 @@
 import sys
 import os
-#from PyQt5.QtCore import QTimer
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QDialog)
 os.environ.__setitem__('DISPLAY', ':0.0')
-from PyQt5 import QtWidgets
+
 
 class ombre(QtWidgets.QDialog):
+''' describe the fake window that displays in the background of alertMSG'''
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -24,7 +25,7 @@ class ombre(QtWidgets.QDialog):
 
     def mousePressEvent(self, QMouseEvent):
         self.close()
-        
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     shadow = ombre()
