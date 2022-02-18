@@ -71,10 +71,10 @@ def run():
             continue
         except EOFError:
             break
-        if frame_id in framenamedict: 
+        if frame_id in framenamedict:
             print(f"FRAME ID {hex(frame_id)}({framenamedict[frame_id]}) DATA : Hex:{format_data_hex(data)}, ASCII: {format_data_ascii(data)}")
         else :
             print(f"FRAME ID {hex(frame_id)}(UNKNOWN) DATA : Hex:{format_data_hex(data)}, ASCII: {format_data_ascii(data)}")
-            
+
 if __name__ == '__main__':
     run()
