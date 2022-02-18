@@ -1,9 +1,11 @@
 from binascii import unhexlify
 import re
-import serial
 import time
+import serial
+
 
 class InvalidFrame(Exception):
+    ''' Base class for wrong frame collected '''
     pass
 
 
@@ -30,7 +32,7 @@ class SourceHandler:
 
 
 class SerialHandler(SourceHandler):
-
+    ''' Handle serial data comming from device_name'''
     def __init__(self, device_name, baudrate=115200):
         self.device_name = device_name
         self.baudrate = baudrate
@@ -72,9 +74,9 @@ class SerialHandler(SourceHandler):
             data = unhexlify(hex_data)
 
         except (IndexError, ValueError) as exc:
-            raise InvalidFrame("Invalid frame {}".format(line)) from exc
+            raise InvalidFrame(f"Invalid frame {line}") from exc
 
         if len(data) != frame_length:
-            raise InvalidFrame("Wrong frame length or invalid data: {}".format(line))
+            raise InvalidFrame(f"Wrong frame length or invalid data: {line}")
 
         return frame_id, data
