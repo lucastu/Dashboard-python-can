@@ -43,11 +43,21 @@ def wait_for_media_message(client, root):
                 print(f"media status, is playing: {media_status.is_playing}, position label: {media_status.position_label}, source: {media_status.source}")
             else:
                 # Retrieve Bluetooth_duration value to calculate a percentage
-                # probleme with when duration xx:xx:xx instead of xx:xx
-                if media_status.position_label != '' and root.Bluetooth_duration.text() != '00:00':
-                    position_label_in_sec = int(media_status.position_label[:-3]) * 60 + int(media_status.position_label[-2:])
-                    duration_label = root.Bluetooth_duration.text()
-                    duration_label_in_sec = int(duration_label[:-3]) * 60 + int(duration_label[-2:])
+                # xx:xx:xx instead of xx:xx
+                duration_label_value = root.Bluetooth_duration.text()
+                if media_status.position_label != '' and duration_label != '00:00':
+                    position_label = media_status.position_label.split(':')
+                    if len(position_label)==2:
+                        position_label_in_sec = int(position_label[0])*60+int(position_label[1])
+                    elif len(position_label)==3:    
+                        position_label_in_sec = int(position_label[0])*3600+int(position_label[1])*60+int(position_label[1])
+
+                    duration_label = duration_label_value.split(':')   
+                    if len(duration_label)==2:
+                        duration_label_in_sec = int(duration_label[0])*60+int(duration_label[1])
+                    elif len(duration_label)==3:    
+                        duration_label_in_sec = int(duration_label[0])*3600+int(duration_label[1])*60+int(duration_label[1])
+
                     percent = (position_label_in_sec / duration_label_in_sec) * 100
                     
                     # Send signal to update progress bar according to percent value
