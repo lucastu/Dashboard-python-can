@@ -404,9 +404,9 @@ def run():
 
 class Ui(QtWidgets.QMainWindow):
    ''' Define the main window of the app '''
-   def update_progress_bluetooth_track(self):
+   def update_progress_media_track(self):
        try:
-           self.Bluetooth_progressBar.setValue(int(float(self.percent.text())))
+           self.media_progressBar.setValue(int(float(self.percent.text())))
        except TypeError:
            logging.info("Wrong type of value for track position")
 
@@ -435,7 +435,7 @@ class Ui(QtWidgets.QMainWindow):
 
         # Init of the custom signals that connects to the progress bars
         self.custom_signals = Communicate()
-        self.custom_signals.update_progress_bluetooth_track_signal.connect(self.update_progress_bluetooth_track)
+        self.custom_signals.update_progress_media_track_signal.connect(self.update_progress_media_track)
         self.custom_signals.update_progress_volume_signal.connect(self.update_progress_volume)
 
         # Init radio list
@@ -508,7 +508,7 @@ class Ui(QtWidgets.QMainWindow):
 
 class Communicate(QObject):
     ''' create  signals for the progress bars '''
-    update_progress_bluetooth_track_signal = pyqtSignal()
+    update_progress_media_track_signal = pyqtSignal()
     update_progress_volume_signal = pyqtSignal()
 
 if __name__ == '__main__':
