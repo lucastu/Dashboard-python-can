@@ -42,9 +42,9 @@ def wait_for_media_message(client, root):
             if root == 0:
                 print(f"media status, is playing: {media_status.is_playing}, position label: {media_status.position_label}, source: {media_status.source}")
             else:
-                # Retrieve Bluetooth_duration value to calculate a percentage
+                # Retrieve media_duration value to calculate a percentage
                 # xx:xx:xx instead of xx:xx
-                duration_label_value = root.Bluetooth_duration.text()
+                duration_label_value = root.media_duration.text()
                 if media_status.position_label != '' and duration_label != '00:00':
                     position_label = media_status.position_label.split(':')
                     if len(position_label)==2:
@@ -62,8 +62,8 @@ def wait_for_media_message(client, root):
                     
                     # Send signal to update progress bar according to percent value
                     root.percent.setText(str(percent))
-                    root.Bluetooth_timing.setText(media_status.position_label)
-                    root.custom_signals.update_progress_bluetooth_track_signal.emit()
+                    root.media_timing.setText(media_status.position_label)
+                    root.custom_signals.update_progress_media_track_signal.emit()
 
         elif message.id == oap_api.MESSAGE_MEDIA_METADATA:
             media_metadata = oap_api.MediaMetadata()
@@ -71,9 +71,9 @@ def wait_for_media_message(client, root):
             if root == 0:
                 print(f"media metadata, artist: {media_metadata.artist}, title: {media_metadata.title}, album: {media_metadata.album}, duration label: {media_metadata.duration_label}")
             else:
-                root.Bluetooth_track.setText('No Title' if not media_metadata.title else media_metadata.title)
-                root.Bluetooth_artist.setText('No Artist' if not media_metadata.artist else media_metadata.artist)
-                root.Bluetooth_duration.setText(media_metadata.duration_label)
+                root.media_track.setText('No Title' if not media_metadata.title else media_metadata.title)
+                root.media_artist.setText('No Artist' if not media_metadata.artist else media_metadata.artist)
+                root.media_duration.setText(media_metadata.duration_label)
     return can_continue
 
 
