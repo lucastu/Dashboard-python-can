@@ -1,13 +1,13 @@
 #
 #  API to retrieve informations from the Open Auto pro soft
-#  Based on https://github.com/bluewave-studio/openauto-pro-api  Copyright (C) BlueWave Studio - All Rights Reserved
+#  Based on https://github.com/bluewave-studio/openauto-pro-api 
 #
 import time
 import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
 
 class EventHandler(ClientEventHandler):
-
+    ''' Handle events comming from OAP API'''
     def on_hello_response(self, client, message):
         print(
             "received hello response, result: {}, oap version: {}.{}, api version: {}.{}"
@@ -35,7 +35,7 @@ def wait_for_media_message(client, root):
             hello_response = oap_api.HelloResponse()
             hello_response.ParseFromString(message.payload)
             client._event_handler.on_hello_response(client, hello_response)
-            
+
         elif message.id == oap_api.MESSAGE_MEDIA_STATUS:
             media_status = oap_api.MediaStatus()
             media_status.ParseFromString(message.payload)
@@ -49,17 +49,17 @@ def wait_for_media_message(client, root):
                     position_label = media_status.position_label.split(':')
                     if len(position_label)==2:
                         position_label_in_sec = int(position_label[0])*60+int(position_label[1])
-                    elif len(position_label)==3:    
+                    elif len(position_label)==3:
                         position_label_in_sec = int(position_label[0])*3600+int(position_label[1])*60+int(position_label[1])
 
-                    duration_label = duration_label_value.split(':')   
+                    duration_label = duration_label_value.split(':')
                     if len(duration_label)==2:
                         duration_label_in_sec = int(duration_label[0])*60+int(duration_label[1])
                     elif len(duration_label)==3:    
                         duration_label_in_sec = int(duration_label[0])*3600+int(duration_label[1])*60+int(duration_label[1])
 
                     percent = (position_label_in_sec / duration_label_in_sec) * 100
-                    
+
                     # Send signal to update progress bar according to percent value
                     root.percent.setText(str(percent))
                     root.media_timing.setText(media_status.position_label)
