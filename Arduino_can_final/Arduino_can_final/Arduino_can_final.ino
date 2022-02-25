@@ -4,6 +4,19 @@
 ///////////////////
 // Configuration //
 ///////////////////
+//Define Pinout for joystick
+const int buttonPin = 2;
+const int analogPinX = A3;
+const int analogPinY = A4;
+
+//Define Variable for joystick
+const int treshold = 512;
+bool flag = false;
+int valx = 0;
+int valy = 0;
+int buttonState = 0;
+String key = "" ;
+
 
 // CS pin for CAN bus shield.
 const int CS_PIN = 10;
@@ -38,6 +51,7 @@ typedef enum {
   RADIO_DESC_FRAME     = 0x07,
   INFO_MSG_FRAME       = 0x08,
   RADIO_STATIONS_FRAME = 0x09,
+  KEY_FRAME            = 0x0A,
   INFO_TRIP_FRAME      = 0x0C,
   INFO_INSTANT_FRAME   = 0x0E,
   //TRIP_MODE_FRAME      = 0x0F,
@@ -113,6 +127,7 @@ void setup() {
   pinMode(screenPowerPin, OUTPUT);
   digitalWrite(screenPowerPin, HIGH);
 
+  pinMode(buttonPin, INPUT_PULLUP);  
   
   pinMode(Relay_PIN, OUTPUT);
   digitalWrite(Relay_PIN, LOW);
@@ -158,6 +173,60 @@ void loop() {
    //if  digitalRead(Radio_POWER_PIN ) == HIGH
     shutdownflag = false ;
   }  
+  
+  //Joystick Handeling
+  buttonState = digitalRead(buttonPin);
+  valx = analogRead(analogPinX);
+  valy = analogRead(analogPinY);
+
+  //Can only be one state at a time 
+  //And have to go back to origin before another state
+  if (buttonState== LOW){
+      if (flag==false){
+        //key="Enter"; 
+        key=1; 
+        flag=true;
+      }
+  }
+  else if (valx < treshold-200){
+      if (flag==false){
+        //key="Gauche"; 
+        key=2;
+        flag=true;
+      }
+  }
+  else if (valx > treshold+200){
+      if (flag==false){
+        key=3;
+        //key="Droite"; 
+        flag=true;
+      }
+  }
+ 
+  else if (valy < treshold-200){
+      if (flag==false){
+        //key="Bas"; 
+        key=4;
+        flag=true;
+      }
+  }
+  else if (valy > treshold+200){
+      if (flag==false){
+        //key="Haut"; 
+        key=5;
+        flag=true;
+      }
+  }
+  else{
+      if (key != 0){
+        //send data
+        sendByteWithType(KEY_FRAME, key);
+      }
+      key=0;
+      //and then reset flag
+      flag=false;     
+  }    
+  //End of joystick handeling
   
   // If a msg is available from canbus
   if (CAN.checkReceive() == CAN_MSGAVAIL) {
