@@ -289,7 +289,7 @@ void loop() {
         strncpy(radioName, (char*)buffer, len);
         sendFrameWithType(RADIO_NAME_FRAME, buffer, len); 
       }    
-    }else if (id == 630) { // or 923
+    }else if (id == 923) { // or 923
       // Radio time data
       if (strncmp((char*)buffer, timedata, len)) {
         strncpy(timedata, (char*)buffer, len);
