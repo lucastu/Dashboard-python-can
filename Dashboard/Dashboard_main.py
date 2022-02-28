@@ -91,24 +91,32 @@ and doing the corresponding action
 """
 def reading_loop(source_handler, root):
     # FRAMETYPES and their IDs
-    INIT_STATUS_FRAME = 0x00
-    VOLUME_FRAME = 0x01
-    TEMPERATURE_FRAME = 0x02
-    RADIO_SOURCE_FRAME = 0x03
-    RADIO_NAME_FRAME = 0x04
-    RADIO_FREQ_FRAME = 0x05
-    RADIO_FMTYPE_FRAME = 0x06
-    RADIO_DESC_FRAME = 0x07
-    INFO_MSG_FRAME = 0x08
+    INIT_STATUS_FRAME    = 0x00
+    VOLUME_FRAME         = 0x01
+    TEMPERATURE_FRAME    = 0x02
+    RADIO_SOURCE_FRAME   = 0x03
+    RADIO_NAME_FRAME     = 0x04
+    RADIO_FREQ_FRAME     = 0x05
+    RADIO_FMTYPE_FRAME   = 0x06
+    RADIO_DESC_FRAME     = 0x07
+    INFO_MSG_FRAME       = 0x08
     RADIO_STATIONS_FRAME = 0x09
-    INFO_TRIP_FRAME = 0x0C
-    INFO_INSTANT_FRAME = 0x0E
+    KEY_FRAME            = 0x0A
+    INFO_TRIP_FRAME      = 0x0C
+    INFO_INSTANT_FRAME   = 0x0E
     AUDIO_SETTINGS_FRAME = 0x10
     REMOTE_COMMAND_FRAME = 0x11
-    OPEN_DOOR_FRAME = 0x12
-    TIME_FRAME = 0x13
-    SHUTDOWN_FRAME = 0x14
-
+    OPEN_DOOR_FRAME      = 0x12
+    TIME_FRAME           = 0x13
+    SHUTDOWN_FRAME       = 0x14
+    
+    listcontrol = { 1 : "enter",
+                  2 : "scroll_left",
+                  3 : "scroll_right",
+                  4 : "down",
+                  5 : "up" ,
+                  6 : "back",
+                  7 : "home"}
 
     while not stop_reading.is_set():
         time.sleep(.05)
@@ -170,6 +178,10 @@ def reading_loop(source_handler, root):
             elif (data[0] & 0b01000000) == 0b01000000:
                 # Previous button pressed
                 mediacontrol("previous")
+        elif frame_id == KEY_FRAME :
+                if data[0] in listcontrol :
+                    logging.info(listcontrol[data[0]])
+                    mediacontrol(listcontrol[data[0]]) 
 
         elif frame_id == OPEN_DOOR_FRAME:
             # Maybe Useless
