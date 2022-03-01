@@ -15,7 +15,7 @@ bool flag = false;
 int valx = 0;
 int valy = 0;
 int buttonState = 0;
-String key = "" ;
+int key = 0 ;
 int timesincepressed = 0;
 bool buttonpressed = false;
 
@@ -187,7 +187,7 @@ void loop() {
       }
   }
   else if (buttonState == HIGH && buttonpressed == true){
-      if (millis()-timesincepressed < 1000) key=1; // Enter
+      if (millis()-timesincepressed < 350) key=1; // Enter
       else key=6; // Back
       buttonpressed = false;
   }
@@ -218,7 +218,7 @@ void loop() {
       }
   }
   
-  if (key != 0){
+  else if (key != 0){
     sendByteWithType(KEY_FRAME, key);
     key=0;
     flag=false;     
@@ -237,7 +237,7 @@ void loop() {
         sendByteWithType(VOLUME_FRAME, volume);    
       }  
     }else if (id == 246 && len == 8) {
-      #tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
+      //tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
       if (temperature != buffer[5]) {
           temperature = buffer[5];
           sendByteWithType(TEMPERATURE_FRAME, temperature);
