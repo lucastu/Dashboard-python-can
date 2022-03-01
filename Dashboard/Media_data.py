@@ -45,7 +45,7 @@ def wait_for_media_message(client, root):
                 # Retrieve media_duration value to calculate a percentage
                 # xx:xx:xx instead of xx:xx
                 duration_label_value = root.media_duration.text()
-                if media_status.position_label != '' and duration_label != '00:00':
+                if media_status.position_label != '' and duration_label_value != '00:00':
                     position_label = media_status.position_label.split(':')
                     if len(position_label)==2:
                         position_label_in_sec = int(position_label[0])*60+int(position_label[1])

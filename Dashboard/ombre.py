@@ -7,7 +7,7 @@ os.environ.__setitem__('DISPLAY', ':0.0')
 
 
 class ombre(QtWidgets.QDialog):
-''' describe the fake window that displays in the background of alertMSG'''
+    ''' describe the fake window that displays in the background of alertMSG'''
     def __init__(self):
         super().__init__()
         self.initUI()

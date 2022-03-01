@@ -13,7 +13,7 @@ os.environ.__setitem__('DISPLAY', ':0.0')
 
 
 class alertmsg(QDialog):
-''' Define the window centered that will show the Infomessage of the car'''
+    ''' Define the window centered that will show the Infomessage of the car'''
     def __init__(self):
         super().__init__()
         self.initUI()
