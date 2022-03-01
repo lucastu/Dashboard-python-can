@@ -240,9 +240,9 @@ void loop() {
         sendByteWithType(VOLUME_FRAME, volume);    
       }  
     }else if (id == 246 && len == 8) {
-      tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
-      if (temperature != tempValue) {
-          temperature = tempValue;
+      #tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
+      if (temperature != buffer[5]) {
+          temperature = buffer[5];
           sendByteWithType(TEMPERATURE_FRAME, temperature);
       }
     }else if (id == 543) {
