@@ -16,7 +16,8 @@ int valx = 0;
 int valy = 0;
 int buttonState = 0;
 String key = "" ;
-
+int timesincepressed = 0;
+bool buttonpressed = false;
 
 // CS pin for CAN bus shield.
 const int CS_PIN = 10;
@@ -180,12 +181,18 @@ void loop() {
   //Can only be one state at a time 
   //And have to go back to origin before another state
   if (buttonState== LOW){
-      if (flag==false){
-        key=1; // Enter
-        flag=true;
+      if (buttonpressed==false){  
+        buttonpressed = true;
+        timesincepressed = millis();
       }
   }
-  else if (valx < treshold-200){
+  else if (buttonState == HIGH && buttonpressed == true){
+      if (millis()-timesincepressed < 1000) key=1; // Enter
+      else key=6; // Back
+      buttonpressed = false;
+  }
+  
+  if (valx < treshold-200){
       if (flag==false){
         key=2; // Gauche
         flag=true;
@@ -210,13 +217,12 @@ void loop() {
         flag=true;
       }
   }
-  else{
-      if (key != 0){
-        sendByteWithType(KEY_FRAME, key);
-      }
-      key=0;
-      flag=false;     
-  }    
+  
+  if (key != 0){
+    sendByteWithType(KEY_FRAME, key);
+    key=0;
+    flag=false;     
+  }
   //End of joystick handeling
   
   // If a msg is available from canbus
