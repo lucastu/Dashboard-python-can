@@ -4,6 +4,20 @@
 ///////////////////
 // Configuration //
 ///////////////////
+//Define Pinout for joystick
+const int buttonPin = 2;
+const int analogPinX = A3;
+const int analogPinY = A4;
+
+//Define Variable for joystick
+const int treshold = 512;
+bool flag = false;
+int valx = 0;
+int valy = 0;
+int buttonState = 0;
+String key = "" ;
+int timesincepressed = 0;
+bool buttonpressed = false;
 
 // CS pin for CAN bus shield.
 const int CS_PIN = 10;
@@ -38,9 +52,9 @@ typedef enum {
   RADIO_DESC_FRAME     = 0x07,
   INFO_MSG_FRAME       = 0x08,
   RADIO_STATIONS_FRAME = 0x09,
+  KEY_FRAME            = 0x0A,
   INFO_TRIP_FRAME      = 0x0C,
   INFO_INSTANT_FRAME   = 0x0E,
-  //TRIP_MODE_FRAME      = 0x0F,
   AUDIO_SETTINGS_FRAME = 0x10,
   REMOTE_COMMAND_FRAME = 0x11,
   OPEN_DOOR_FRAME      = 0x12,
@@ -113,6 +127,7 @@ void setup() {
   pinMode(screenPowerPin, OUTPUT);
   digitalWrite(screenPowerPin, HIGH);
 
+  pinMode(buttonPin, INPUT_PULLUP);  
   
   pinMode(Relay_PIN, OUTPUT);
   digitalWrite(Relay_PIN, LOW);
@@ -146,18 +161,69 @@ void loop() {
         shutdownflag = true ;
         shutdownStartDate = millis();
       }
-      if (millis()-shutdownStartDate >=40000){
-        //If time spent since ignition went down is more than 1min
+      if (millis()-shutdownStartDate >= 2400000){
+        //If time spent since ignition went down is more than 4min
         //Send shutdown frame to raspberry, wait for it to be shuted down, then cut the power
         sendByteWithType(SHUTDOWN_FRAME, 0x01);
-        delay(20000);
+        delay(10000);
         digitalWrite(Relay_PIN, HIGH);
       }  
   }
   else {
-   //if  digitalRead(Radio_POWER_PIN ) == HIGH
     shutdownflag = false ;
   }  
+  
+  //Joystick Handeling
+  buttonState = digitalRead(buttonPin);
+  valx = analogRead(analogPinX);
+  valy = analogRead(analogPinY);
+
+  //Can only be one state at a time 
+  //And have to go back to origin before another state
+  if (buttonState== LOW){
+      if (buttonpressed==false){  
+        buttonpressed = true;
+        timesincepressed = millis();
+      }
+  }
+  else if (buttonState == HIGH && buttonpressed == true){
+      if (millis()-timesincepressed < 1000) key=1; // Enter
+      else key=6; // Back
+      buttonpressed = false;
+  }
+  
+  if (valx < treshold-200){
+      if (flag==false){
+        key=2; // Gauche
+        flag=true;
+      }
+  }
+  else if (valx > treshold+200){
+      if (flag==false){
+        key=3; // Droite
+        flag=true;
+      }
+  }
+ 
+  else if (valy < treshold-200){
+      if (flag==false){
+        key=4; // Bas
+        flag=true;
+      }
+  }
+  else if (valy > treshold+200){
+      if (flag==false){
+        key=5; // Haut
+        flag=true;
+      }
+  }
+  
+  if (key != 0){
+    sendByteWithType(KEY_FRAME, key);
+    key=0;
+    flag=false;     
+  }
+  //End of joystick handeling
   
   // If a msg is available from canbus
   if (CAN.checkReceive() == CAN_MSGAVAIL) {
@@ -171,9 +237,9 @@ void loop() {
         sendByteWithType(VOLUME_FRAME, volume);    
       }  
     }else if (id == 246 && len == 8) {
-      tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
-      if (temperature != tempValue) {
-          temperature = tempValue;
+      #tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
+      if (temperature != buffer[5]) {
+          temperature = buffer[5];
           sendByteWithType(TEMPERATURE_FRAME, temperature);
       }
     }else if (id == 543) {
@@ -220,7 +286,7 @@ void loop() {
         strncpy(radioName, (char*)buffer, len);
         sendFrameWithType(RADIO_NAME_FRAME, buffer, len); 
       }    
-    }else if (id == 630) { // or 923
+    }else if (id == 923) { // or 923
       // Radio time data
       if (strncmp((char*)buffer, timedata, len)) {
         strncpy(timedata, (char*)buffer, len);

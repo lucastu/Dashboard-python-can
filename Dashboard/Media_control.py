@@ -21,6 +21,20 @@ def mediacontrol(action=""):
         key_type = oap_api.KeyEvent.KEY_TYPE_NEXT_TRACK
     elif action == "mode":
         key_type = oap_api.KeyEvent.KEY_TYPE_MODE
+    elif action == "up":
+        key_type = oap_api.KeyEvent.KEY_TYPE_UP
+    elif action == "down":
+        key_type = oap_api.KeyEvent.KEY_TYPE_DOWN
+    elif action == "scroll_left":
+        key_type = oap_api.KeyEvent.KEY_TYPE_SCROLL_LEFT
+    elif action == "scroll_right":
+        key_type = oap_api.KeyEvent.KEY_TYPE_SCROLL_RIGHT
+    elif action == "enter":
+        key_type = oap_api.KeyEvent.KEY_TYPE_ENTER
+    elif action == "back":
+        key_type = oap_api.KeyEvent.KEY_TYPE_BACK
+    elif action == "home":
+        key_type = oap_api.KeyEvent.KEY_TYPE_HOME
 
     print(action)
 

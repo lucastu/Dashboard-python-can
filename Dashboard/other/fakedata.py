@@ -23,6 +23,22 @@ framenamedict = {
 testing = False
 path_of_file = '/home/pi/lucas/other/fakedata.txt'
 
+def retrievedatafromfile():
+	if os.path.getsize(path_of_file) != 0  :
+	  # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
+	  with open(path_of_file) as f:
+		lines = f.read()
+		logging.info("Injecting fake data from file : %s ", lines)
+		Firstparse = lines.split(" ")
+		frame_id = int(Firstparse[0],16)
+		data = Firstparse[1].split(".")
+		data = [(int(item,16)) for item in data]
+		# then clear file
+		f = open(path_of_file, "r+")
+		f.seek(0)
+		f.truncate()
+		return	frame_id, data
+
 def write_to_file(data_to_write):
     print("Writing file...")    
     print(data_to_write)

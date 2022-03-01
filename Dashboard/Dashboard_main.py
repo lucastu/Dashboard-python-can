@@ -22,19 +22,19 @@ from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
 from Media_control import mediacontrol
 from Media_data import mediadata
+from other.fakedata import retrievedatafromfile
 
 ############## Event for closing everything ##############
 stop_reading = threading.Event()
 
 ################# Log file formatting #################
 # write log in console (sys.stderr) and log file
-
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
                     filename='/home/pi/lucas/log.txt')
 console = logging.StreamHandler()
-console.setLevel(logging.INFO)
+console.setLevel(logging.DEBUG)
 logging.getLogger('').addHandler(console)
 
 ################## USB Arduino parameters  #################
@@ -58,6 +58,7 @@ try :
   testWithFakeData = bool(sys.argv[1] == 'test')
 except IndexError :
   testWithFakeData = False
+  
 print('Mode Test' if testWithFakeData else 'Mode Normal')
 
 ################# string formating function ################
@@ -91,44 +92,42 @@ and doing the corresponding action
 """
 def reading_loop(source_handler, root):
     # FRAMETYPES and their IDs
-    INIT_STATUS_FRAME = 0x00
-    VOLUME_FRAME = 0x01
-    TEMPERATURE_FRAME = 0x02
-    RADIO_SOURCE_FRAME = 0x03
-    RADIO_NAME_FRAME = 0x04
-    RADIO_FREQ_FRAME = 0x05
-    RADIO_FMTYPE_FRAME = 0x06
-    RADIO_DESC_FRAME = 0x07
-    INFO_MSG_FRAME = 0x08
+    INIT_STATUS_FRAME    = 0x00
+    VOLUME_FRAME         = 0x01
+    TEMPERATURE_FRAME    = 0x02
+    RADIO_SOURCE_FRAME   = 0x03
+    RADIO_NAME_FRAME     = 0x04
+    RADIO_FREQ_FRAME     = 0x05
+    RADIO_FMTYPE_FRAME   = 0x06
+    RADIO_DESC_FRAME     = 0x07
+    INFO_MSG_FRAME       = 0x08
     RADIO_STATIONS_FRAME = 0x09
-    INFO_TRIP_FRAME = 0x0C
-    INFO_INSTANT_FRAME = 0x0E
+    KEY_FRAME            = 0x0A
+    INFO_TRIP_FRAME      = 0x0C
+    INFO_INSTANT_FRAME   = 0x0E
     AUDIO_SETTINGS_FRAME = 0x10
     REMOTE_COMMAND_FRAME = 0x11
-    OPEN_DOOR_FRAME = 0x12
-    TIME_FRAME = 0x13
-    SHUTDOWN_FRAME = 0x14
+    OPEN_DOOR_FRAME      = 0x12
+    TIME_FRAME           = 0x13
+    SHUTDOWN_FRAME       = 0x14
 
+    # Dict of controls and their ID to send to mediacontrol()
+    listcontrol = { 
+                  1 : "enter",
+                  2 : "scroll_left",
+                  3 : "scroll_right",
+                  4 : "down",
+                  5 : "up" ,
+                  6 : "back",
+                  7 : "home"
+                  }
 
     while not stop_reading.is_set():
         time.sleep(.05)
         frame_id, data = None, None
 
-        path_of_file = '/home/pi/lucas/other/fakedata.txt'
         if testWithFakeData :
-            if os.path.getsize(path_of_file) != 0  :
-                  # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
-                  with open(path_of_file) as f:
-                      lines = f.read()
-                      logging.info("Injecting fake data from file : %s ", lines)
-                      Firstparse = lines.split(" ")
-                      frame_id = int(Firstparse[0],16)
-                      data = Firstparse[1].split(".")
-                      data = [(int(item,16)) for item in data]
-                      # then clear file
-                      f = open(path_of_file, "r+")
-                      f.seek(0)
-                      f.truncate()
+          frame_id, data = retrievedatafromfile()
         else :
             try:
                 frame_id, data = source_handler.get_message()
@@ -151,6 +150,11 @@ def reading_loop(source_handler, root):
             elif (data[0] & 0b11100000 == 0b11100000) and root.Volumewindow.visible:
                 root.Volumewindow.movedown()
 
+        elif frame_id == TEMPERATURE_FRAME:
+            text = str(round(data[0]/2-39.5))+ "°C"
+            root.Temperature.setText(text)
+            root.Temperatureb.setText(text)
+            
         elif frame_id == SHUTDOWN_FRAME:
             logging.info("Shuting DOWN")
             os.system("sudo shutdown now")
@@ -170,6 +174,11 @@ def reading_loop(source_handler, root):
             elif (data[0] & 0b01000000) == 0b01000000:
                 # Previous button pressed
                 mediacontrol("previous")
+                
+        elif frame_id == KEY_FRAME :
+                if data[0] in listcontrol :
+                    logging.info(listcontrol[data[0]])
+                    mediacontrol(listcontrol[data[0]])
 
         elif frame_id == OPEN_DOOR_FRAME:
             # Maybe Useless
@@ -183,11 +192,6 @@ def reading_loop(source_handler, root):
                 logging.info("Door Back Right")
             if (data[0] & 0b00001000) == 0b00001000:
                 logging.info("Trunk Door")
-
-        elif frame_id == TEMPERATURE_FRAME:
-            text = str(data[0]) + "°C"
-            root.Temperature.setText(text)
-            root.Temperatureb.setText(text)
 
         elif frame_id == RADIO_NAME_FRAME:
             root.RadioName.setText(format_data_ascii(data))
@@ -292,10 +296,8 @@ def reading_loop(source_handler, root):
 
             if (data[0] & 0b00001000) == 0b00001000:
                 # if Tripbutton pressed : switch window
-                #cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
-                #os.system(cmd)
-                mediacontrol("mode") #This should work....
-
+                mediacontrol("mode")
+                
         elif frame_id == AUDIO_SETTINGS_FRAME:
             # Active selected mode in audio settings
             switchToAudiosettingsTab = True
