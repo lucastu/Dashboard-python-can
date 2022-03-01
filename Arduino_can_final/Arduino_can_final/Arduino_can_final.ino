@@ -54,7 +54,6 @@ typedef enum {
   KEY_FRAME            = 0x0A,
   INFO_TRIP_FRAME      = 0x0C,
   INFO_INSTANT_FRAME   = 0x0E,
-  //TRIP_MODE_FRAME      = 0x0F,
   AUDIO_SETTINGS_FRAME = 0x10,
   REMOTE_COMMAND_FRAME = 0x11,
   OPEN_DOOR_FRAME      = 0x12,
@@ -161,16 +160,15 @@ void loop() {
         shutdownflag = true ;
         shutdownStartDate = millis();
       }
-      if (millis()-shutdownStartDate >=40000){
-        //If time spent since ignition went down is more than 1min
+      if (millis()-shutdownStartDate >= 2400000){
+        //If time spent since ignition went down is more than 4min
         //Send shutdown frame to raspberry, wait for it to be shuted down, then cut the power
         sendByteWithType(SHUTDOWN_FRAME, 0x01);
-        delay(20000);
+        delay(10000);
         digitalWrite(Relay_PIN, HIGH);
       }  
   }
   else {
-   //if  digitalRead(Radio_POWER_PIN ) == HIGH
     shutdownflag = false ;
   }  
   
@@ -183,47 +181,40 @@ void loop() {
   //And have to go back to origin before another state
   if (buttonState== LOW){
       if (flag==false){
-        //key="Enter"; 
-        key=1; 
+        key=1; // Enter
         flag=true;
       }
   }
   else if (valx < treshold-200){
       if (flag==false){
-        //key="Gauche"; 
-        key=2;
+        key=2; // Gauche
         flag=true;
       }
   }
   else if (valx > treshold+200){
       if (flag==false){
-        key=3;
-        //key="Droite"; 
+        key=3; // Droite
         flag=true;
       }
   }
  
   else if (valy < treshold-200){
       if (flag==false){
-        //key="Bas"; 
-        key=4;
+        key=4; // Bas
         flag=true;
       }
   }
   else if (valy > treshold+200){
       if (flag==false){
-        //key="Haut"; 
-        key=5;
+        key=5; // Haut
         flag=true;
       }
   }
   else{
       if (key != 0){
-        //send data
         sendByteWithType(KEY_FRAME, key);
       }
       key=0;
-      //and then reset flag
       flag=false;     
   }    
   //End of joystick handeling
