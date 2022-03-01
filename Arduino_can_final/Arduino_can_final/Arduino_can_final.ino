@@ -5,18 +5,19 @@
 // Configuration //
 ///////////////////
 //Define Pinout for joystick
-const int buttonPin = 2;
+const int buttonPin = 5;
 const int analogPinX = A3;
 const int analogPinY = A4;
 
 //Define Variable for joystick
 const int treshold = 512;
+const int precision = 300;
 bool flag = false;
 int valx = 0;
 int valy = 0;
 int buttonState = 0;
 int key = 0 ;
-int timesincepressed = 0;
+long int timesincepressed = 0;
 bool buttonpressed = false;
 
 // CS pin for CAN bus shield.
@@ -187,31 +188,32 @@ void loop() {
       }
   }
   else if (buttonState == HIGH && buttonpressed == true){
+      Serial.println(millis()-timesincepressed);
       if (millis()-timesincepressed < 350) key=1; // Enter
       else key=6; // Back
       buttonpressed = false;
   }
   
-  if (valx < treshold-200){
+  if (valx < treshold-precision){
       if (flag==false){
-        key=2; // Gauche
+        key=3; // Gauche
         flag=true;
       }
   }
-  else if (valx > treshold+200){
+  else if (valx > treshold+precision){
       if (flag==false){
-        key=3; // Droite
+        key=2; // Droite
         flag=true;
       }
   }
  
-  else if (valy < treshold-200){
+  else if (valy < treshold-precision){
       if (flag==false){
         key=4; // Bas
         flag=true;
       }
   }
-  else if (valy > treshold+200){
+  else if (valy > treshold+precision){
       if (flag==false){
         key=5; // Haut
         flag=true;
