@@ -110,13 +110,16 @@ def reading_loop(source_handler, root):
     TIME_FRAME           = 0x13
     SHUTDOWN_FRAME       = 0x14
     
-    listcontrol = { 1 : "enter",
+    # Dict of controls and their ID to send to mediacontrol()
+    listcontrol = { 
+                  1 : "enter",
                   2 : "scroll_left",
                   3 : "scroll_right",
                   4 : "down",
                   5 : "up" ,
                   6 : "back",
-                  7 : "home"}
+                  7 : "home"
+                  }
 
     while not stop_reading.is_set():
         time.sleep(.05)
@@ -159,6 +162,11 @@ def reading_loop(source_handler, root):
             elif (data[0] & 0b11100000 == 0b11100000) and root.Volumewindow.visible:
                 root.Volumewindow.movedown()
 
+        elif frame_id == TEMPERATURE_FRAME:
+            text = str(round(data[0]/2-39.5))+ "°C"
+            root.Temperature.setText(text)
+            root.Temperatureb.setText(text)
+            
         elif frame_id == SHUTDOWN_FRAME:
             logging.info("Shuting DOWN")
             os.system("sudo shutdown now")
@@ -178,6 +186,7 @@ def reading_loop(source_handler, root):
             elif (data[0] & 0b01000000) == 0b01000000:
                 # Previous button pressed
                 mediacontrol("previous")
+                
         elif frame_id == KEY_FRAME :
                 if data[0] in listcontrol :
                     logging.info(listcontrol[data[0]])
@@ -195,11 +204,6 @@ def reading_loop(source_handler, root):
                 logging.info("Door Back Right")
             if (data[0] & 0b00001000) == 0b00001000:
                 logging.info("Trunk Door")
-
-        elif frame_id == TEMPERATURE_FRAME:
-            text = str(data[0]) + "°C"
-            root.Temperature.setText(text)
-            root.Temperatureb.setText(text)
 
         elif frame_id == RADIO_NAME_FRAME:
             root.RadioName.setText(format_data_ascii(data))
@@ -304,10 +308,8 @@ def reading_loop(source_handler, root):
 
             if (data[0] & 0b00001000) == 0b00001000:
                 # if Tripbutton pressed : switch window
-                #cmd = 'xdotool keydown  alt +Tab keyup alt+Tab'
-                #os.system(cmd)
-                mediacontrol("mode") #This should work....
-
+                mediacontrol("mode")
+                
         elif frame_id == AUDIO_SETTINGS_FRAME:
             # Active selected mode in audio settings
             switchToAudiosettingsTab = True
