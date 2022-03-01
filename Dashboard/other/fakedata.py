@@ -24,23 +24,23 @@ testing = False
 path_of_file = '/home/pi/lucas/other/fakedata.txt'
 
 def retrievedatafromfile():
-	if os.path.getsize(path_of_file) != 0  :
-	  # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
-	  with open(path_of_file) as f:
-		lines = f.read()
-		logging.info("Injecting fake data from file : %s ", lines)
-		Firstparse = lines.split(" ")
-		frame_id = int(Firstparse[0],16)
-		data = Firstparse[1].split(".")
-		data = [(int(item,16)) for item in data]
-		# then clear file
-		f = open(path_of_file, "r+")
-		f.seek(0)
-		f.truncate()
-		return	frame_id, data
+    if os.path.getsize(path_of_file) != 0  :
+      # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
+      with open(path_of_file) as f:
+        lines = f.read()
+        logging.info("Injecting fake data from file : %s ", lines)
+        Firstparse = lines.split(" ")
+        frame_id = int(Firstparse[0],16)
+        data = Firstparse[1].split(".")
+        data = [(int(item,16)) for item in data]
+        # then clear file
+        f = open(path_of_file, "r+")
+        f.seek(0)
+        f.truncate()
+        return	frame_id, data
 
 def write_to_file(data_to_write):
-    print("Writing file...")    
+    print("Writing file...")
     print(data_to_write)
     if not testing :
         f = open(path_of_file, "a")
@@ -88,19 +88,19 @@ def wait_for_empty_file():
     print("file empty")    
     
 def format_data(number_of_bytes, generated_data,id):  
-	if number_of_bytes == 1:
-            data=str('{:02x}'.format(generated_data))
-        elif  number_of_bytes == 2:   
-            data=str('{:04x}'.format(generated_data))
-        elif number_of_bytes == 3:
-            data=str('{:06x}'.format(generated_data))
-        elif number_of_bytes == 4:
-            data=str('{:08x}'.format(generated_data))
-        elif number_of_bytes == 5:
-            data=str('{:010x}'.format(generated_data))
-        formated_data = '.'.join(data[i:i + 2] for i in range(0, len(data), 2)).upper()
-        data_to_write = f'{"{:02x}".format(id)} {formated_data}'
-	return data_to_write
+    if number_of_bytes == 1:
+        data=str('{:02x}'.format(generated_data))
+    elif  number_of_bytes == 2:
+        data=str('{:04x}'.format(generated_data))
+    elif number_of_bytes == 3:
+        data=str('{:06x}'.format(generated_data))
+    elif number_of_bytes == 4:
+        data=str('{:08x}'.format(generated_data))
+    elif number_of_bytes == 5:
+        data=str('{:010x}'.format(generated_data))
+    formated_data = '.'.join(data[i:i + 2] for i in range(0, len(data), 2)).upper()
+    data_to_write = f'{"{:02x}".format(id)} {formated_data}'
+    return data_to_write
 
 def choose_data():
     can_continue =True

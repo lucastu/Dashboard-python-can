@@ -177,7 +177,7 @@ def reading_loop(source_handler, root):
                 
         elif frame_id == KEY_FRAME :
                 if data[0] in listcontrol :
-                    logging.info(listcontrol[data[0]])
+                    print(data[0])
                     mediacontrol(listcontrol[data[0]])
 
         elif frame_id == OPEN_DOOR_FRAME:
@@ -385,10 +385,15 @@ def reading_loop(source_handler, root):
 
 ###################### Main start of the program ###################
 def run():
-    source_handler = SerialHandler(serial_device, baudrate )
     # Reading from a serial device, opened with timeout=0 (non-blocking read())
-
-    source_handler.open()
+    try:
+        source_handler = SerialHandler(serial_device, baudrate )
+        source_handler.open()
+    except :
+        print(f"Serial device not available at {serial_device}, trying /dev/ttyUSB1")
+        # serial_device = "/dev/ttyUSB1"
+        source_handler = SerialHandler("/dev/ttyUSB1", baudrate )
+        source_handler.open()
 
     app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
     root = Ui()  # Create an instance of our class for the MainWindow
