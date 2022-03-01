@@ -22,19 +22,19 @@ from alertMSG import alertmsg
 from InfoMSG_parser import parseInfoMessage
 from Media_control import mediacontrol
 from Media_data import mediadata
+from other.fakedata import retrievedatafromfile
 
 ############## Event for closing everything ##############
 stop_reading = threading.Event()
 
 ################# Log file formatting #################
 # write log in console (sys.stderr) and log file
-
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
                     filename='/home/pi/lucas/log.txt')
 console = logging.StreamHandler()
-console.setLevel(logging.INFO)
+console.setLevel(logging.DEBUG)
 logging.getLogger('').addHandler(console)
 
 ################## USB Arduino parameters  #################
@@ -58,6 +58,7 @@ try :
   testWithFakeData = bool(sys.argv[1] == 'test')
 except IndexError :
   testWithFakeData = False
+  
 print('Mode Test' if testWithFakeData else 'Mode Normal')
 
 ################# string formating function ################
@@ -109,7 +110,7 @@ def reading_loop(source_handler, root):
     OPEN_DOOR_FRAME      = 0x12
     TIME_FRAME           = 0x13
     SHUTDOWN_FRAME       = 0x14
-    
+
     # Dict of controls and their ID to send to mediacontrol()
     listcontrol = { 
                   1 : "enter",
@@ -125,21 +126,8 @@ def reading_loop(source_handler, root):
         time.sleep(.05)
         frame_id, data = None, None
 
-        path_of_file = '/home/pi/lucas/other/fakedata.txt'
         if testWithFakeData :
-            if os.path.getsize(path_of_file) != 0  :
-                  # frame_id, data = 0x13, [0x01, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23]
-                  with open(path_of_file) as f:
-                      lines = f.read()
-                      logging.info("Injecting fake data from file : %s ", lines)
-                      Firstparse = lines.split(" ")
-                      frame_id = int(Firstparse[0],16)
-                      data = Firstparse[1].split(".")
-                      data = [(int(item,16)) for item in data]
-                      # then clear file
-                      f = open(path_of_file, "r+")
-                      f.seek(0)
-                      f.truncate()
+          frame_id, data = retrievedatafromfile()
         else :
             try:
                 frame_id, data = source_handler.get_message()
@@ -190,7 +178,7 @@ def reading_loop(source_handler, root):
         elif frame_id == KEY_FRAME :
                 if data[0] in listcontrol :
                     logging.info(listcontrol[data[0]])
-                    mediacontrol(listcontrol[data[0]]) 
+                    mediacontrol(listcontrol[data[0]])
 
         elif frame_id == OPEN_DOOR_FRAME:
             # Maybe Useless
