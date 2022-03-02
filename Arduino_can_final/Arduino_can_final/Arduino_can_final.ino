@@ -188,12 +188,12 @@ void loop() {
       }
   }
   else if (buttonState == HIGH && buttonpressed == true){
-      Serial.println(millis()-timesincepressed);
-      if (millis()-timesincepressed < 350) key=1; // Enter
-      else key=6; // Back
+      if (millis()-timesincepressed > 1200 ) key=7; // Home
+      else if (millis()-timesincepressed > 350 ) key=6; // Back
+      else key=1; // Enter
       buttonpressed = false;
   }
-  
+
   if (valx < treshold-precision){
       if (flag==false){
         key=3; // Gauche
@@ -239,7 +239,6 @@ void loop() {
         sendByteWithType(VOLUME_FRAME, volume);    
       }  
     }else if (id == 246 && len == 8) {
-      //tempValue = ceil((buffer[5] & 0xFF) / 2.0) - 40;
       if (temperature != buffer[5]) {
           temperature = buffer[5];
           sendByteWithType(TEMPERATURE_FRAME, temperature);
@@ -265,7 +264,7 @@ void loop() {
        } 
       
     } else if (id == 544) {
-      // Openned doors
+      // Opened doors
       tempValue = buffer[0];
       if (opendoors != tempValue) { 
         opendoors = tempValue;
@@ -288,17 +287,13 @@ void loop() {
         strncpy(radioName, (char*)buffer, len);
         sendFrameWithType(RADIO_NAME_FRAME, buffer, len); 
       }    
-    }else if (id == 923) { // or 923
+    }else if (id == 923) {
       // Radio time data
-      if (strncmp((char*)buffer, timedata, len)) {
-        strncpy(timedata, (char*)buffer, len);
-        sendFrameWithType(TIME_FRAME, buffer, len); 
-      
-      // Alternative way  
-      //tempValue = (buffer[3], buffer[4]);
-      //if (tempValue! = timedata) {
-      //  tempValue = timedata;
-      //  sendFrameWithType(TIME_FRAME, timedata, 2); 
+
+      tempValue = (buffer[3], buffer[4]);
+      if (tempValue! = timedata) {
+       tempValue = timedata;
+       sendFrameWithType(TIME_FRAME, timedata, 2); 
       }          
     }else if (id == 549) {
       // Radio frequency
