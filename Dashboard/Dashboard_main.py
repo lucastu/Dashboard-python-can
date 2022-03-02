@@ -151,7 +151,7 @@ def reading_loop(source_handler, root):
                 root.Volumewindow.movedown()
 
         elif frame_id == TEMPERATURE_FRAME:
-            text = str(round(data[0]/2-39.5))+ "°C"
+            text = str(data[0]/2-39.5)+ "°C"
             root.Temperature.setText(text)
             root.Temperatureb.setText(text)
             
@@ -160,7 +160,7 @@ def reading_loop(source_handler, root):
             os.system("sudo shutdown now")
 
         elif frame_id == TIME_FRAME:
-            text = f"{data[3]:02d}:{data[4]:02d}"
+            text = f"{data[0]:02d}:{data1]:02d}"
             root.heure.setText(text)
             root.heureb.setText(text)
 
