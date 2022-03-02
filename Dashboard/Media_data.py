@@ -3,13 +3,14 @@
 #  Based on https://github.com/bluewave-studio/openauto-pro-api 
 #
 import time
+import logging
 import common.Api_pb2 as oap_api
 from common.Client import Client, ClientEventHandler
 
 class EventHandler(ClientEventHandler):
     ''' Handle events comming from OAP API'''
     def on_hello_response(self, client, message):
-        print(
+        logging.info(
             "received hello response, result: {}, oap version: {}.{}, api version: {}.{}"
                 .format(message.result, message.oap_version.major,
                         message.oap_version.minor, message.api_version.major,
@@ -40,10 +41,9 @@ def wait_for_media_message(client, root):
             media_status = oap_api.MediaStatus()
             media_status.ParseFromString(message.payload)
             if root == 0:
-                print(f"media status, is playing: {media_status.is_playing}, position label: {media_status.position_label}, source: {media_status.source}")
+                logging.INFO(f"media status, is playing: {media_status.is_playing}, position label: {media_status.position_label}, source: {media_status.source}")
             else:
                 # Retrieve media_duration value to calculate a percentage
-                # xx:xx:xx instead of xx:xx
                 duration_label_value = root.media_duration.text()
                 if media_status.position_label != '' and duration_label_value != '00:00':
                     position_label = media_status.position_label.split(':')
@@ -69,10 +69,10 @@ def wait_for_media_message(client, root):
             media_metadata = oap_api.MediaMetadata()
             media_metadata.ParseFromString(message.payload)
             if root == 0:
-                print(f"media metadata, artist: {media_metadata.artist}, title: {media_metadata.title}, album: {media_metadata.album}, duration label: {media_metadata.duration_label}")
+                logging.INFO(f"media metadata, artist: {media_metadata.artist}, title: {media_metadata.title}, album: {media_metadata.album}, duration label: {media_metadata.duration_label}")
             else:
-                root.media_track.setText('No Title' if not media_metadata.title else media_metadata.title)
-                root.media_artist.setText('No Artist' if not media_metadata.artist else media_metadata.artist)
+                root.media_track.setText('' if not media_metadata.title else media_metadata.title)
+                root.media_artist.setText('' if not media_metadata.artist else media_metadata.artist)
                 root.media_duration.setText(media_metadata.duration_label)
     return can_continue
 
