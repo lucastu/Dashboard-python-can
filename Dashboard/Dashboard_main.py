@@ -385,18 +385,17 @@ def reading_loop(source_handler, root):
 
 ###################### Main start of the program ###################
 def run():
-    # Reading from a serial device, opened with timeout=0 (non-blocking read())
     try:
         source_handler = SerialHandler(serial_device, baudrate )
         source_handler.open()
-    except :
-        print(f"Serial device not available at {serial_device}, trying /dev/ttyUSB1")
-        # serial_device = "/dev/ttyUSB1"
+    except Exception:
+        traceback.print_exc()
+        print(f"Serial device not available at {serial_device}, trying /dev/ttyUSB1...")
         source_handler = SerialHandler("/dev/ttyUSB1", baudrate )
         source_handler.open()
 
     app = QtWidgets.QApplication(sys.argv)  # Create an instance of QtWidgets.QApplication
-    root = Ui()  # Create an instance of our class for the MainWindow
+    root = Ui()  # Create an instance of UI class for the MainWindow
 
     # Create Thread for the reading loop , args : source_handler for USB & root for UI
     reading_thread = threading.Thread(target=reading_loop, args=(source_handler, root,))
@@ -433,10 +432,6 @@ class Ui(QtWidgets.QMainWindow):
         self.Ombre = ombre()
         self.AlertMSG = alertmsg()
         self.Volumewindow = volumewindow()
-
-        # Init both tabs
-#         self.tabWidget.setCurrentIndex(0)
-#         self.tabWidget.setCurrentIndex(1)
 
         self.showMaximized()  # Show the GUI
 
