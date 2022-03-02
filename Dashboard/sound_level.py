@@ -15,8 +15,10 @@ class volumewindow(QtWidgets.QDialog):
         self.ScreenWidth = 1024
         # Definition de la taille de la fenetre
         self.WindowHeight = 30
-        self.WindowWidth =600
-
+        self.WindowWidth = 600
+        
+        self.distancefromegdge = 50
+        
         super().__init__()
         self.initUI()
 
@@ -31,7 +33,6 @@ class volumewindow(QtWidgets.QDialog):
         self.progress.setGeometry(0, 0, self.WindowWidth, self.WindowHeight)
         # Maxmimum de valeur de volume
         self.progress.setMaximum(30)
-        # Retire le text du pourcentage dans la barre
         # Mode Frameless
         self.setWindowFlags(Qt.Widget | Qt.FramelessWindowHint)
         self.visible=False
@@ -41,7 +42,7 @@ class volumewindow(QtWidgets.QDialog):
         self.show()
         # Placement according to window and display size
         emplacement_x = int(self.ScreenWidth / 2 - self.WindowWidth / 2)
-        emplacement_y = int(self.ScreenHeight - self.WindowHeight)
+        emplacement_y = int(self.ScreenHeight - self.WindowHeight - self.distancefromegdge)
         # Application nouvelle geometry
         self.move(emplacement_x, emplacement_y)
 
@@ -49,7 +50,7 @@ class volumewindow(QtWidgets.QDialog):
         # Placement according to window and display size
         emplacement_y_cible =  self.ScreenHeight
         emplacement_x = int(self.ScreenWidth / 2 - self.WindowWidth / 2)
-        emplacement_y = int(self.ScreenHeight - self.WindowHeight)
+        emplacement_y = int(self.ScreenHeight - self.WindowHeight - self.distancefromegdge)
         self.move(emplacement_x, emplacement_y)
 
         add = 3
