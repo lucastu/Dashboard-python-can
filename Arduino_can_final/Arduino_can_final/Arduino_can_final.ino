@@ -162,7 +162,7 @@ void loop() {
         shutdownflag = true ;
         shutdownStartDate = millis();
       }
-      if (millis()-shutdownStartDate >= 2400000){
+      if (millis()-shutdownStartDate >= 240000){
         //If time spent since ignition went down is more than 4min
         //Send shutdown frame to raspberry, wait for it to be shuted down, then cut the power
         sendByteWithType(SHUTDOWN_FRAME, 0x01);
