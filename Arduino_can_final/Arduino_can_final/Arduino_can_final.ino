@@ -227,8 +227,8 @@ void loop() {
   }
   //End of joystick handeling
   
-  // If a msg is available from canbus
-  if (CAN.checkReceive() == CAN_MSGAVAIL) {
+  // If a msg is available from canbus and the serial link is up
+  if (CAN.checkReceive() == CAN_MSGAVAIL  && Serial) {
     CAN.readMsgBuf(&id, &len, buffer);
     
     if (id==421) {
