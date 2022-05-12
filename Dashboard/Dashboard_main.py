@@ -160,7 +160,8 @@ def reading_loop(source_handler, root):
             os.system("sudo shutdown now")
 
         elif frame_id == TIME_FRAME:
-            text = f"{data[0]:02d}:{data1]:02d}"
+            print(data)
+            text = f"{data[0]:02d}:{data[1]:02d}"
             root.heure.setText(text)
             root.heureb.setText(text)
 

@@ -293,11 +293,17 @@ void loop() {
         strncpy(radioName, (char*)buffer, len);
         sendFrameWithType(RADIO_NAME_FRAME, buffer, len); 
       }    
-    }else if (id == 923) {
+    }else if (id == 1014) { //630 923
       // Radio time data
 
-      tempValue = (buffer[3], buffer[4]);
-      if (tempValue! = timedata) {
+      tempValue = (buffer[0]);
+
+      Serial.println(buffer[0]); //0   
+      Serial.println(buffer[1]); //105
+      Serial.println(buffer[2]); //16  80  144   
+      Serial.println(buffer[3]); //93
+      Serial.println(buffer[4]); //0
+      if (tempValue != timedata) {
        tempValue = timedata;
        sendFrameWithType(TIME_FRAME, timedata, 2); 
       }          
