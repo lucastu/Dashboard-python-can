@@ -115,6 +115,8 @@ unsigned long lastCDCactivation =0;
 // To handel the shuting down of the system
 unsigned long shutdownStartDate  =0;
 bool shutdownflag = false;
+unsigned long finalcountdown  =0;
+bool finalcountdownflag = false;
 
 void setup() {
   Serial.begin(SERIAL_SPEED);
@@ -162,18 +164,22 @@ void loop() {
         shutdownflag = true ;
         shutdownStartDate = millis();
       }
-      if (millis()-shutdownStartDate >= 2400000){
+      if (millis()-shutdownStartDate >= 2400000 && finalcountdownflag == false){
         //If time spent since ignition went down is more than 4min
-        //Send shutdown frame to raspberry, wait for it to be shuted down, then cut the power
+        //Send shutdown frame to raspberry, wait for it to be shuted down, then cut the power...
         sendByteWithType(SHUTDOWN_FRAME, 0x01);
-        delay(10000);
-        digitalWrite(Relay_PIN, HIGH);
-      }  
+        finalcountdownflag = true;
+        finalcountdown = millis();
+      } 
   }
   else {
     shutdownflag = false ;
   }  
-  
+  // .... right there
+  if (millis()-finalcountdown >= 10000 && finalcountdownflag){
+        digitalWrite(Relay_PIN, HIGH);  
+    }
+
   //Joystick Handeling
   buttonState = digitalRead(buttonPin);
   valx = analogRead(analogPinX);
